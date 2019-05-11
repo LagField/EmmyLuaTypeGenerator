@@ -72,7 +72,7 @@ namespace EmmyTypeGenerator
             GenerateTypeDefines();
         }
 
-        static void RecordType(Type type)
+        private static void RecordType(Type type)
         {
 #if ToLuaVersion
             if (ToLuaFacility.toluaRewriteTypes.Contains(type))
@@ -93,7 +93,7 @@ namespace EmmyTypeGenerator
             }
         }
 
-        static void GenerateTypeDefines()
+        private static void GenerateTypeDefines()
         {
             sb.Clear();
             sb.AppendLine("---@class NotExportType @表明该类型未导出");
@@ -109,6 +109,7 @@ namespace EmmyTypeGenerator
                 WriteClassFieldDefine(type);
                 sb.AppendLine(string.Format("local {0} = {{}}", type.FullName.Replace(".", "_")));
 
+                WriteClassConstructorDefine(type);
                 WriteClassMethodDefine(type);
 
                 sb.AppendLine("");
@@ -118,7 +119,9 @@ namespace EmmyTypeGenerator
             AssetDatabase.Refresh();
         }
 
-        static void WriteClassDefine(Type type)
+        #region TypeDefineFileGenerator
+
+        private static void WriteClassDefine(Type type)
         {
             if (type.BaseType != null && !type.IsEnum)
             {
@@ -130,7 +133,7 @@ namespace EmmyTypeGenerator
             }
         }
 
-        static void WriteClassFieldDefine(Type type)
+        private static void WriteClassFieldDefine(Type type)
         {
             FieldInfo[] publicInstanceFieldInfos =
                 type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
@@ -169,7 +172,36 @@ namespace EmmyTypeGenerator
             }
         }
 
-        static void WriteClassMethodDefine(Type type)
+        private static void WriteClassConstructorDefine(Type type)
+        {
+            if (type == typeof(MonoBehaviour) || type.IsSubclassOf(typeof(MonoBehaviour)))
+            {
+                return;
+            }
+            
+            string className = type.FullName.Replace(".", "_");
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
+            if (constructorInfos.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < constructorInfos.Length - 1; i++)
+            {
+                ConstructorInfo ctorInfo = constructorInfos[i];
+                if (ctorInfo.IsStatic || ctorInfo.IsGenericMethod)
+                {
+                    continue;
+                }
+
+                WriteOverloadMethodCommentDecalre(ctorInfo.GetParameters(), type);
+            }
+
+            ConstructorInfo lastCtorInfo = constructorInfos[constructorInfos.Length - 1];
+            WriteMethodFunctionDeclare(lastCtorInfo.GetParameters(), type, "New", className, true);
+        }
+
+        private static void WriteClassMethodDefine(Type type)
         {
             string classNameWithNameSpace = type.ToLuaTypeName().Replace(".", "_");
 
@@ -238,21 +270,20 @@ namespace EmmyTypeGenerator
                 //前面的方法都是overload
                 for (int i = 0; i < methodInfoList.Count - 1; i++)
                 {
-                    WriteOverloadMethodCommentDecalre(methodInfoList[i], classNameWithNameSpace);
+                    WriteOverloadMethodCommentDecalre(methodInfoList[i].GetParameters(), methodInfoList[i].ReturnType);
                 }
 
                 MethodInfo lastMethodInfo = methodInfoList[methodInfoList.Count - 1];
-                WriteMethodFunctionDeclare(lastMethodInfo, classNameWithNameSpace);
+                WriteMethodFunctionDeclare(lastMethodInfo.GetParameters(), lastMethodInfo.ReturnType, lastMethodInfo.Name,
+                    classNameWithNameSpace, lastMethodInfo.IsStatic);
             }
         }
 
-        static void WriteOverloadMethodCommentDecalre(MethodInfo methodInfo, string className)
+        private static void WriteOverloadMethodCommentDecalre(ParameterInfo[] parameterInfos, Type returnType)
         {
-            string methodName = methodInfo.Name;
             List<ParameterInfo> outOrRefParameterInfoList = new List<ParameterInfo>();
 
             tempSb.Clear();
-            ParameterInfo[] parameterInfos = methodInfo.GetParameters();
             for (int i = 0; i < parameterInfos.Length; i++)
             {
                 ParameterInfo parameterInfo = parameterInfos[i];
@@ -269,7 +300,7 @@ namespace EmmyTypeGenerator
                 {
                     parameterName = "ref_" + parameterName;
                     outOrRefParameterInfoList.Add(parameterInfo);
-                    
+
                     parameterTypeName = parameterInfo.ParameterType.GetElementType().ToLuaTypeName();
                 }
 
@@ -286,10 +317,9 @@ namespace EmmyTypeGenerator
 
             //return
             List<Type> returnTypeList = new List<Type>();
-            ParameterInfo returnParameterInfo = methodInfo.ReturnParameter;
-            if (returnParameterInfo != null && returnParameterInfo.ParameterType != typeof(void))
+            if (returnType != null && returnType != typeof(void))
             {
-                returnTypeList.Add(returnParameterInfo.ParameterType);
+                returnTypeList.Add(returnType);
             }
 
             for (int i = 0; i < outOrRefParameterInfoList.Count; i++)
@@ -320,13 +350,12 @@ namespace EmmyTypeGenerator
             }
         }
 
-        static void WriteMethodFunctionDeclare(MethodInfo methodInfo, string className)
+        private static void WriteMethodFunctionDeclare(ParameterInfo[] parameterInfos, Type returnType, string methodName,
+            string className, bool isStaticMethod)
         {
-            string methodName = methodInfo.Name;
             List<ParameterInfo> outOrRefParameterInfoList = new List<ParameterInfo>();
 
             tempSb.Clear();
-            ParameterInfo[] parameterInfos = methodInfo.GetParameters();
             for (int i = 0; i < parameterInfos.Length; i++)
             {
                 ParameterInfo parameterInfo = parameterInfos[i];
@@ -343,7 +372,7 @@ namespace EmmyTypeGenerator
                 {
                     parameterName = "ref_" + parameterName;
                     outOrRefParameterInfoList.Add(parameterInfo);
-                    
+
                     parameterTypeName = parameterInfo.ParameterType.GetElementType().ToLuaTypeName();
                 }
 
@@ -362,17 +391,16 @@ namespace EmmyTypeGenerator
             }
 
             //return
-            ParameterInfo returnParameterInfo = methodInfo.ReturnParameter;
-            bool haveReturen = returnParameterInfo != null && returnParameterInfo.ParameterType != typeof(void) || outOrRefParameterInfoList.Count > 0;
+            bool haveReturen = returnType != null && returnType != typeof(void) || outOrRefParameterInfoList.Count > 0;
 
             if (haveReturen)
             {
                 sb.Append("---@return ");
             }
 
-            if (returnParameterInfo != null && returnParameterInfo.ParameterType != typeof(void))
+            if (returnType != null && returnType != typeof(void))
             {
-                sb.Append(returnParameterInfo.ParameterType.ToLuaTypeName());
+                sb.Append(returnType.ToLuaTypeName());
             }
 
             for (int i = 0; i < outOrRefParameterInfoList.Count; i++)
@@ -385,7 +413,7 @@ namespace EmmyTypeGenerator
                 sb.AppendLine("");
             }
 
-            if (methodInfo.IsStatic)
+            if (isStaticMethod)
             {
                 sb.AppendLine(string.Format("function {0}.{1}({2}) end", className, methodName, tempSb));
             }
@@ -395,7 +423,10 @@ namespace EmmyTypeGenerator
             }
         }
 
-        static bool TypeIsExport(Type type)
+        #endregion
+
+
+        private static bool TypeIsExport(Type type)
         {
 #if ToLuaVersion
             return ToLuaFacility.toluaRewriteTypes.Contains(type) || exportTypeList.Contains(type) || type == typeof(string) ||
@@ -406,7 +437,7 @@ namespace EmmyTypeGenerator
 #endif
         }
 
-        static string ToLuaTypeName(this Type type)
+        private static string ToLuaTypeName(this Type type)
         {
             if (!TypeIsExport(type))
             {
@@ -442,7 +473,7 @@ namespace EmmyTypeGenerator
             return typeName;
         }
 
-        static string EscapeLuaKeyword(string s)
+        private static string EscapeLuaKeyword(string s)
         {
             if (luaKeywordSet.Contains(s))
             {

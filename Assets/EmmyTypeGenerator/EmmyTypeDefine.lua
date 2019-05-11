@@ -6,6 +6,8 @@
 ---@field NOT_INJECTION_FLAG number
 ---@field INVALID_INJECTION_FLAG number
 local LuaInterface_LuaInjectionStation = {}
+---@return LuaInterface.LuaInjectionStation
+function LuaInterface_LuaInjectionStation.New() end
 ---@param index number
 ---@return number
 function LuaInterface_LuaInjectionStation.GetInjectFlag(index) end
@@ -20,6 +22,8 @@ function LuaInterface_LuaInjectionStation.Clear() end
 
 ---@class System.Object
 local System_Object = {}
+---@return System.Object
+function System_Object.New() end
 ---@overload fun(objA : System.Object, objB : System.Object) : boolean
 ---@param obj System.Object
 ---@return boolean
@@ -99,6 +103,8 @@ function LuaInterface_Debugger.LogException(str, e) end
 ---@field hingeJoint UnityEngine.Component
 ---@field particleSystem UnityEngine.Component
 local UnityEngine_Component = {}
+---@return UnityEngine.Component
+function UnityEngine_Component.New() end
 ---@overload fun(type : NotExportType) : UnityEngine.Component
 ---@param type string
 ---@return UnityEngine.Component
@@ -148,6 +154,8 @@ function UnityEngine_Component:BroadcastMessage(methodName, options) end
 ---@field name string
 ---@field hideFlags NotExportEnum
 local UnityEngine_Object = {}
+---@return UnityEngine.Object
+function UnityEngine_Object.New() end
 ---@overload fun(original : UnityEngine.Object, position : UnityEngine.Vector3, rotation : UnityEngine.Quaternion) : UnityEngine.Object
 ---@overload fun(original : UnityEngine.Object, position : UnityEngine.Vector3, rotation : UnityEngine.Quaternion, parent : UnityEngine.Transform) : UnityEngine.Object
 ---@overload fun(original : UnityEngine.Object) : UnityEngine.Object
@@ -324,6 +332,11 @@ function UnityEngine_Transform:GetChildCount() end
 ---@field passCount number
 ---@field shaderKeywords NotExportType
 local UnityEngine_Material = {}
+---@overload fun(shader : UnityEngine.Shader) : UnityEngine.Material
+---@overload fun(source : UnityEngine.Material) : UnityEngine.Material
+---@param contents string
+---@return UnityEngine.Material
+function UnityEngine_Material.New(contents) end
 ---@param scriptContents string
 ---@return UnityEngine.Material
 function UnityEngine_Material.Create(scriptContents) end
@@ -529,6 +542,8 @@ function UnityEngine_Material:GetTextureScale(nameID) end
 ---@field isBaked boolean
 ---@field alreadyLightmapped boolean
 local UnityEngine_Light = {}
+---@return UnityEngine.Light
+function UnityEngine_Light.New() end
 ---@param type UnityEngine.LightType
 ---@param layer number
 ---@return NotExportType
@@ -560,6 +575,8 @@ function UnityEngine_Light:GetCommandBuffers(evt) end
 ---@field enabled boolean
 ---@field isActiveAndEnabled boolean
 local UnityEngine_Behaviour = {}
+---@return UnityEngine.Behaviour
+function UnityEngine_Behaviour.New() end
 
 ---@class UnityEngine.Rigidbody : UnityEngine.Component
 ---@field velocity UnityEngine.Vector3
@@ -591,6 +608,8 @@ local UnityEngine_Behaviour = {}
 ---@field solverIterationCount number
 ---@field solverVelocityIterationCount number
 local UnityEngine_Rigidbody = {}
+---@return UnityEngine.Rigidbody
+function UnityEngine_Rigidbody.New() end
 ---@param density number
 function UnityEngine_Rigidbody:SetDensity(density) end
 ---@param position UnityEngine.Vector3
@@ -736,6 +755,8 @@ function UnityEngine_Rigidbody:SweepTestAll(direction) end
 ---@field hdr boolean
 ---@field stereoMirrorMode boolean
 local UnityEngine_Camera = {}
+---@return UnityEngine.Camera
+function UnityEngine_Camera.New() end
 ---@param out_output NotExportType
 ---@param focalLength number
 ---@param sensorSize UnityEngine.Vector2
@@ -913,6 +934,8 @@ function UnityEngine_Camera:GetStereoProjectionMatrices() end
 ---@field panLevel number
 ---@field pan number
 local UnityEngine_AudioSource = {}
+---@return UnityEngine.AudioSource
+function UnityEngine_AudioSource.New() end
 ---@overload fun(clip : UnityEngine.AudioClip, position : UnityEngine.Vector3)
 ---@param clip UnityEngine.AudioClip
 ---@param position UnityEngine.Vector3
@@ -969,6 +992,8 @@ function UnityEngine_AudioSource:GetAmbisonicDecoderFloat(index, out_value) end
 
 ---@class UnityEngine.AudioBehaviour : UnityEngine.Behaviour
 local UnityEngine_AudioBehaviour = {}
+---@return UnityEngine.AudioBehaviour
+function UnityEngine_AudioBehaviour.New() end
 
 ---@class UnityEngine.MonoBehaviour : UnityEngine.Behaviour
 ---@field useGUILayout boolean
@@ -1031,6 +1056,12 @@ function UnityEngine_MonoBehaviour:StopAllCoroutines() end
 ---@field hingeJoint UnityEngine.Component
 ---@field particleSystem UnityEngine.Component
 local UnityEngine_GameObject = {}
+---@overload fun(name : string) : UnityEngine.GameObject
+---@overload fun() : UnityEngine.GameObject
+---@param name string
+---@param components NotExportType
+---@return UnityEngine.GameObject
+function UnityEngine_GameObject.New(name, components) end
 ---@param type NotExportEnum
 ---@return UnityEngine.GameObject
 function UnityEngine_GameObject.CreatePrimitive(type) end
@@ -1153,6 +1184,8 @@ function UnityEngine_TrackedReference:GetHashCode() end
 ---@field loadedLevel number
 ---@field loadedLevelName string
 local UnityEngine_Application = {}
+---@return UnityEngine.Application
+function UnityEngine_Application.New() end
 ---@overload fun(exitCode : number)
 function UnityEngine_Application.Quit() end
 function UnityEngine_Application.CancelQuit() end
@@ -1257,6 +1290,8 @@ function UnityEngine_Application.UnloadLevel(scenePath) end
 ---@field interCollisionStiffness number
 ---@field interCollisionSettingsToggle boolean
 local UnityEngine_Physics = {}
+---@return UnityEngine.Physics
+function UnityEngine_Physics.New() end
 ---@overload fun(collider1 : UnityEngine.Collider, collider2 : UnityEngine.Collider, ignore : boolean)
 ---@param collider1 UnityEngine.Collider
 ---@param collider2 UnityEngine.Collider
@@ -1521,6 +1556,8 @@ function UnityEngine_Physics.RebuildBroadphaseRegions(worldBounds, subdivisions)
 ---@field sharedMaterial NotExportType
 ---@field material NotExportType
 local UnityEngine_Collider = {}
+---@return UnityEngine.Collider
+function UnityEngine_Collider.New() end
 ---@param position UnityEngine.Vector3
 ---@return UnityEngine.Vector3
 function UnityEngine_Collider:ClosestPoint(position) end
@@ -1588,6 +1625,13 @@ function UnityEngine_Texture:IncrementUpdateCount() end
 ---@field loadedMipmapLevel number
 ---@field alphaIsTransparency boolean
 local UnityEngine_Texture2D = {}
+---@overload fun(width : number, height : number, format : NotExportEnum, flags : NotExportEnum) : UnityEngine.Texture2D
+---@overload fun(width : number, height : number, textureFormat : NotExportEnum, mipChain : boolean, linear : boolean) : UnityEngine.Texture2D
+---@overload fun(width : number, height : number, textureFormat : NotExportEnum, mipChain : boolean) : UnityEngine.Texture2D
+---@param width number
+---@param height number
+---@return UnityEngine.Texture2D
+function UnityEngine_Texture2D.New(width, height) end
 ---@param width number
 ---@param height number
 ---@param format NotExportEnum
@@ -1821,6 +1865,8 @@ function UnityEngine_Shader.GetGlobalMatrixArray(nameID, values) end
 ---@field sharedMaterial UnityEngine.Material
 ---@field sharedMaterials NotExportType
 local UnityEngine_Renderer = {}
+---@return UnityEngine.Renderer
+function UnityEngine_Renderer.New() end
 ---@return boolean
 function UnityEngine_Renderer:HasPropertyBlock() end
 ---@overload fun(properties : NotExportType)
@@ -1859,6 +1905,15 @@ function UnityEngine_Renderer:GetClosestReflectionProbes(result) end
 ---@field url string
 ---@field keepWaiting boolean
 local UnityEngine_WWW = {}
+---@overload fun(url : string) : UnityEngine.WWW
+---@overload fun(url : string, form : NotExportType) : UnityEngine.WWW
+---@overload fun(url : string, postData : NotExportType) : UnityEngine.WWW
+---@overload fun(url : string, postData : NotExportType, headers : NotExportType) : UnityEngine.WWW
+---@param url string
+---@param postData NotExportType
+---@param headers NotExportType
+---@return UnityEngine.WWW
+function UnityEngine_WWW.New(url, postData, headers) end
 ---@overload fun(s : string) : string
 ---@param s string
 ---@param e NotExportType
@@ -1925,6 +1980,8 @@ function UnityEngine_CustomYieldInstruction:Reset() end
 ---@field showCursor boolean
 ---@field lockCursor boolean
 local UnityEngine_Screen = {}
+---@return UnityEngine.Screen
+function UnityEngine_Screen.New() end
 ---@overload fun(width : number, height : number, fullscreenMode : NotExportEnum, preferredRefreshRate : number)
 ---@overload fun(width : number, height : number, fullscreenMode : NotExportEnum)
 ---@overload fun(width : number, height : number, fullscreen : boolean, preferredRefreshRate : number)
@@ -2135,6 +2192,8 @@ function UnityEngine_AssetBundle:GetAllScenePaths() end
 ---@field trails NotExportType
 ---@field customData NotExportType
 local UnityEngine_ParticleSystem = {}
+---@return UnityEngine.ParticleSystem
+function UnityEngine_ParticleSystem.New() end
 function UnityEngine_ParticleSystem.ResetPreMappedBufferMemory() end
 ---@param customData NotExportType
 ---@param streamIndex NotExportEnum
@@ -2188,9 +2247,13 @@ function UnityEngine_ParticleSystem:IsAlive() end
 ---@field priority number
 ---@field allowSceneActivation boolean
 local UnityEngine_AsyncOperation = {}
+---@return UnityEngine.AsyncOperation
+function UnityEngine_AsyncOperation.New() end
 
 ---@class UnityEngine.YieldInstruction : System.Object
 local UnityEngine_YieldInstruction = {}
+---@return UnityEngine.YieldInstruction
+function UnityEngine_YieldInstruction.New() end
 
 ---@class UnityEngine.LightType
 ---@field Spot UnityEngine.LightType
@@ -2205,6 +2268,8 @@ local UnityEngine_LightType = {}
 ---@field NeverSleep number
 ---@field SystemSetting number
 local UnityEngine_SleepTimeout = {}
+---@return UnityEngine.SleepTimeout
+function UnityEngine_SleepTimeout.New() end
 
 ---@class UnityEngine.Animator : UnityEngine.Behaviour
 ---@field isOptimizable boolean
@@ -2253,6 +2318,8 @@ local UnityEngine_SleepTimeout = {}
 ---@field fireEvents boolean
 ---@field keepAnimatorControllerStateOnDisable boolean
 local UnityEngine_Animator = {}
+---@return UnityEngine.Animator
+function UnityEngine_Animator.New() end
 ---@param name string
 ---@return number
 function UnityEngine_Animator.StringToHash(name) end
@@ -2517,6 +2584,8 @@ function UnityEngine_Animator:SetQuaternion(id, value) end
 ---@field touches NotExportType
 ---@field accelerationEvents NotExportType
 local UnityEngine_Input = {}
+---@return UnityEngine.Input
+function UnityEngine_Input.New() end
 ---@param axisName string
 ---@return number
 function UnityEngine_Input.GetAxis(axisName) end
@@ -2905,6 +2974,8 @@ local UnityEngine_KeyCode = {}
 ---@field skinnedMotionVectors boolean
 ---@field localBounds UnityEngine.Bounds
 local UnityEngine_SkinnedMeshRenderer = {}
+---@return UnityEngine.SkinnedMeshRenderer
+function UnityEngine_SkinnedMeshRenderer.New() end
 ---@param index number
 ---@return number
 function UnityEngine_SkinnedMeshRenderer:GetBlendShapeWeight(index) end
@@ -2923,12 +2994,16 @@ local UnityEngine_Space = {}
 ---@field additionalVertexStreams NotExportType
 ---@field subMeshStartIndex number
 local UnityEngine_MeshRenderer = {}
+---@return UnityEngine.MeshRenderer
+function UnityEngine_MeshRenderer.New() end
 
 ---@class UnityEngine.BoxCollider : UnityEngine.Collider
 ---@field center UnityEngine.Vector3
 ---@field size UnityEngine.Vector3
 ---@field extents UnityEngine.Vector3
 local UnityEngine_BoxCollider = {}
+---@return UnityEngine.BoxCollider
+function UnityEngine_BoxCollider.New() end
 
 ---@class UnityEngine.MeshCollider : UnityEngine.Collider
 ---@field sharedMesh NotExportType
@@ -2938,11 +3013,15 @@ local UnityEngine_BoxCollider = {}
 ---@field skinWidth number
 ---@field smoothSphereCollisions boolean
 local UnityEngine_MeshCollider = {}
+---@return UnityEngine.MeshCollider
+function UnityEngine_MeshCollider.New() end
 
 ---@class UnityEngine.SphereCollider : UnityEngine.Collider
 ---@field center UnityEngine.Vector3
 ---@field radius number
 local UnityEngine_SphereCollider = {}
+---@return UnityEngine.SphereCollider
+function UnityEngine_SphereCollider.New() end
 
 ---@class UnityEngine.CharacterController : UnityEngine.Collider
 ---@field velocity UnityEngine.Vector3
@@ -2958,6 +3037,8 @@ local UnityEngine_SphereCollider = {}
 ---@field detectCollisions boolean
 ---@field enableOverlapRecovery boolean
 local UnityEngine_CharacterController = {}
+---@return UnityEngine.CharacterController
+function UnityEngine_CharacterController.New() end
 ---@param speed UnityEngine.Vector3
 ---@return boolean
 function UnityEngine_CharacterController:SimpleMove(speed) end
@@ -2971,6 +3052,8 @@ function UnityEngine_CharacterController:Move(motion) end
 ---@field height number
 ---@field direction number
 local UnityEngine_CapsuleCollider = {}
+---@return UnityEngine.CapsuleCollider
+function UnityEngine_CapsuleCollider.New() end
 
 ---@class UnityEngine.Animation : UnityEngine.Behaviour
 ---@field clip UnityEngine.AnimationClip
@@ -2983,6 +3066,8 @@ local UnityEngine_CapsuleCollider = {}
 ---@field cullingType NotExportEnum
 ---@field localBounds UnityEngine.Bounds
 local UnityEngine_Animation = {}
+---@return UnityEngine.Animation
+function UnityEngine_Animation.New() end
 ---@overload fun()
 ---@param name string
 function UnityEngine_Animation:Stop(name) end
@@ -3054,6 +3139,8 @@ function UnityEngine_Animation:GetClip(name) end
 ---@field hasMotionCurves boolean
 ---@field hasRootCurves boolean
 local UnityEngine_AnimationClip = {}
+---@return UnityEngine.AnimationClip
+function UnityEngine_AnimationClip.New() end
 ---@param evt NotExportType
 function UnityEngine_AnimationClip:AddEvent(evt) end
 ---@param go UnityEngine.GameObject
@@ -3095,6 +3182,8 @@ function UnityEngine_Motion:ValidateIfRetargetable(val) end
 ---@field name string
 ---@field blendMode UnityEngine.AnimationBlendMode
 local UnityEngine_AnimationState = {}
+---@return UnityEngine.AnimationState
+function UnityEngine_AnimationState.New() end
 ---@overload fun(mix : UnityEngine.Transform, recursive : boolean)
 ---@param mix UnityEngine.Transform
 function UnityEngine_AnimationState:AddMixingTransform(mix) end
@@ -3235,6 +3324,16 @@ local UnityEngine_BlendWeights = {}
 ---@field isCubemap boolean
 ---@field isVolume boolean
 local UnityEngine_RenderTexture = {}
+---@overload fun(desc : NotExportType) : UnityEngine.RenderTexture
+---@overload fun(textureToCopy : UnityEngine.RenderTexture) : UnityEngine.RenderTexture
+---@overload fun(width : number, height : number, depth : number, format : NotExportEnum) : UnityEngine.RenderTexture
+---@overload fun(width : number, height : number, depth : number, format : NotExportEnum, readWrite : NotExportEnum) : UnityEngine.RenderTexture
+---@overload fun(width : number, height : number, depth : number, format : NotExportEnum) : UnityEngine.RenderTexture
+---@param width number
+---@param height number
+---@param depth number
+---@return UnityEngine.RenderTexture
+function UnityEngine_RenderTexture.New(width, height, depth) end
 ---@param rt UnityEngine.RenderTexture
 ---@return boolean
 function UnityEngine_RenderTexture.SupportsStencil(rt) end
@@ -3278,6 +3377,8 @@ function UnityEngine_RenderTexture:GetTexelOffset() end
 
 ---@class UnityEngine.Resources : System.Object
 local UnityEngine_Resources = {}
+---@return UnityEngine.Resources
+function UnityEngine_Resources.New() end
 ---@param type NotExportType
 ---@return NotExportType
 function UnityEngine_Resources.FindObjectsOfTypeAll(type) end
