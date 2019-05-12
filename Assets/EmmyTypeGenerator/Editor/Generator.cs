@@ -18,6 +18,11 @@ namespace EmmyTypeGenerator
             get { return Application.dataPath + "/EmmyTypeGenerator/EmmyTypeDefine.lua"; }
         }
 
+        private static string LuaGlobalVariableFilePath
+        {
+            get { return Application.dataPath + "/EmmyTypeGenerator/ExportTypeGlobalVariables.lua"; }
+        }
+
         public static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
         {
             typeof(byte),
@@ -70,6 +75,9 @@ namespace EmmyTypeGenerator
             }
 
             GenerateTypeDefines();
+            GenerateExportTypeGlobalVariable();
+            
+            AssetDatabase.Refresh();
         }
 
         private static void RecordType(Type type)
@@ -116,7 +124,34 @@ namespace EmmyTypeGenerator
             }
 
             File.WriteAllText(TypeDefineFilePath, sb.ToString());
-            AssetDatabase.Refresh();
+        }
+
+        private static void GenerateExportTypeGlobalVariable()
+        {
+            List<Type> globalVariableTypes = new List<Type>();
+            for (int i = 0; i < exportTypeList.Count; i++)
+            {
+                Type exportType = exportTypeList[i];
+
+                if (exportType == typeof(MonoBehaviour) || exportType.IsSubclassOf(typeof(MonoBehaviour)))
+                {
+                    continue;
+                }
+
+                globalVariableTypes.Add(exportType);
+            }
+
+            sb.Clear();
+
+            for (int i = 0; i < globalVariableTypes.Count; i++)
+            {
+                Type exportType = globalVariableTypes[i];
+
+                sb.AppendLine(string.Format("---@type {0}", exportType.FullName));
+                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName.Replace(".", "_"), exportType.FullName));
+            }
+
+            File.WriteAllText(LuaGlobalVariableFilePath, sb.ToString());
         }
 
         #region TypeDefineFileGenerator
@@ -178,7 +213,7 @@ namespace EmmyTypeGenerator
             {
                 return;
             }
-            
+
             string className = type.FullName.Replace(".", "_");
             ConstructorInfo[] constructorInfos = type.GetConstructors();
             if (constructorInfos.Length == 0)
