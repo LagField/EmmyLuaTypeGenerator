@@ -117,7 +117,9 @@ public static class ToLuaMenu
                 AssetDatabase.Refresh();
                 GenerateClassWraps();
                 GenLuaBinder();
-                beAutoGen = false;                
+                beAutoGen = false;        
+                
+                EmmyTypeGenerator.Generator.GenerateEmmyTypeFiles();
             }
 
             beCheck = false;
@@ -380,6 +382,8 @@ public static class ToLuaMenu
         ToLuaExport.allTypes.Clear();
         allTypes.Clear();        
         AssetDatabase.Refresh();
+        
+        Debug.Log("generate wrap files");
     }
 
     static HashSet<Type> GetCustomTypeDelegates()
@@ -910,6 +914,7 @@ public static class ToLuaMenu
         GenerateClassWraps();
         GenLuaBinder();
         beAutoGen = false;
+        
     }
 
     [MenuItem("Lua/Clear wrap files", false, 6)]

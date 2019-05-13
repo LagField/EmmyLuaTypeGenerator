@@ -3420,3 +3420,94 @@ function LuaProfiler.GetID(name) end
 function LuaProfiler.BeginSample(id) end
 function LuaProfiler.EndSample() end
 
+---@class TestExportScript : System.Object
+local TestExportScript = {}
+---@param go UnityEngine.GameObject
+function TestExportScript.PrintGameobject(go) end
+
+---@class UnityEngine.Debug : System.Object
+---@field unityLogger NotExportType
+---@field developerConsoleVisible boolean
+---@field isDebugBuild boolean
+---@field logger NotExportType
+local UnityEngine_Debug = {}
+---@return UnityEngine.Debug
+function UnityEngine_Debug.New() end
+---@overload fun(start : UnityEngine.Vector3, _end : UnityEngine.Vector3, color : UnityEngine.Color, duration : number)
+---@overload fun(start : UnityEngine.Vector3, _end : UnityEngine.Vector3, color : UnityEngine.Color)
+---@overload fun(start : UnityEngine.Vector3, _end : UnityEngine.Vector3)
+---@param start UnityEngine.Vector3
+---@param _end UnityEngine.Vector3
+---@param color UnityEngine.Color
+---@param duration number
+---@param depthTest boolean
+function UnityEngine_Debug.DrawLine(start, _end, color, duration, depthTest) end
+---@overload fun(start : UnityEngine.Vector3, dir : UnityEngine.Vector3, color : UnityEngine.Color, duration : number)
+---@overload fun(start : UnityEngine.Vector3, dir : UnityEngine.Vector3, color : UnityEngine.Color)
+---@overload fun(start : UnityEngine.Vector3, dir : UnityEngine.Vector3)
+---@param start UnityEngine.Vector3
+---@param dir UnityEngine.Vector3
+---@param color UnityEngine.Color
+---@param duration number
+---@param depthTest boolean
+function UnityEngine_Debug.DrawRay(start, dir, color, duration, depthTest) end
+function UnityEngine_Debug.Break() end
+function UnityEngine_Debug.DebugBreak() end
+---@overload fun(message : System.Object)
+---@param message System.Object
+---@param context UnityEngine.Object
+function UnityEngine_Debug.Log(message, context) end
+---@overload fun(format : string, args : NotExportType)
+---@param context UnityEngine.Object
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.LogFormat(context, format, args) end
+---@overload fun(message : System.Object)
+---@param message System.Object
+---@param context UnityEngine.Object
+function UnityEngine_Debug.LogError(message, context) end
+---@overload fun(format : string, args : NotExportType)
+---@param context UnityEngine.Object
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.LogErrorFormat(context, format, args) end
+function UnityEngine_Debug.ClearDeveloperConsole() end
+---@overload fun(exception : NotExportType)
+---@param exception NotExportType
+---@param context UnityEngine.Object
+function UnityEngine_Debug.LogException(exception, context) end
+---@overload fun(message : System.Object)
+---@param message System.Object
+---@param context UnityEngine.Object
+function UnityEngine_Debug.LogWarning(message, context) end
+---@overload fun(format : string, args : NotExportType)
+---@param context UnityEngine.Object
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.LogWarningFormat(context, format, args) end
+---@overload fun(condition : boolean)
+---@overload fun(condition : boolean, context : UnityEngine.Object)
+---@overload fun(condition : boolean, message : System.Object)
+---@overload fun(condition : boolean, message : string)
+---@overload fun(condition : boolean, message : System.Object, context : UnityEngine.Object)
+---@overload fun(condition : boolean, message : string, context : UnityEngine.Object)
+---@param condition boolean
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.Assert(condition, format, args) end
+---@overload fun(condition : boolean, format : string, args : NotExportType)
+---@param condition boolean
+---@param context UnityEngine.Object
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.AssertFormat(condition, context, format, args) end
+---@overload fun(message : System.Object)
+---@param message System.Object
+---@param context UnityEngine.Object
+function UnityEngine_Debug.LogAssertion(message, context) end
+---@overload fun(format : string, args : NotExportType)
+---@param context UnityEngine.Object
+---@param format string
+---@param args NotExportType
+function UnityEngine_Debug.LogAssertionFormat(context, format, args) end
+

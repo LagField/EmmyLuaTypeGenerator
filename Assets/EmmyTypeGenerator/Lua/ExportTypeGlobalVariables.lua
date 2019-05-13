@@ -26,6 +26,8 @@ UnityEngine_Camera = UnityEngine.Camera
 UnityEngine_AudioSource = UnityEngine.AudioSource
 ---@type UnityEngine.AudioBehaviour
 UnityEngine_AudioBehaviour = UnityEngine.AudioBehaviour
+---@type UnityEngine.MonoBehaviour
+UnityEngine_MonoBehaviour = UnityEngine.MonoBehaviour
 ---@type UnityEngine.GameObject
 UnityEngine_GameObject = UnityEngine.GameObject
 ---@type UnityEngine.TrackedReference
@@ -116,3 +118,7 @@ UnityEngine_RenderTexture = UnityEngine.RenderTexture
 UnityEngine_Resources = UnityEngine.Resources
 ---@type LuaProfiler
 LuaProfiler = LuaProfiler
+---@type TestExportScript
+TestExportScript = TestExportScript
+---@type UnityEngine.Debug
+UnityEngine_Debug = UnityEngine.Debug

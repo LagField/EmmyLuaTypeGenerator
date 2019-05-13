@@ -23,7 +23,7 @@ namespace EmmyTypeGenerator
             get { return Application.dataPath + "/EmmyTypeGenerator/ExportTypeGlobalVariables.lua"; }
         }
 
-        public static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
+        private static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
         {
             typeof(byte),
             typeof(sbyte),
@@ -37,7 +37,7 @@ namespace EmmyTypeGenerator
             typeof(double)
         };
 
-        public static HashSet<string> luaKeywordSet = new HashSet<string>
+        private static HashSet<string> luaKeywordSet = new HashSet<string>
         {
             "and",
             "break",
@@ -64,7 +64,7 @@ namespace EmmyTypeGenerator
 
         private static StringBuilder sb = new StringBuilder(1024);
         private static StringBuilder tempSb = new StringBuilder(1024);
-        public static List<Type> exportTypeList = new List<Type>();
+        private static List<Type> exportTypeList = new List<Type>();
 
         [MenuItem("Lua/EmmyTypeGenerate")]
         public static void GenerateEmmyTypeFiles()
@@ -76,7 +76,7 @@ namespace EmmyTypeGenerator
 
             GenerateTypeDefines();
             GenerateExportTypeGlobalVariable();
-            
+
             AssetDatabase.Refresh();
         }
 
@@ -135,7 +135,15 @@ namespace EmmyTypeGenerator
 
                 if (exportType == typeof(MonoBehaviour) || exportType.IsSubclassOf(typeof(MonoBehaviour)))
                 {
-                    continue;
+                    //检查mono脚本是否有静态方法或属性
+                    MethodInfo[] methodInfos = exportType.GetMethods(BindingFlags.Public | BindingFlags.Static);
+                    FieldInfo[] fieldInfos = exportType.GetFields(BindingFlags.Public | BindingFlags.Static);
+                    PropertyInfo[] propertyInfos = exportType.GetProperties(BindingFlags.Public | BindingFlags.Static);
+
+                    if (methodInfos.Length == 0 && fieldInfos.Length == 0 && propertyInfos.Length == 0)
+                    {
+                        continue;
+                    }
                 }
 
                 globalVariableTypes.Add(exportType);
