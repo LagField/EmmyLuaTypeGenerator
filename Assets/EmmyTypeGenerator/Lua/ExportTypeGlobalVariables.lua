@@ -122,20 +122,37 @@ LuaProfiler = LuaProfiler
 TestExportScript = TestExportScript
 ---@type UnityEngine.Debug
 UnityEngine_Debug = UnityEngine.Debug
+---@type fun(f : fun())
 System_Action = System.Action
+---@type fun(f : fun())
 UnityEngine_Events_UnityAction = UnityEngine.Events.UnityAction
+---@type fun(f : fun(param1 : number) : boolean)
 System_Predicate_int = System.Predicate_int
+---@type fun(f : fun(param1 : number))
 System_Action_int = System.Action_int
+---@type fun(f : fun(param1 : number, param2 : number) : number)
 System_Comparison_int = System.Comparison_int
+---@type fun(f : fun(param1 : number) : number)
 System_Func_int_int = System.Func_int_int
+---@type fun(f : fun(param1 : UnityEngine.Camera))
 UnityEngine_Camera_CameraCallback = UnityEngine.Camera.CameraCallback
+---@type fun(f : fun(param1 : string, param2 : boolean, param3 : string))
 UnityEngine_Application_AdvertisingIdentifierCallback = UnityEngine.Application.AdvertisingIdentifierCallback
+---@type fun(f : fun())
 UnityEngine_Application_LowMemoryCallback = UnityEngine.Application.LowMemoryCallback
+---@type fun(f : fun(param1 : string, param2 : string, param3 : NotExportEnum))
 UnityEngine_Application_LogCallback = UnityEngine.Application.LogCallback
+---@type fun(f : fun(param1 : boolean))
 System_Action_bool = System.Action_bool
+---@type fun(f : fun() : boolean)
 System_Func_bool = System.Func_bool
+---@type fun(f : fun(param1 : NotExportType))
 UnityEngine_AudioClip_PCMReaderCallback = UnityEngine.AudioClip.PCMReaderCallback
+---@type fun(f : fun(param1 : number))
 UnityEngine_AudioClip_PCMSetPositionCallback = UnityEngine.AudioClip.PCMSetPositionCallback
+---@type fun(f : fun(param1 : number))
 System_Action_float = System.Action_float
+---@type fun(f : fun(param1 : string))
 TestExportScript_CustomDelegate = TestExportScript.CustomDelegate
+---@type fun(f : fun(param1 : UnityEngine.Camera))
 System_Action_UnityEngine_Camera = System.Action_UnityEngine_Camera

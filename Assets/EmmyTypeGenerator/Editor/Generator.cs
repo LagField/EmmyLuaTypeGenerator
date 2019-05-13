@@ -541,9 +541,11 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < exportDelegateTypeList.Count; i++)
             {
                 Type delegateType = exportDelegateTypeList[i];
+                WriteDelegateTypeComment(delegateType);
                 if (delegateType.IsGenericType)
                 {
 //                    Debug.Log("泛型委托: " + delegateType.FullName);
+
                     tempSb.Clear();
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
                     Type[] genericTypes = delegateType.GetGenericArguments();
@@ -564,8 +566,40 @@ namespace EmmyTypeGenerator
                 else
                 {
                     sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.ReplaceDotOrPlusWithUnderscore(),
-                        delegateType.FullName.Replace("+",".")));
+                        delegateType.FullName.Replace("+", ".")));
                 }
+            }
+        }
+
+        private static void WriteDelegateTypeComment(Type type)
+        {
+            //不是delegate类型
+            if (!typeof(Delegate).IsAssignableFrom(type))
+            {
+                return;
+            }
+
+            tempSb.Clear();
+            MethodInfo invokeMethodInfo = type.GetMethod("Invoke");
+            ParameterInfo[] parameterInfos = invokeMethodInfo.GetParameters();
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                ParameterInfo parameterInfo = parameterInfos[i];
+                tempSb.AppendFormat("param{0} : {1}", i + 1, parameterInfo.ParameterType.ToLuaTypeName());
+                if (i != parameterInfos.Length - 1)
+                {
+                    tempSb.Append(", ");
+                }
+            }
+
+            Type returnType = invokeMethodInfo.ReturnType;
+            if (returnType != typeof(void))
+            {
+                sb.AppendLine(string.Format("---@type fun(f : fun({0}) : {1})", tempSb, returnType.ToLuaTypeName()));
+            }
+            else
+            {
+                sb.AppendLine(string.Format("---@type fun(f : fun({0}))", tempSb));
             }
         }
 
