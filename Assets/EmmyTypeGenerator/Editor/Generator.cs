@@ -1,6 +1,8 @@
 ﻿#define ToLuaVersion
 //#define XLuaVersion
 
+#define CombineNamespaceWithClassName
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,12 +153,44 @@ namespace EmmyTypeGenerator
 
             sb.Clear();
 
+#if !CombineNamespaceWithClassName
+            //搜集namespace
+            List<string> namespaceList = new List<string>();
+            for (int i = 0; i < globalVariableTypes.Count; i++)
+            {
+                Type exportType = globalVariableTypes[i];
+                string ns = exportType.Namespace;
+                if (string.IsNullOrEmpty(ns))
+                {
+                    continue;
+                }
+
+                if (namespaceList.Contains(ns))
+                {
+                    continue;
+                }
+
+                namespaceList.Add(ns);
+            }
+
+            for (int i = 0; i < namespaceList.Count; i++)
+            {
+                string ns = namespaceList[i];
+
+                sb.AppendLine(string.Format("{0} = {1}", ns, ns));
+            }
+#endif
+
             for (int i = 0; i < globalVariableTypes.Count; i++)
             {
                 Type exportType = globalVariableTypes[i];
 
                 sb.AppendLine(string.Format("---@type {0}", exportType.FullName));
-                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName.Replace(".", "_"), exportType.FullName));
+#if CombineNamespaceWithClassName
+                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName.ReplaceDotOrPlusWithUnderscore(), exportType.FullName));
+#else
+                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName, exportType.FullName));
+#endif
             }
 
             //generate delegates
@@ -199,7 +233,7 @@ namespace EmmyTypeGenerator
                 {
                     continue;
                 }
-                
+
                 Type fieldType = fieldInfo.FieldType;
                 sb.AppendLine(string.Format("---@field {0} {1}", fieldInfo.Name, fieldType.ToLuaTypeName()));
             }
@@ -222,7 +256,7 @@ namespace EmmyTypeGenerator
                 {
                     continue;
                 }
-                
+
                 Type propertyType = propertyInfo.PropertyType;
                 sb.AppendLine(string.Format("---@field {0} {1}", propertyInfo.Name, propertyType.ToLuaTypeName()));
             }
@@ -310,6 +344,7 @@ namespace EmmyTypeGenerator
                 {
                     continue;
                 }
+
                 recordMethodGroup(methodInfo);
             }
 
@@ -320,6 +355,7 @@ namespace EmmyTypeGenerator
                 {
                     continue;
                 }
+
                 recordMethodGroup(methodInfo);
             }
 
@@ -560,7 +596,11 @@ namespace EmmyTypeGenerator
 //                    Debug.Log("泛型委托: " + delegateType.FullName);
 
                     tempSb.Clear();
+#if CombineNamespaceWithClassName
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
+#else
+                    tempSb.Append(delegateType.GetGenericTypeFullName());
+#endif
                     Type[] genericTypes = delegateType.GetGenericArguments();
                     for (int j = 0; j < genericTypes.Length; j++)
                     {
@@ -578,8 +618,13 @@ namespace EmmyTypeGenerator
                 }
                 else
                 {
+#if CombineNamespaceWithClassName
                     sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.ReplaceDotOrPlusWithUnderscore(),
                         delegateType.FullName.Replace("+", ".")));
+#else
+                    sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.Replace("+", "."),
+                        delegateType.FullName.Replace("+", ".")));
+#endif
                 }
             }
         }
@@ -713,7 +758,7 @@ namespace EmmyTypeGenerator
 
         private static bool IsMemberObsolete(MemberInfo memberInfo)
         {
-            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute),false).Length > 0;
+            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0;
         }
     }
 }
