@@ -13,6 +13,7 @@ public class Test : MonoBehaviour
         string fullPath = Application.dataPath + "\\EmmyTypeGenerator/Lua";
         lua.AddSearchPath(fullPath);   
         
+        DelegateFactory.Init();
         LuaBinder.Bind(lua);
         
         lua.Require("Test");

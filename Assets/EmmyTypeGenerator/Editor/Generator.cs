@@ -159,6 +159,9 @@ namespace EmmyTypeGenerator
                 sb.AppendLine(string.Format("{0} = {1}", exportType.FullName.Replace(".", "_"), exportType.FullName));
             }
 
+            //generate delegates
+            WriteDelegateTypeDefine();
+
             File.WriteAllText(LuaGlobalVariableFilePath, sb.ToString());
         }
 
@@ -468,6 +471,102 @@ namespace EmmyTypeGenerator
 
         #endregion
 
+        private static void WriteDelegateTypeDefine()
+        {
+            List<Type> exportDelegateTypeList = new List<Type>();
+            for (int i = 0; i < CustomSettings.customDelegateList.Length; i++)
+            {
+                exportDelegateTypeList.Add(CustomSettings.customDelegateList[i].type);
+            }
+
+            //查找所有导出类型中,是否有用到了委托的
+            Action<Type> recordDelegateTypeToList = type =>
+            {
+                if (typeof(Delegate).IsAssignableFrom(type))
+                {
+                    if (!exportDelegateTypeList.Contains(type))
+                    {
+                        exportDelegateTypeList.Add(type);
+                    }
+                }
+            };
+
+            for (int i = 0; i < exportTypeList.Count; i++)
+            {
+                Type exportType = exportTypeList[i];
+                MethodInfo[] methodInfos = exportType.GetMethods(BindingFlags.Public | BindingFlags.Static);
+                FieldInfo[] fieldInfos = exportType.GetFields(BindingFlags.Public | BindingFlags.Static);
+                PropertyInfo[] propertyInfos = exportType.GetProperties(BindingFlags.Public | BindingFlags.Static);
+
+                for (int j = 0; j < methodInfos.Length; j++)
+                {
+                    MethodInfo methodInfo = methodInfos[j];
+                    ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+                    for (int k = 0; k < parameterInfos.Length; k++)
+                    {
+                        ParameterInfo parameterInfo = parameterInfos[k];
+                        if (parameterInfo.IsOut || parameterInfo.ParameterType.IsByRef)
+                        {
+                            recordDelegateTypeToList(parameterInfo.ParameterType.GetElementType());
+                        }
+                        else
+                        {
+                            recordDelegateTypeToList(parameterInfo.ParameterType);
+                        }
+                    }
+
+                    ParameterInfo returnInfo = methodInfo.ReturnParameter;
+                    recordDelegateTypeToList(returnInfo.ParameterType);
+                }
+
+                for (int j = 0; j < fieldInfos.Length; j++)
+                {
+                    FieldInfo fieldInfo = fieldInfos[j];
+                    recordDelegateTypeToList(fieldInfo.FieldType);
+                }
+
+                for (int j = 0; j < propertyInfos.Length; j++)
+                {
+                    PropertyInfo propertyInfo = propertyInfos[j];
+                    recordDelegateTypeToList(propertyInfo.PropertyType);
+                }
+            }
+
+//            Debug.Log("以下Delegate类型需要导出:");
+//            for (int i = 0; i < exportDelegateTypeList.Count; i++)
+//            {
+//                Debug.Log(exportDelegateTypeList[i].FullName);
+//            }
+
+            for (int i = 0; i < exportDelegateTypeList.Count; i++)
+            {
+                Type delegateType = exportDelegateTypeList[i];
+                if (delegateType.IsGenericType)
+                {
+//                    Debug.Log("泛型委托: " + delegateType.FullName);
+                    tempSb.Clear();
+                    tempSb.AppendFormat(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                    Type[] genericTypes = delegateType.GetGenericArguments();
+                    for (int j = 0; j < genericTypes.Length; j++)
+                    {
+//                        Debug.Log("包含泛型参数类型: " + genericTypes[j].FullName);
+                        tempSb.AppendFormat("_{0}", genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                    }
+
+                    tempSb.AppendFormat(" = {0}", delegateType.GetGenericTypeFullName());
+                    for (int j = 0; j < genericTypes.Length; j++)
+                    {
+                        tempSb.AppendFormat("_{0}", genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                    }
+
+                    sb.AppendLine(tempSb.ToString());
+                }
+                else
+                {
+                    
+                }
+            }
+        }
 
         private static bool TypeIsExport(Type type)
         {
@@ -514,6 +613,44 @@ namespace EmmyTypeGenerator
 
             string typeName = type.FullName;
             return typeName;
+        }
+
+        private static Dictionary<Type, string> CSharpTypeNameDic = new Dictionary<Type, string>
+        {
+            {typeof(byte), "byte"},
+            {typeof(sbyte), "sbyte"},
+            {typeof(short), "short"},
+            {typeof(ushort), "ushort"},
+            {typeof(int), "int"},
+            {typeof(uint), "uint"},
+            {typeof(long), "long"},
+            {typeof(ulong), "ulong"},
+            {typeof(float), "float"},
+            {typeof(double), "double"},
+            {typeof(bool), "bool"},
+            {typeof(string), "string"},
+        };
+
+        private static string ToCSharpTypeFullName(this Type type)
+        {
+            if (CSharpTypeNameDic.ContainsKey(type))
+            {
+                return CSharpTypeNameDic[type];
+            }
+
+            return type.FullName;
+        }
+
+        private static string GetGenericTypeFullName(this Type type)
+        {
+            string fullName = type.FullName;
+            int backquoteIndex = fullName.IndexOf("`");
+            return fullName.Substring(0, backquoteIndex);
+        }
+
+        private static string ReplaceDotOrPlusWithUnderscore(this string s)
+        {
+            return s.Replace(".", "_").Replace("+", "_");
         }
 
         private static string EscapeLuaKeyword(string s)

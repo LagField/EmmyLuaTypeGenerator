@@ -32,6 +32,9 @@ public class DelegateFactory
 		dict.Add(typeof(UnityEngine.AudioClip.PCMReaderCallback), factory.UnityEngine_AudioClip_PCMReaderCallback);
 		dict.Add(typeof(UnityEngine.AudioClip.PCMSetPositionCallback), factory.UnityEngine_AudioClip_PCMSetPositionCallback);
 		dict.Add(typeof(System.Action<UnityEngine.AsyncOperation>), factory.System_Action_UnityEngine_AsyncOperation);
+		dict.Add(typeof(TestExportScript.CustomDelegate), factory.TestExportScript_CustomDelegate);
+		dict.Add(typeof(System.Action<UnityEngine.Camera>), factory.System_Action_UnityEngine_Camera);
+		dict.Add(typeof(System.Action<float>), factory.System_Action_float);
 
 		DelegateTraits<System.Action>.Init(factory.System_Action);
 		DelegateTraits<UnityEngine.Events.UnityAction>.Init(factory.UnityEngine_Events_UnityAction);
@@ -48,6 +51,9 @@ public class DelegateFactory
 		DelegateTraits<UnityEngine.AudioClip.PCMReaderCallback>.Init(factory.UnityEngine_AudioClip_PCMReaderCallback);
 		DelegateTraits<UnityEngine.AudioClip.PCMSetPositionCallback>.Init(factory.UnityEngine_AudioClip_PCMSetPositionCallback);
 		DelegateTraits<System.Action<UnityEngine.AsyncOperation>>.Init(factory.System_Action_UnityEngine_AsyncOperation);
+		DelegateTraits<TestExportScript.CustomDelegate>.Init(factory.TestExportScript_CustomDelegate);
+		DelegateTraits<System.Action<UnityEngine.Camera>>.Init(factory.System_Action_UnityEngine_Camera);
+		DelegateTraits<System.Action<float>>.Init(factory.System_Action_float);
 
 		TypeTraits<System.Action>.Init(factory.Check_System_Action);
 		TypeTraits<UnityEngine.Events.UnityAction>.Init(factory.Check_UnityEngine_Events_UnityAction);
@@ -64,6 +70,9 @@ public class DelegateFactory
 		TypeTraits<UnityEngine.AudioClip.PCMReaderCallback>.Init(factory.Check_UnityEngine_AudioClip_PCMReaderCallback);
 		TypeTraits<UnityEngine.AudioClip.PCMSetPositionCallback>.Init(factory.Check_UnityEngine_AudioClip_PCMSetPositionCallback);
 		TypeTraits<System.Action<UnityEngine.AsyncOperation>>.Init(factory.Check_System_Action_UnityEngine_AsyncOperation);
+		TypeTraits<TestExportScript.CustomDelegate>.Init(factory.Check_TestExportScript_CustomDelegate);
+		TypeTraits<System.Action<UnityEngine.Camera>>.Init(factory.Check_System_Action_UnityEngine_Camera);
+		TypeTraits<System.Action<float>>.Init(factory.Check_System_Action_float);
 
 		StackTraits<System.Action>.Push = factory.Push_System_Action;
 		StackTraits<UnityEngine.Events.UnityAction>.Push = factory.Push_UnityEngine_Events_UnityAction;
@@ -80,6 +89,9 @@ public class DelegateFactory
 		StackTraits<UnityEngine.AudioClip.PCMReaderCallback>.Push = factory.Push_UnityEngine_AudioClip_PCMReaderCallback;
 		StackTraits<UnityEngine.AudioClip.PCMSetPositionCallback>.Push = factory.Push_UnityEngine_AudioClip_PCMSetPositionCallback;
 		StackTraits<System.Action<UnityEngine.AsyncOperation>>.Push = factory.Push_System_Action_UnityEngine_AsyncOperation;
+		StackTraits<TestExportScript.CustomDelegate>.Push = factory.Push_TestExportScript_CustomDelegate;
+		StackTraits<System.Action<UnityEngine.Camera>>.Push = factory.Push_System_Action_UnityEngine_Camera;
+		StackTraits<System.Action<float>>.Push = factory.Push_System_Action_float;
 	}
     
     public static Delegate CreateDelegate(Type t, LuaFunction func = null)
@@ -1054,6 +1066,177 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_UnityEngine_AsyncOperation(IntPtr L, System.Action<UnityEngine.AsyncOperation> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class TestExportScript_CustomDelegate_Event : LuaDelegate
+	{
+		public TestExportScript_CustomDelegate_Event(LuaFunction func) : base(func) { }
+		public TestExportScript_CustomDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(string param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(string param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public TestExportScript.CustomDelegate TestExportScript_CustomDelegate(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			TestExportScript.CustomDelegate fn = delegate(string param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			TestExportScript_CustomDelegate_Event target = new TestExportScript_CustomDelegate_Event(func);
+			TestExportScript.CustomDelegate d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			TestExportScript_CustomDelegate_Event target = new TestExportScript_CustomDelegate_Event(func, self);
+			TestExportScript.CustomDelegate d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_TestExportScript_CustomDelegate(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(TestExportScript.CustomDelegate), L, pos);
+	}
+
+	void Push_TestExportScript_CustomDelegate(IntPtr L, TestExportScript.CustomDelegate o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_Camera_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_Camera_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_Camera_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.Camera param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.Camera param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.Camera> System_Action_UnityEngine_Camera(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.Camera> fn = delegate(UnityEngine.Camera param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_Camera_Event target = new System_Action_UnityEngine_Camera_Event(func);
+			System.Action<UnityEngine.Camera> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_Camera_Event target = new System_Action_UnityEngine_Camera_Event(func, self);
+			System.Action<UnityEngine.Camera> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_Camera(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.Camera>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_Camera(IntPtr L, System.Action<UnityEngine.Camera> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_float_Event : LuaDelegate
+	{
+		public System_Action_float_Event(LuaFunction func) : base(func) { }
+		public System_Action_float_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(float param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(float param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<float> System_Action_float(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<float> fn = delegate(float param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_float_Event target = new System_Action_float_Event(func);
+			System.Action<float> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_float_Event target = new System_Action_float_Event(func, self);
+			System.Action<float> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_float(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<float>), L, pos);
+	}
+
+	void Push_System_Action_float(IntPtr L, System.Action<float> o)
 	{
 		ToLua.Push(L, o);
 	}
