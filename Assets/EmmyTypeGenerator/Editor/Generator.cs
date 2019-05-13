@@ -1,4 +1,5 @@
 ﻿#define ToLuaVersion
+//todo xlua version
 //#define XLuaVersion
 
 #define CombineNamespaceWithClassName
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -64,6 +66,7 @@ namespace EmmyTypeGenerator
             "while"
         };
 
+
         private static StringBuilder sb = new StringBuilder(1024);
         private static StringBuilder tempSb = new StringBuilder(1024);
         private static List<Type> exportTypeList = new List<Type>();
@@ -73,8 +76,15 @@ namespace EmmyTypeGenerator
         {
             for (int i = 0; i < CustomSettings.customTypeList.Length; i++)
             {
-                RecordType(CustomSettings.customTypeList[i].type);
+                RecordTypeAndBaseType(CustomSettings.customTypeList[i].type);
             }
+
+#if ToLuaVersion
+            for (int i = 0; i < ToLuaFacility.toluaBaseTypes.Count; i++)
+            {
+                RecordType(ToLuaFacility.toluaBaseTypes[i]);
+            }
+#endif
 
             GenerateTypeDefines();
             GenerateExportTypeGlobalVariable();
@@ -82,7 +92,7 @@ namespace EmmyTypeGenerator
             AssetDatabase.Refresh();
         }
 
-        private static void RecordType(Type type)
+        private static void RecordTypeAndBaseType(Type type)
         {
 #if ToLuaVersion
             if (ToLuaFacility.toluaRewriteTypes.Contains(type))
@@ -99,8 +109,17 @@ namespace EmmyTypeGenerator
             exportTypeList.Add(type);
             if (type.BaseType != null && !type.IsEnum)
             {
-                RecordType(type.BaseType);
+                RecordTypeAndBaseType(type.BaseType);
             }
+        }
+
+        private static void RecordType(Type type)
+        {
+            if (exportTypeList.Contains(type))
+            {
+                return;
+            }
+            exportTypeList.Add(type);
         }
 
         private static void GenerateTypeDefines()
@@ -595,6 +614,11 @@ namespace EmmyTypeGenerator
                 {
 //                    Debug.Log("泛型委托: " + delegateType.FullName);
 
+                    if (string.IsNullOrEmpty(delegateType.FullName))
+                    {
+                        continue;
+                    }
+
                     tempSb.Clear();
 #if CombineNamespaceWithClassName
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
@@ -639,6 +663,10 @@ namespace EmmyTypeGenerator
 
             tempSb.Clear();
             MethodInfo invokeMethodInfo = type.GetMethod("Invoke");
+            if (invokeMethodInfo == null)
+            {
+                return;
+            }
             ParameterInfo[] parameterInfos = invokeMethodInfo.GetParameters();
             for (int i = 0; i < parameterInfos.Length; i++)
             {
@@ -705,6 +733,10 @@ namespace EmmyTypeGenerator
             }
 
             string typeName = type.FullName;
+            
+            //去除泛型后缀
+            typeName = Regex.Replace(typeName, @"\`[0-9]+", "").Replace("+", ".");
+            
             return typeName;
         }
 
