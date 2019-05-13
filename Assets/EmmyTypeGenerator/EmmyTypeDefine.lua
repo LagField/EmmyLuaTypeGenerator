@@ -3425,9 +3425,10 @@ function LuaProfiler.EndSample() end
 ---@field intDelegate NotExportType
 ---@field cameraDelegate NotExportType
 local TestExportScript = {}
----@param callback NotExportType
----@param number number
-function TestExportScript.TestDelegate(callback, number) end
+---@overload fun(callback : NotExportType, number : number)
+---@param customDelegate NotExportType
+---@param content string
+function TestExportScript.TestDelegate(customDelegate, content) end
 ---@param go UnityEngine.GameObject
 function TestExportScript.PrintGameobject(go) end
 

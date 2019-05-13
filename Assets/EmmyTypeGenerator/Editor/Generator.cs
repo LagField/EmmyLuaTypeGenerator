@@ -20,7 +20,7 @@ namespace EmmyTypeGenerator
 
         private static string LuaGlobalVariableFilePath
         {
-            get { return Application.dataPath + "/EmmyTypeGenerator/ExportTypeGlobalVariables.lua"; }
+            get { return Application.dataPath + "/EmmyTypeGenerator/Lua/ExportTypeGlobalVariables.lua"; }
         }
 
         private static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
@@ -545,7 +545,7 @@ namespace EmmyTypeGenerator
                 {
 //                    Debug.Log("泛型委托: " + delegateType.FullName);
                     tempSb.Clear();
-                    tempSb.AppendFormat(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                    tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
                     Type[] genericTypes = delegateType.GetGenericArguments();
                     for (int j = 0; j < genericTypes.Length; j++)
                     {
@@ -563,7 +563,8 @@ namespace EmmyTypeGenerator
                 }
                 else
                 {
-                    
+                    sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.ReplaceDotOrPlusWithUnderscore(),
+                        delegateType.FullName.Replace("+",".")));
                 }
             }
         }

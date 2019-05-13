@@ -21,11 +21,26 @@ public class TestExportScriptWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
-			System.Action<float> arg0 = (System.Action<float>)ToLua.CheckDelegate<System.Action<float>>(L, 1);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-			TestExportScript.TestDelegate(arg0, arg1);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2 && TypeChecker.CheckTypes<System.Action<float>, float>(L, 1))
+			{
+				System.Action<float> arg0 = (System.Action<float>)ToLua.ToObject(L, 1);
+				float arg1 = (float)LuaDLL.lua_tonumber(L, 2);
+				TestExportScript.TestDelegate(arg0, arg1);
+				return 0;
+			}
+			else if (count == 2 && TypeChecker.CheckTypes<TestExportScript.CustomDelegate, string>(L, 1))
+			{
+				TestExportScript.CustomDelegate arg0 = (TestExportScript.CustomDelegate)ToLua.ToObject(L, 1);
+				string arg1 = ToLua.ToString(L, 2);
+				TestExportScript.TestDelegate(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: TestExportScript.TestDelegate");
+			}
 		}
 		catch (Exception e)
 		{
