@@ -86,22 +86,6 @@ function LuaInterface_Debugger.LogException(str, e) end
 ---@field transform UnityEngine.Transform
 ---@field gameObject UnityEngine.GameObject
 ---@field tag string
----@field rigidbody UnityEngine.Component
----@field rigidbody2D UnityEngine.Component
----@field camera UnityEngine.Component
----@field light UnityEngine.Component
----@field animation UnityEngine.Component
----@field constantForce UnityEngine.Component
----@field renderer UnityEngine.Component
----@field audio UnityEngine.Component
----@field guiText UnityEngine.Component
----@field networkView UnityEngine.Component
----@field guiElement UnityEngine.Component
----@field guiTexture UnityEngine.Component
----@field collider UnityEngine.Component
----@field collider2D UnityEngine.Component
----@field hingeJoint UnityEngine.Component
----@field particleSystem UnityEngine.Component
 local UnityEngine_Component = {}
 ---@return UnityEngine.Component
 function UnityEngine_Component.New() end
@@ -176,18 +160,6 @@ function UnityEngine_Object.DestroyImmediate(obj) end
 function UnityEngine_Object.FindObjectsOfType(type) end
 ---@param target UnityEngine.Object
 function UnityEngine_Object.DontDestroyOnLoad(target) end
----@overload fun(obj : UnityEngine.Object, t : number)
----@param obj UnityEngine.Object
-function UnityEngine_Object.DestroyObject(obj) end
----@param type NotExportType
----@return NotExportType
-function UnityEngine_Object.FindSceneObjectsOfType(type) end
----@param type NotExportType
----@return NotExportType
-function UnityEngine_Object.FindObjectsOfTypeIncludingAssets(type) end
----@param type NotExportType
----@return NotExportType
-function UnityEngine_Object.FindObjectsOfTypeAll(type) end
 ---@param type NotExportType
 ---@return UnityEngine.Object
 function UnityEngine_Object.FindObjectOfType(type) end
@@ -247,10 +219,10 @@ function UnityEngine_Transform:Translate(x, y, z, relativeTo) end
 ---@param axis UnityEngine.Vector3
 ---@param angle number
 function UnityEngine_Transform:Rotate(axis, angle) end
----@overload fun(point : UnityEngine.Vector3, axis : UnityEngine.Vector3, angle : number)
+---@param point UnityEngine.Vector3
 ---@param axis UnityEngine.Vector3
 ---@param angle number
-function UnityEngine_Transform:RotateAround(axis, angle) end
+function UnityEngine_Transform:RotateAround(point, axis, angle) end
 ---@overload fun(target : UnityEngine.Transform, worldUp : UnityEngine.Vector3)
 ---@overload fun(target : UnityEngine.Transform)
 ---@overload fun(worldPosition : UnityEngine.Vector3, worldUp : UnityEngine.Vector3)
@@ -305,19 +277,11 @@ function UnityEngine_Transform:Find(n) end
 ---@param parent UnityEngine.Transform
 ---@return boolean
 function UnityEngine_Transform:IsChildOf(parent) end
----@param n string
----@return UnityEngine.Transform
-function UnityEngine_Transform:FindChild(n) end
 ---@return NotExportType
 function UnityEngine_Transform:GetEnumerator() end
----@param axis UnityEngine.Vector3
----@param angle number
-function UnityEngine_Transform:RotateAroundLocal(axis, angle) end
 ---@param index number
 ---@return UnityEngine.Transform
 function UnityEngine_Transform:GetChild(index) end
----@return number
-function UnityEngine_Transform:GetChildCount() end
 
 ---@class UnityEngine.Material : UnityEngine.Object
 ---@field shader UnityEngine.Shader
@@ -337,9 +301,6 @@ local UnityEngine_Material = {}
 ---@param contents string
 ---@return UnityEngine.Material
 function UnityEngine_Material.New(contents) end
----@param scriptContents string
----@return UnityEngine.Material
-function UnityEngine_Material.Create(scriptContents) end
 ---@overload fun(nameID : number) : boolean
 ---@param name string
 ---@return boolean
@@ -504,7 +465,6 @@ function UnityEngine_Material:GetTextureOffset(nameID) end
 function UnityEngine_Material:GetTextureScale(nameID) end
 
 ---@class UnityEngine.Light : UnityEngine.Behaviour
----@field pixelLightCount number
 ---@field type UnityEngine.LightType
 ---@field spotAngle number
 ---@field color UnityEngine.Color
@@ -525,22 +485,13 @@ function UnityEngine_Material:GetTextureScale(nameID) end
 ---@field shadows NotExportEnum
 ---@field shadowStrength number
 ---@field shadowResolution NotExportEnum
----@field shadowSoftness number
----@field shadowSoftnessFade number
 ---@field layerShadowCullDistances NotExportType
 ---@field cookieSize number
 ---@field cookie UnityEngine.Texture
 ---@field renderMode NotExportEnum
----@field bakedIndex number
 ---@field areaSize UnityEngine.Vector2
 ---@field lightmapBakeType NotExportEnum
 ---@field commandBufferCount number
----@field shadowConstantBias number
----@field shadowObjectSizeBias number
----@field attenuate boolean
----@field lightmappingMode NotExportEnum
----@field isBaked boolean
----@field alreadyLightmapped boolean
 local UnityEngine_Light = {}
 ---@return UnityEngine.Light
 function UnityEngine_Light.New() end
@@ -602,11 +553,6 @@ function UnityEngine_Behaviour.New() end
 ---@field sleepThreshold number
 ---@field maxAngularVelocity number
 ---@field solverVelocityIterations number
----@field sleepVelocity number
----@field sleepAngularVelocity number
----@field useConeFriction boolean
----@field solverIterationCount number
----@field solverVelocityIterationCount number
 local UnityEngine_Rigidbody = {}
 ---@return UnityEngine.Rigidbody
 function UnityEngine_Rigidbody.New() end
@@ -628,8 +574,6 @@ function UnityEngine_Rigidbody:GetRelativePointVelocity(relativePoint) end
 ---@param worldPoint UnityEngine.Vector3
 ---@return UnityEngine.Vector3
 function UnityEngine_Rigidbody:GetPointVelocity(worldPoint) end
----@param a number
-function UnityEngine_Rigidbody:SetMaxAngularVelocity(a) end
 ---@overload fun(force : UnityEngine.Vector3, mode : NotExportEnum)
 ---@overload fun(force : UnityEngine.Vector3)
 ---@overload fun(x : number, y : number, z : number, mode : NotExportEnum)
@@ -691,7 +635,6 @@ function UnityEngine_Rigidbody:SweepTestAll(direction) end
 ---@field current UnityEngine.Camera
 ---@field allCamerasCount number
 ---@field allCameras NotExportType
----@field mainCamera UnityEngine.Camera
 ---@field nearClipPlane number
 ---@field farClipPlane number
 ---@field fieldOfView number
@@ -748,12 +691,6 @@ function UnityEngine_Rigidbody:SweepTestAll(direction) end
 ---@field stereoTargetEye NotExportEnum
 ---@field stereoActiveEye NotExportEnum
 ---@field commandBufferCount number
----@field isOrthoGraphic boolean
----@field near number
----@field far number
----@field fov number
----@field hdr boolean
----@field stereoMirrorMode boolean
 local UnityEngine_Camera = {}
 ---@return UnityEngine.Camera
 function UnityEngine_Camera.New() end
@@ -882,22 +819,6 @@ function UnityEngine_Camera:RemoveCommandBuffer(evt, buffer) end
 ---@param evt NotExportEnum
 ---@return NotExportType
 function UnityEngine_Camera:GetCommandBuffers(evt) end
----@return number
-function UnityEngine_Camera:GetScreenWidth() end
----@return number
-function UnityEngine_Camera:GetScreenHeight() end
-function UnityEngine_Camera:DoClear() end
-function UnityEngine_Camera:ResetFieldOfView() end
----@param leftMatrix NotExportType
----@param rightMatrix NotExportType
-function UnityEngine_Camera:SetStereoViewMatrices(leftMatrix, rightMatrix) end
----@param leftMatrix NotExportType
----@param rightMatrix NotExportType
-function UnityEngine_Camera:SetStereoProjectionMatrices(leftMatrix, rightMatrix) end
----@return NotExportType
-function UnityEngine_Camera:GetStereoViewMatrices() end
----@return NotExportType
-function UnityEngine_Camera:GetStereoProjectionMatrices() end
 
 ---@class UnityEngine.AudioSource : UnityEngine.AudioBehaviour
 ---@field volume number
@@ -928,11 +849,6 @@ function UnityEngine_Camera:GetStereoProjectionMatrices() end
 ---@field minDistance number
 ---@field maxDistance number
 ---@field rolloffMode NotExportEnum
----@field minVolume number
----@field maxVolume number
----@field rolloffFactor number
----@field panLevel number
----@field pan number
 local UnityEngine_AudioSource = {}
 ---@return UnityEngine.AudioSource
 function UnityEngine_AudioSource.New() end
@@ -964,11 +880,9 @@ function UnityEngine_AudioSource:SetCustomCurve(type, curve) end
 ---@param type NotExportEnum
 ---@return NotExportType
 function UnityEngine_AudioSource:GetCustomCurve(type) end
----@overload fun(numSamples : number, channel : number) : NotExportType
 ---@param samples NotExportType
 ---@param channel number
 function UnityEngine_AudioSource:GetOutputData(samples, channel) end
----@overload fun(numSamples : number, channel : number, window : NotExportEnum) : NotExportType
 ---@param samples NotExportType
 ---@param channel number
 ---@param window NotExportEnum
@@ -1020,9 +934,6 @@ function UnityEngine_MonoBehaviour:InvokeRepeating(methodName, time, repeatRate)
 ---@param routine NotExportType
 ---@return NotExportType
 function UnityEngine_MonoBehaviour:StartCoroutine(routine) end
----@param routine NotExportType
----@return NotExportType
-function UnityEngine_MonoBehaviour:StartCoroutine_Auto(routine) end
 ---@overload fun(routine : NotExportType)
 ---@overload fun(routine : NotExportType)
 ---@param methodName string
@@ -1032,29 +943,12 @@ function UnityEngine_MonoBehaviour:StopAllCoroutines() end
 ---@class UnityEngine.GameObject : UnityEngine.Object
 ---@field transform UnityEngine.Transform
 ---@field layer number
----@field active boolean
 ---@field activeSelf boolean
 ---@field activeInHierarchy boolean
 ---@field isStatic boolean
 ---@field tag string
 ---@field scene NotExportType
 ---@field gameObject UnityEngine.GameObject
----@field rigidbody UnityEngine.Component
----@field rigidbody2D UnityEngine.Component
----@field camera UnityEngine.Component
----@field light UnityEngine.Component
----@field animation UnityEngine.Component
----@field constantForce UnityEngine.Component
----@field renderer UnityEngine.Component
----@field audio UnityEngine.Component
----@field guiText UnityEngine.Component
----@field networkView UnityEngine.Component
----@field guiElement UnityEngine.Component
----@field guiTexture UnityEngine.Component
----@field collider UnityEngine.Component
----@field collider2D UnityEngine.Component
----@field hingeJoint UnityEngine.Component
----@field particleSystem UnityEngine.Component
 local UnityEngine_GameObject = {}
 ---@overload fun(name : string) : UnityEngine.GameObject
 ---@overload fun() : UnityEngine.GameObject
@@ -1117,23 +1011,14 @@ function UnityEngine_GameObject:SendMessage(methodName) end
 ---@overload fun(methodName : string, parameter : System.Object)
 ---@param methodName string
 function UnityEngine_GameObject:BroadcastMessage(methodName) end
----@overload fun(componentType : NotExportType) : UnityEngine.Component
----@param className string
+---@param componentType NotExportType
 ---@return UnityEngine.Component
-function UnityEngine_GameObject:AddComponent(className) end
+function UnityEngine_GameObject:AddComponent(componentType) end
 ---@param value boolean
 function UnityEngine_GameObject:SetActive(value) end
----@param state boolean
-function UnityEngine_GameObject:SetActiveRecursively(state) end
 ---@param tag string
 ---@return boolean
 function UnityEngine_GameObject:CompareTag(tag) end
----@param clip UnityEngine.Object
----@param time number
-function UnityEngine_GameObject:SampleAnimation(clip, time) end
----@param animation UnityEngine.Object
-function UnityEngine_GameObject:PlayAnimation(animation) end
-function UnityEngine_GameObject:StopAnimation() end
 
 ---@class UnityEngine.TrackedReference : System.Object
 local UnityEngine_TrackedReference = {}
@@ -1144,9 +1029,6 @@ function UnityEngine_TrackedReference:Equals(o) end
 function UnityEngine_TrackedReference:GetHashCode() end
 
 ---@class UnityEngine.Application : System.Object
----@field isLoadingLevel boolean
----@field streamedBytes number
----@field webSecurityEnabled boolean
 ---@field isPlaying boolean
 ---@field isFocused boolean
 ---@field platform NotExportEnum
@@ -1171,29 +1053,18 @@ function UnityEngine_TrackedReference:GetHashCode() end
 ---@field cloudProjectId string
 ---@field targetFrameRate number
 ---@field systemLanguage NotExportEnum
----@field stackTraceLogType NotExportEnum
 ---@field consoleLogPath string
 ---@field backgroundLoadingPriority NotExportEnum
 ---@field internetReachability NotExportEnum
 ---@field genuine boolean
 ---@field genuineCheckAvailable boolean
----@field isShowingSplashScreen boolean
----@field isPlayer boolean
 ---@field isEditor boolean
----@field levelCount number
----@field loadedLevel number
----@field loadedLevelName string
 local UnityEngine_Application = {}
 ---@return UnityEngine.Application
 function UnityEngine_Application.New() end
 ---@overload fun(exitCode : number)
 function UnityEngine_Application.Quit() end
-function UnityEngine_Application.CancelQuit() end
 function UnityEngine_Application.Unload() end
----@overload fun(levelIndex : number) : number
----@param levelName string
----@return number
-function UnityEngine_Application.GetStreamProgressForLevel(levelName) end
 ---@overload fun(levelIndex : number) : boolean
 ---@param levelName string
 ---@return boolean
@@ -1207,15 +1078,11 @@ function UnityEngine_Application.GetBuildTags() end
 function UnityEngine_Application.SetBuildTags(buildTags) end
 ---@return boolean
 function UnityEngine_Application.HasProLicense() end
----@param script string
-function UnityEngine_Application.ExternalEval(script) end
 ---@param delegateMethod NotExportType
 ---@return boolean
 function UnityEngine_Application.RequestAdvertisingIdentifierAsync(delegateMethod) end
 ---@param url string
 function UnityEngine_Application.OpenURL(url) end
----@param mode number
-function UnityEngine_Application.ForceCrash(mode) end
 ---@param logType NotExportEnum
 ---@return NotExportEnum
 function UnityEngine_Application.GetStackTraceLogType(logType) end
@@ -1228,45 +1095,11 @@ function UnityEngine_Application.RequestUserAuthorization(mode) end
 ---@param mode NotExportEnum
 ---@return boolean
 function UnityEngine_Application.HasUserAuthorization(mode) end
----@param functionName string
----@param args NotExportType
-function UnityEngine_Application.ExternalCall(functionName, args) end
----@param o UnityEngine.Object
-function UnityEngine_Application.DontDestroyOnLoad(o) end
----@overload fun(filename : string, superSize : number)
----@param filename string
-function UnityEngine_Application.CaptureScreenshot(filename) end
----@param handler NotExportType
-function UnityEngine_Application.RegisterLogCallback(handler) end
----@param handler NotExportType
-function UnityEngine_Application.RegisterLogCallbackThreaded(handler) end
----@overload fun(index : number)
----@param name string
-function UnityEngine_Application.LoadLevel(name) end
----@overload fun(index : number)
----@param name string
-function UnityEngine_Application.LoadLevelAdditive(name) end
----@overload fun(index : number) : UnityEngine.AsyncOperation
----@param levelName string
----@return UnityEngine.AsyncOperation
-function UnityEngine_Application.LoadLevelAsync(levelName) end
----@overload fun(index : number) : UnityEngine.AsyncOperation
----@param levelName string
----@return UnityEngine.AsyncOperation
-function UnityEngine_Application.LoadLevelAdditiveAsync(levelName) end
----@overload fun(index : number) : boolean
----@param scenePath string
----@return boolean
-function UnityEngine_Application.UnloadLevel(scenePath) end
 
 ---@class UnityEngine.Physics : System.Object
 ---@field IgnoreRaycastLayer number
 ---@field DefaultRaycastLayers number
 ---@field AllLayers number
----@field kIgnoreRaycastLayer number
----@field kDefaultRaycastLayers number
----@field kAllLayers number
----@field minPenetrationForPenalty number
 ---@field gravity UnityEngine.Vector3
 ---@field defaultContactOffset number
 ---@field sleepThreshold number
@@ -1275,13 +1108,6 @@ function UnityEngine_Application.UnloadLevel(scenePath) end
 ---@field bounceThreshold number
 ---@field defaultSolverIterations number
 ---@field defaultSolverVelocityIterations number
----@field bounceTreshold number
----@field sleepVelocity number
----@field sleepAngularVelocity number
----@field maxAngularVelocity number
----@field solverIterationCount number
----@field solverVelocityIterationCount number
----@field penetrationPenaltyForce number
 ---@field defaultPhysicsScene NotExportType
 ---@field autoSimulation boolean
 ---@field autoSyncTransforms boolean
@@ -1607,8 +1433,6 @@ function UnityEngine_Texture.SetGlobalAnisotropicFilteringLimits(forcedMin, glob
 function UnityEngine_Texture.SetStreamingTextureMaterialDebugProperties() end
 ---@return NotExportType
 function UnityEngine_Texture:GetNativeTexturePtr() end
----@return number
-function UnityEngine_Texture:GetNativeTextureID() end
 function UnityEngine_Texture:IncrementUpdateCount() end
 
 ---@class UnityEngine.Texture2D : UnityEngine.Texture
@@ -1715,19 +1539,12 @@ function UnityEngine_Texture2D:ReadPixels(source, destX, destY) end
 function UnityEngine_Texture2D:SetPixels32(x, y, blockWidth, blockHeight, colors) end
 
 ---@class UnityEngine.Shader : UnityEngine.Object
----@field globalShaderHardwareTier NotExportEnum
 ---@field globalMaximumLOD number
 ---@field globalRenderPipeline string
 ---@field maximumLOD number
 ---@field isSupported boolean
 ---@field renderQueue number
 local UnityEngine_Shader = {}
----@param propertyName string
----@param mode NotExportEnum
-function UnityEngine_Shader.SetGlobalTexGenMode(propertyName, mode) end
----@param propertyName string
----@param matrixName string
-function UnityEngine_Shader.SetGlobalTextureMatrixName(propertyName, matrixName) end
 ---@param name string
 ---@return UnityEngine.Shader
 function UnityEngine_Shader.Find(name) end
@@ -1832,11 +1649,6 @@ function UnityEngine_Shader.GetGlobalVectorArray(nameID, values) end
 function UnityEngine_Shader.GetGlobalMatrixArray(nameID, values) end
 
 ---@class UnityEngine.Renderer : UnityEngine.Component
----@field lightmapTilingOffset NotExportType
----@field lightProbeAnchor UnityEngine.Transform
----@field castShadows boolean
----@field motionVectors boolean
----@field useLightProbes boolean
 ---@field bounds UnityEngine.Bounds
 ---@field enabled boolean
 ---@field isVisible boolean
@@ -1886,17 +1698,12 @@ function UnityEngine_Renderer:GetClosestReflectionProbes(result) end
 
 ---@class UnityEngine.WWW : UnityEngine.CustomYieldInstruction
 ---@field assetBundle UnityEngine.AssetBundle
----@field audioClip UnityEngine.Object
 ---@field bytes NotExportType
----@field movie UnityEngine.Object
----@field size number
 ---@field bytesDownloaded number
 ---@field error string
 ---@field isDone boolean
----@field oggVorbis UnityEngine.Object
 ---@field progress number
 ---@field responseHeaders NotExportType
----@field data string
 ---@field text string
 ---@field texture UnityEngine.Texture2D
 ---@field textureNonReadable UnityEngine.Texture2D
@@ -1950,8 +1757,6 @@ function UnityEngine_WWW:GetAudioClip(threeD, stream, audioType) end
 ---@param audioType NotExportEnum
 ---@return UnityEngine.AudioClip
 function UnityEngine_WWW:GetAudioClipCompressed(threeD, audioType) end
----@return NotExportType
-function UnityEngine_WWW:GetMovieTexture() end
 
 ---@class UnityEngine.CustomYieldInstruction : System.Object
 ---@field keepWaiting boolean
@@ -1976,9 +1781,6 @@ function UnityEngine_CustomYieldInstruction:Reset() end
 ---@field fullScreenMode NotExportEnum
 ---@field safeArea NotExportType
 ---@field resolutions NotExportType
----@field GetResolution NotExportType
----@field showCursor boolean
----@field lockCursor boolean
 local UnityEngine_Screen = {}
 ---@return UnityEngine.Screen
 function UnityEngine_Screen.New() end
@@ -2003,16 +1805,12 @@ local UnityEngine_CameraClearFlags = {}
 ---@field samples number
 ---@field channels number
 ---@field frequency number
----@field isReadyToPlay boolean
 ---@field loadType NotExportEnum
 ---@field preloadAudioData boolean
 ---@field ambisonic boolean
 ---@field loadState NotExportEnum
 ---@field loadInBackground boolean
 local UnityEngine_AudioClip = {}
----@overload fun(name : string, lengthSamples : number, channels : number, frequency : number, _3D : boolean, stream : boolean) : UnityEngine.AudioClip
----@overload fun(name : string, lengthSamples : number, channels : number, frequency : number, _3D : boolean, stream : boolean, pcmreadercallback : NotExportType) : UnityEngine.AudioClip
----@overload fun(name : string, lengthSamples : number, channels : number, frequency : number, _3D : boolean, stream : boolean, pcmreadercallback : NotExportType, pcmsetpositioncallback : NotExportType) : UnityEngine.AudioClip
 ---@overload fun(name : string, lengthSamples : number, channels : number, frequency : number, stream : boolean) : UnityEngine.AudioClip
 ---@overload fun(name : string, lengthSamples : number, channels : number, frequency : number, stream : boolean, pcmreadercallback : NotExportType) : UnityEngine.AudioClip
 ---@param name string
@@ -2038,7 +1836,6 @@ function UnityEngine_AudioClip:GetData(data, offsetSamples) end
 function UnityEngine_AudioClip:SetData(data, offsetSamples) end
 
 ---@class UnityEngine.AssetBundle : UnityEngine.Object
----@field mainAsset UnityEngine.Object
 ---@field isStreamedSceneAssetBundle boolean
 local UnityEngine_AssetBundle = {}
 ---@param unloadAllObjects boolean
@@ -2086,23 +1883,9 @@ function UnityEngine_AssetBundle.LoadFromStream(stream) end
 ---@param priority NotExportEnum
 ---@return NotExportType
 function UnityEngine_AssetBundle.RecompressAssetBundleAsync(inputPath, outputPath, method, expectedCRC, priority) end
----@param path string
----@return UnityEngine.AssetBundle
-function UnityEngine_AssetBundle.CreateFromFile(path) end
----@param binary NotExportType
----@return NotExportType
-function UnityEngine_AssetBundle.CreateFromMemory(binary) end
----@param binary NotExportType
----@return UnityEngine.AssetBundle
-function UnityEngine_AssetBundle.CreateFromMemoryImmediate(binary) end
 ---@param name string
 ---@return boolean
 function UnityEngine_AssetBundle:Contains(name) end
----@param name string
----@return UnityEngine.Object
-function UnityEngine_AssetBundle:Load(name) end
----@return NotExportType
-function UnityEngine_AssetBundle:LoadAll() end
 ---@overload fun(name : string) : UnityEngine.Object
 ---@param name string
 ---@param type NotExportType
@@ -2131,8 +1914,6 @@ function UnityEngine_AssetBundle:LoadAllAssets(type) end
 ---@param type NotExportType
 ---@return NotExportType
 function UnityEngine_AssetBundle:LoadAllAssetsAsync(type) end
----@return NotExportType
-function UnityEngine_AssetBundle:AllAssetNames() end
 ---@param unloadAllLoadedObjects boolean
 function UnityEngine_AssetBundle:Unload(unloadAllLoadedObjects) end
 ---@return NotExportType
@@ -2141,25 +1922,6 @@ function UnityEngine_AssetBundle:GetAllAssetNames() end
 function UnityEngine_AssetBundle:GetAllScenePaths() end
 
 ---@class UnityEngine.ParticleSystem : UnityEngine.Component
----@field safeCollisionEventSize number
----@field startDelay number
----@field loop boolean
----@field playOnAwake boolean
----@field duration number
----@field playbackSpeed number
----@field enableEmission boolean
----@field emissionRate number
----@field startSpeed number
----@field startSize number
----@field startColor UnityEngine.Color
----@field startRotation number
----@field startRotation3D UnityEngine.Vector3
----@field startLifetime number
----@field gravityModifier number
----@field maxParticles number
----@field simulationSpace NotExportEnum
----@field scalingMode NotExportEnum
----@field automaticCullingEnabled boolean
 ---@field isPlaying boolean
 ---@field isEmitting boolean
 ---@field isStopped boolean
@@ -2207,12 +1969,6 @@ function UnityEngine_ParticleSystem:GetCustomParticleData(customData, streamInde
 ---@param subEmitterIndex number
 ---@param particles NotExportType
 function UnityEngine_ParticleSystem:TriggerSubEmitter(subEmitterIndex, particles) end
----@overload fun(position : UnityEngine.Vector3, velocity : UnityEngine.Vector3, size : number, lifetime : number, color : NotExportType)
----@overload fun(particle : NotExportType)
----@overload fun(count : number)
----@param emitParams NotExportType
----@param count number
-function UnityEngine_ParticleSystem:Emit(emitParams, count) end
 ---@overload fun(out_particles : NotExportType, size : number, offset : number) : NotExportType
 ---@overload fun(out_particles : NotExportType, size : number) : NotExportType
 ---@param out_particles NotExportType
@@ -2240,6 +1996,10 @@ function UnityEngine_ParticleSystem:Clear() end
 ---@overload fun(withChildren : boolean) : boolean
 ---@return boolean
 function UnityEngine_ParticleSystem:IsAlive() end
+---@overload fun(count : number)
+---@param emitParams NotExportType
+---@param count number
+function UnityEngine_ParticleSystem:Emit(emitParams, count) end
 
 ---@class UnityEngine.AsyncOperation : UnityEngine.YieldInstruction
 ---@field isDone boolean
@@ -2284,8 +2044,6 @@ function UnityEngine_SleepTimeout.New() end
 ---@field rootPosition UnityEngine.Vector3
 ---@field rootRotation UnityEngine.Quaternion
 ---@field applyRootMotion boolean
----@field linearVelocityBlending boolean
----@field animatePhysics boolean
 ---@field updateMode NotExportEnum
 ---@field hasTransformHierarchy boolean
 ---@field gravityWeight number
@@ -2323,13 +2081,6 @@ function UnityEngine_Animator.New() end
 ---@param name string
 ---@return number
 function UnityEngine_Animator.StringToHash(name) end
----@param layerIndex number
----@return NotExportType
-function UnityEngine_Animator:GetCurrentAnimationClipState(layerIndex) end
----@param layerIndex number
----@return NotExportType
-function UnityEngine_Animator:GetNextAnimationClipState(layerIndex) end
-function UnityEngine_Animator:Stop() end
 ---@overload fun(name : string) : number
 ---@param id number
 ---@return number
@@ -2475,8 +2226,6 @@ function UnityEngine_Animator:MatchTarget(matchPosition, matchRotation, targetBo
 ---@overload fun()
 ---@param completeMatch boolean
 function UnityEngine_Animator:InterruptMatchTarget(completeMatch) end
----@param normalizedTime number
-function UnityEngine_Animator:ForceStateNormalizedTime(normalizedTime) end
 ---@overload fun(stateName : string, fixedTransitionDuration : number)
 ---@overload fun(stateName : string, fixedTransitionDuration : number, layer : number)
 ---@overload fun(stateName : string, fixedTransitionDuration : number, layer : number, fixedTimeOffset : number)
@@ -2518,9 +2267,6 @@ function UnityEngine_Animator:Play(stateNameHash) end
 ---@param targetIndex NotExportEnum
 ---@param targetNormalizedTime number
 function UnityEngine_Animator:SetTarget(targetIndex, targetNormalizedTime) end
----@param transform UnityEngine.Transform
----@return boolean
-function UnityEngine_Animator:IsControlled(transform) end
 ---@param humanBoneId NotExportEnum
 ---@return UnityEngine.Transform
 function UnityEngine_Animator:GetBoneTransform(humanBoneId) end
@@ -2537,22 +2283,6 @@ function UnityEngine_Animator:HasState(layerIndex, stateID) end
 function UnityEngine_Animator:Update(deltaTime) end
 function UnityEngine_Animator:Rebind() end
 function UnityEngine_Animator:ApplyBuiltinRootMotion() end
----@overload fun(name : string) : UnityEngine.Vector3
----@param id number
----@return UnityEngine.Vector3
-function UnityEngine_Animator:GetVector(id) end
----@overload fun(name : string, value : UnityEngine.Vector3)
----@param id number
----@param value UnityEngine.Vector3
-function UnityEngine_Animator:SetVector(id, value) end
----@overload fun(name : string) : UnityEngine.Quaternion
----@param id number
----@return UnityEngine.Quaternion
-function UnityEngine_Animator:GetQuaternion(id) end
----@overload fun(name : string, value : UnityEngine.Quaternion)
----@param id number
----@param value UnityEngine.Quaternion
-function UnityEngine_Animator:SetQuaternion(id, value) end
 
 ---@class UnityEngine.Input : System.Object
 ---@field simulateMouseWithTouches boolean
@@ -2565,14 +2295,12 @@ function UnityEngine_Animator:SetQuaternion(id, value) end
 ---@field compositionString string
 ---@field imeIsSelected boolean
 ---@field compositionCursorPos UnityEngine.Vector2
----@field eatKeyPressOnTextFieldFocus boolean
 ---@field mousePresent boolean
 ---@field touchCount number
 ---@field touchPressureSupported boolean
 ---@field stylusTouchSupported boolean
 ---@field touchSupported boolean
 ---@field multiTouchEnabled boolean
----@field isGyroAvailable boolean
 ---@field deviceOrientation NotExportEnum
 ---@field acceleration UnityEngine.Vector3
 ---@field compensateSensors boolean
@@ -3000,7 +2728,6 @@ function UnityEngine_MeshRenderer.New() end
 ---@class UnityEngine.BoxCollider : UnityEngine.Collider
 ---@field center UnityEngine.Vector3
 ---@field size UnityEngine.Vector3
----@field extents UnityEngine.Vector3
 local UnityEngine_BoxCollider = {}
 ---@return UnityEngine.BoxCollider
 function UnityEngine_BoxCollider.New() end
@@ -3008,10 +2735,7 @@ function UnityEngine_BoxCollider.New() end
 ---@class UnityEngine.MeshCollider : UnityEngine.Collider
 ---@field sharedMesh NotExportType
 ---@field convex boolean
----@field inflateMesh boolean
 ---@field cookingOptions NotExportEnum
----@field skinWidth number
----@field smoothSphereCollisions boolean
 local UnityEngine_MeshCollider = {}
 ---@return UnityEngine.MeshCollider
 function UnityEngine_MeshCollider.New() end
@@ -3062,7 +2786,6 @@ function UnityEngine_CapsuleCollider.New() end
 ---@field isPlaying boolean
 ---@field Item UnityEngine.AnimationState
 ---@field animatePhysics boolean
----@field animateOnlyIfVisible boolean
 ---@field cullingType NotExportEnum
 ---@field localBounds UnityEngine.Bounds
 local UnityEngine_Animation = {}
@@ -3080,12 +2803,9 @@ function UnityEngine_Animation:IsPlaying(name) end
 ---@overload fun() : boolean
 ---@overload fun(mode : UnityEngine.PlayMode) : boolean
 ---@overload fun(animation : string, mode : UnityEngine.PlayMode) : boolean
----@overload fun(animation : string) : boolean
----@overload fun(mode : NotExportEnum) : boolean
 ---@param animation string
----@param mode NotExportEnum
 ---@return boolean
-function UnityEngine_Animation:Play(animation, mode) end
+function UnityEngine_Animation:Play(animation) end
 ---@overload fun(animation : string, fadeLength : number, mode : UnityEngine.PlayMode)
 ---@overload fun(animation : string, fadeLength : number)
 ---@param animation string
@@ -3162,11 +2882,7 @@ function UnityEngine_AnimationClip:ClearCurves() end
 ---@field isLooping boolean
 ---@field legacy boolean
 ---@field isHumanMotion boolean
----@field isAnimatorMotion boolean
 local UnityEngine_Motion = {}
----@param val boolean
----@return boolean
-function UnityEngine_Motion:ValidateIfRetargetable(val) end
 
 ---@class UnityEngine.AnimationState : UnityEngine.TrackedReference
 ---@field enabled boolean
@@ -3215,7 +2931,6 @@ local UnityEngine_PlayMode = {}
 local UnityEngine_WrapMode = {}
 
 ---@class UnityEngine.QualitySettings : UnityEngine.Object
----@field currentLevel NotExportEnum
 ---@field pixelLightCount number
 ---@field shadows NotExportEnum
 ---@field shadowProjection NotExportEnum
@@ -3265,7 +2980,6 @@ function UnityEngine_QualitySettings.SetQualityLevel(index, applyExpensiveChange
 function UnityEngine_QualitySettings.GetQualityLevel() end
 
 ---@class UnityEngine.RenderSettings : UnityEngine.Object
----@field ambientSkyboxAmount number
 ---@field fog boolean
 ---@field fogStartDistance number
 ---@field fogEndDistance number
@@ -3300,7 +3014,6 @@ local UnityEngine_BlendWeights = {}
 
 ---@class UnityEngine.RenderTexture : UnityEngine.Texture
 ---@field active UnityEngine.RenderTexture
----@field enabled boolean
 ---@field width number
 ---@field height number
 ---@field dimension NotExportEnum
@@ -3320,9 +3033,6 @@ local UnityEngine_BlendWeights = {}
 ---@field depthBuffer NotExportType
 ---@field depth number
 ---@field descriptor NotExportType
----@field generateMips boolean
----@field isCubemap boolean
----@field isVolume boolean
 local UnityEngine_RenderTexture = {}
 ---@overload fun(desc : NotExportType) : UnityEngine.RenderTexture
 ---@overload fun(textureToCopy : UnityEngine.RenderTexture) : UnityEngine.RenderTexture
@@ -3370,10 +3080,6 @@ function UnityEngine_RenderTexture:GenerateMips() end
 ---@param equirect UnityEngine.RenderTexture
 ---@param eye NotExportEnum
 function UnityEngine_RenderTexture:ConvertToEquirect(equirect, eye) end
----@param color UnityEngine.Color
-function UnityEngine_RenderTexture:SetBorderColor(color) end
----@return UnityEngine.Vector2
-function UnityEngine_RenderTexture:GetTexelOffset() end
 
 ---@class UnityEngine.Resources : System.Object
 local UnityEngine_Resources = {}
@@ -3404,10 +3110,6 @@ function UnityEngine_Resources.GetBuiltinResource(type, path) end
 function UnityEngine_Resources.UnloadAsset(assetToUnload) end
 ---@return UnityEngine.AsyncOperation
 function UnityEngine_Resources.UnloadUnusedAssets() end
----@param assetPath string
----@param type NotExportType
----@return UnityEngine.Object
-function UnityEngine_Resources.LoadAssetAtPath(assetPath, type) end
 
 ---@class LuaProfiler : System.Object
 ---@field list NotExportType
@@ -3431,12 +3133,13 @@ local TestExportScript = {}
 function TestExportScript.TestDelegate(customDelegate, content) end
 ---@param go UnityEngine.GameObject
 function TestExportScript.PrintGameobject(go) end
+---@return NotExportType
+function TestExportScript.GetDictionary() end
 
 ---@class UnityEngine.Debug : System.Object
 ---@field unityLogger NotExportType
 ---@field developerConsoleVisible boolean
 ---@field isDebugBuild boolean
----@field logger NotExportType
 local UnityEngine_Debug = {}
 ---@return UnityEngine.Debug
 function UnityEngine_Debug.New() end
@@ -3497,11 +3200,10 @@ function UnityEngine_Debug.LogWarningFormat(context, format, args) end
 ---@overload fun(condition : boolean, message : System.Object)
 ---@overload fun(condition : boolean, message : string)
 ---@overload fun(condition : boolean, message : System.Object, context : UnityEngine.Object)
----@overload fun(condition : boolean, message : string, context : UnityEngine.Object)
 ---@param condition boolean
----@param format string
----@param args NotExportType
-function UnityEngine_Debug.Assert(condition, format, args) end
+---@param message string
+---@param context UnityEngine.Object
+function UnityEngine_Debug.Assert(condition, message, context) end
 ---@overload fun(condition : boolean, format : string, args : NotExportType)
 ---@param condition boolean
 ---@param context UnityEngine.Object

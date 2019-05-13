@@ -195,6 +195,11 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
+                if (IsMemberObsolete(fieldInfo))
+                {
+                    continue;
+                }
+                
                 Type fieldType = fieldInfo.FieldType;
                 sb.AppendLine(string.Format("---@field {0} {1}", fieldInfo.Name, fieldType.ToLuaTypeName()));
             }
@@ -213,6 +218,11 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < propertyInfoList.Count; i++)
             {
                 PropertyInfo propertyInfo = propertyInfoList[i];
+                if (IsMemberObsolete(propertyInfo))
+                {
+                    continue;
+                }
+                
                 Type propertyType = propertyInfo.PropertyType;
                 sb.AppendLine(string.Format("---@field {0} {1}", propertyInfo.Name, propertyType.ToLuaTypeName()));
             }
@@ -276,11 +286,6 @@ namespace EmmyTypeGenerator
                     return;
                 }
 
-                if (methodInfo.MemberType == MemberTypes.Event)
-                {
-                    Debug.Log(methodInfo.Name);
-                }
-
                 if (methodGroup.ContainsKey(methodName))
                 {
                     List<MethodInfo> methodInfoList = methodGroup[methodName];
@@ -301,12 +306,20 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < publicStaticMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicStaticMethodInfos[i];
+                if (IsMemberObsolete(methodInfo))
+                {
+                    continue;
+                }
                 recordMethodGroup(methodInfo);
             }
 
             for (int i = 0; i < publicInstanceMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicInstanceMethodInfos[i];
+                if (IsMemberObsolete(methodInfo))
+                {
+                    continue;
+                }
                 recordMethodGroup(methodInfo);
             }
 
@@ -696,6 +709,11 @@ namespace EmmyTypeGenerator
             }
 
             return s;
+        }
+
+        private static bool IsMemberObsolete(MemberInfo memberInfo)
+        {
+            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute),false).Length > 0;
         }
     }
 }

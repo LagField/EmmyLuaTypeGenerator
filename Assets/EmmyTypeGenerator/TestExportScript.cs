@@ -11,6 +11,12 @@ public static class TestExportScript
 
     public static Action<int> intDelegate;
     public static Action<Camera> cameraDelegate;
+    
+    static Dictionary<int,string> testDictionary = new Dictionary<int, string>
+    {
+        {1,"first element"},
+        {100,"one hundred element"}
+    };
 
 
     public static void TestDelegate(Action<float> callback, float number)
@@ -26,5 +32,10 @@ public static class TestExportScript
     public static void PrintGameobject(this GameObject go)
     {
         Debug.Log(go.name);
+    }
+
+    public static Dictionary<int, string> GetDictionary()
+    {
+        return testDictionary;
     }
 }

@@ -9,6 +9,7 @@ public class TestExportScriptWrap
 		L.BeginStaticLibs("TestExportScript");
 		L.RegFunction("TestDelegate", TestDelegate);
 		L.RegFunction("PrintGameobject", PrintGameobject);
+		L.RegFunction("GetDictionary", GetDictionary);
 		L.RegVar("myDelegate", get_myDelegate, set_myDelegate);
 		L.RegVar("intDelegate", get_intDelegate, set_intDelegate);
 		L.RegVar("cameraDelegate", get_cameraDelegate, set_cameraDelegate);
@@ -57,6 +58,22 @@ public class TestExportScriptWrap
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			TestExportScript.PrintGameobject(arg0);
 			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetDictionary(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			System.Collections.Generic.Dictionary<int,string> o = TestExportScript.GetDictionary();
+			ToLua.PushSealed(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{
