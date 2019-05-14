@@ -38,6 +38,9 @@ public class DelegateFactory
 		dict.Add(typeof(System.Predicate<UnityEngine.GameObject>), factory.System_Predicate_UnityEngine_GameObject);
 		dict.Add(typeof(System.Action<UnityEngine.GameObject>), factory.System_Action_UnityEngine_GameObject);
 		dict.Add(typeof(System.Comparison<UnityEngine.GameObject>), factory.System_Comparison_UnityEngine_GameObject);
+		dict.Add(typeof(System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>>), factory.System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject);
+		dict.Add(typeof(System.Action<System.Collections.Generic.List<UnityEngine.GameObject>>), factory.System_Action_System_Collections_Generic_List_UnityEngine_GameObject);
+		dict.Add(typeof(System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>>), factory.System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject);
 
 		DelegateTraits<System.Action>.Init(factory.System_Action);
 		DelegateTraits<UnityEngine.Events.UnityAction>.Init(factory.UnityEngine_Events_UnityAction);
@@ -60,6 +63,9 @@ public class DelegateFactory
 		DelegateTraits<System.Predicate<UnityEngine.GameObject>>.Init(factory.System_Predicate_UnityEngine_GameObject);
 		DelegateTraits<System.Action<UnityEngine.GameObject>>.Init(factory.System_Action_UnityEngine_GameObject);
 		DelegateTraits<System.Comparison<UnityEngine.GameObject>>.Init(factory.System_Comparison_UnityEngine_GameObject);
+		DelegateTraits<System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject);
+		DelegateTraits<System.Action<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.System_Action_System_Collections_Generic_List_UnityEngine_GameObject);
+		DelegateTraits<System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject);
 
 		TypeTraits<System.Action>.Init(factory.Check_System_Action);
 		TypeTraits<UnityEngine.Events.UnityAction>.Init(factory.Check_UnityEngine_Events_UnityAction);
@@ -82,6 +88,9 @@ public class DelegateFactory
 		TypeTraits<System.Predicate<UnityEngine.GameObject>>.Init(factory.Check_System_Predicate_UnityEngine_GameObject);
 		TypeTraits<System.Action<UnityEngine.GameObject>>.Init(factory.Check_System_Action_UnityEngine_GameObject);
 		TypeTraits<System.Comparison<UnityEngine.GameObject>>.Init(factory.Check_System_Comparison_UnityEngine_GameObject);
+		TypeTraits<System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.Check_System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject);
+		TypeTraits<System.Action<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.Check_System_Action_System_Collections_Generic_List_UnityEngine_GameObject);
+		TypeTraits<System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>>>.Init(factory.Check_System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject);
 
 		StackTraits<System.Action>.Push = factory.Push_System_Action;
 		StackTraits<UnityEngine.Events.UnityAction>.Push = factory.Push_UnityEngine_Events_UnityAction;
@@ -104,6 +113,9 @@ public class DelegateFactory
 		StackTraits<System.Predicate<UnityEngine.GameObject>>.Push = factory.Push_System_Predicate_UnityEngine_GameObject;
 		StackTraits<System.Action<UnityEngine.GameObject>>.Push = factory.Push_System_Action_UnityEngine_GameObject;
 		StackTraits<System.Comparison<UnityEngine.GameObject>>.Push = factory.Push_System_Comparison_UnityEngine_GameObject;
+		StackTraits<System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>>>.Push = factory.Push_System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject;
+		StackTraits<System.Action<System.Collections.Generic.List<UnityEngine.GameObject>>>.Push = factory.Push_System_Action_System_Collections_Generic_List_UnityEngine_GameObject;
+		StackTraits<System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>>>.Push = factory.Push_System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject;
 	}
     
     public static Delegate CreateDelegate(Type t, LuaFunction func = null)
@@ -1430,6 +1442,187 @@ public class DelegateFactory
 	}
 
 	void Push_System_Comparison_UnityEngine_GameObject(IntPtr L, System.Comparison<UnityEngine.GameObject> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public bool Call(System.Collections.Generic.List<UnityEngine.GameObject> param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			bool ret = func.CheckBoolean();
+			func.EndPCall();
+			return ret;
+		}
+
+		public bool CallWithSelf(System.Collections.Generic.List<UnityEngine.GameObject> param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			bool ret = func.CheckBoolean();
+			func.EndPCall();
+			return ret;
+		}
+	}
+
+	public System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>> System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>> fn = delegate(System.Collections.Generic.List<UnityEngine.GameObject> param0) { return false; };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event(func);
+			System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject_Event(func, self);
+			System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>>), L, pos);
+	}
+
+	void Push_System_Predicate_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, System.Predicate<System.Collections.Generic.List<UnityEngine.GameObject>> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(System.Collections.Generic.List<UnityEngine.GameObject> param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(System.Collections.Generic.List<UnityEngine.GameObject> param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<System.Collections.Generic.List<UnityEngine.GameObject>> System_Action_System_Collections_Generic_List_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<System.Collections.Generic.List<UnityEngine.GameObject>> fn = delegate(System.Collections.Generic.List<UnityEngine.GameObject> param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event(func);
+			System.Action<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Action_System_Collections_Generic_List_UnityEngine_GameObject_Event(func, self);
+			System.Action<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<System.Collections.Generic.List<UnityEngine.GameObject>>), L, pos);
+	}
+
+	void Push_System_Action_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, System.Action<System.Collections.Generic.List<UnityEngine.GameObject>> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public int Call(System.Collections.Generic.List<UnityEngine.GameObject> param0, System.Collections.Generic.List<UnityEngine.GameObject> param1)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			int ret = (int)func.CheckNumber();
+			func.EndPCall();
+			return ret;
+		}
+
+		public int CallWithSelf(System.Collections.Generic.List<UnityEngine.GameObject> param0, System.Collections.Generic.List<UnityEngine.GameObject> param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			int ret = (int)func.CheckNumber();
+			func.EndPCall();
+			return ret;
+		}
+	}
+
+	public System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>> System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>> fn = delegate(System.Collections.Generic.List<UnityEngine.GameObject> param0, System.Collections.Generic.List<UnityEngine.GameObject> param1) { return 0; };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event(func);
+			System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event target = new System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject_Event(func, self);
+			System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>>), L, pos);
+	}
+
+	void Push_System_Comparison_System_Collections_Generic_List_UnityEngine_GameObject(IntPtr L, System.Comparison<System.Collections.Generic.List<UnityEngine.GameObject>> o)
 	{
 		ToLua.Push(L, o);
 	}

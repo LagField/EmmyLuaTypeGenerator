@@ -154,32 +154,11 @@ namespace EmmyTypeGenerator
 
         private static void GenerateExportTypeGlobalVariable()
         {
-            List<Type> globalVariableTypes = new List<Type>();
+            sb.Clear();
+
             for (int i = 0; i < exportTypeList.Count; i++)
             {
                 Type exportType = exportTypeList[i];
-
-                if (exportType == typeof(MonoBehaviour) || exportType.IsSubclassOf(typeof(MonoBehaviour)))
-                {
-                    //检查mono脚本是否有静态方法或属性
-                    MethodInfo[] methodInfos = exportType.GetMethods(BindingFlags.Public | BindingFlags.Static);
-                    FieldInfo[] fieldInfos = exportType.GetFields(BindingFlags.Public | BindingFlags.Static);
-                    PropertyInfo[] propertyInfos = exportType.GetProperties(BindingFlags.Public | BindingFlags.Static);
-
-                    if (methodInfos.Length == 0 && fieldInfos.Length == 0 && propertyInfos.Length == 0)
-                    {
-                        continue;
-                    }
-                }
-
-                globalVariableTypes.Add(exportType);
-            }
-
-            sb.Clear();
-
-            for (int i = 0; i < globalVariableTypes.Count; i++)
-            {
-                Type exportType = globalVariableTypes[i];
                 keepStringTypeName = exportType == typeof(string);
 
                 sb.AppendLine(string.Format("---@type {0}", exportType.ToLuaTypeName()));
@@ -719,7 +698,17 @@ namespace EmmyTypeGenerator
                 Type[] genericTypes = type.GetGenericArguments();
                 for (int i = 0; i < genericTypes.Length; i++)
                 {
-                    typeName = typeName + "_" + genericTypes[i].FullName.ReplaceDotOrPlusWithUnderscore();
+                    Type genericArgumentType = genericTypes[i];
+                    string genericArgumentTypeName;
+                    if (CSharpTypeNameDic.ContainsKey(genericArgumentType))
+                    {
+                        genericArgumentTypeName = CSharpTypeNameDic[genericArgumentType];
+                    }
+                    else
+                    {
+                        genericArgumentTypeName = genericArgumentType.ToLuaTypeName();
+                    }
+                    typeName = typeName + "_" + genericArgumentTypeName.ReplaceDotOrPlusWithUnderscore();
                 }
             }
             

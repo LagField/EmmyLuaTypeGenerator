@@ -24,3 +24,10 @@ UnityEngine_Debug.Log('csharp string replace ' .. tostring(csharpString:Replace(
 if System_Collections_Generic_List_UnityEngine_GameObject ~= nil then
     UnityEngine_Debug.Log('System_Collections_Generic_List_UnityEngine_GameObject not nil')
 end
+if System_Collections_Generic_Dictionary_int_UnityEngine_GameObject ~= nil then
+    UnityEngine_Debug.Log('System_Collections_Generic_Dictionary_int_UnityEngine_GameObject not nil')
+end
+if System_Collections_Generic_List_System_Collections_Generic_List_UnityEngine_GameObject ~= nil then
+    UnityEngine_Debug.Log('System_Collections_Generic_List_System_Collections_Generic_List_UnityEngine_GameObject not nil')
+end
+
