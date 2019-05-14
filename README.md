@@ -97,11 +97,10 @@ System_Comparison_int = System.Comparison_int
 System_Func_int_int = System.Func_int_int
 ```
 按照Tolua的委托调用规则,生成了详细的传入参数类型和返回类型,调用则直接使用即可,例如:
-```lua
-TestExportScript.TestDelegate(System_Action_float(function(number)
-    UnityEngine_Debug.Log('delegate print ' .. number)
-end), 100)
-```
+![](png/emmytype04.png)
+![](png/emmytype03.png)
+
+
 和Tolua的规则一样,对于customTypeList中牵扯到的委托类型,工具也都会自动导出,不用再单独写一份了.
 
 ### ToDo
