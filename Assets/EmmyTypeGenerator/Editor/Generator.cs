@@ -15,11 +15,17 @@ namespace EmmyTypeGenerator
 {
     public static class Generator
     {
+        /// <summary>
+        /// 该文件只用来给ide进行lua类型提示的,不要在运行时require该文件或者打包到版本中.
+        /// </summary>
         private static string TypeDefineFilePath
         {
             get { return Application.dataPath + "/EmmyTypeGenerator/EmmyTypeDefine.lua"; }
         }
 
+        /// <summary>
+        /// 该文件需要在运行时require到lua虚拟机中,主要存放了大部分导出类型以及委托的全局引用
+        /// </summary>
         private static string LuaGlobalVariableFilePath
         {
             get { return Application.dataPath + "/EmmyTypeGenerator/Lua/ExportTypeGlobalVariables.lua"; }
@@ -638,7 +644,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < parameterInfos.Length; i++)
             {
                 ParameterInfo parameterInfo = parameterInfos[i];
-                tempSb.AppendFormat("param{0} : {1}", i + 1, parameterInfo.ParameterType.ToLuaTypeName());
+                tempSb.AppendFormat("{0} : {1}", parameterInfo.Name, parameterInfo.ParameterType.ToLuaTypeName());
                 if (i != parameterInfos.Length - 1)
                 {
                     tempSb.Append(", ");

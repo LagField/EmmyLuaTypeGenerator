@@ -119,6 +119,7 @@ public static class ToLuaMenu
                 GenLuaBinder();
                 beAutoGen = false;        
                 
+                //这里自动调用类型文件生成
                 EmmyTypeGenerator.Generator.GenerateEmmyTypeFiles();
             }
 
