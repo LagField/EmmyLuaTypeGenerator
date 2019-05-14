@@ -2,8 +2,6 @@
 //todo xlua version
 //#define XLuaVersion
 
-#define CombineNamespaceWithClassName
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -173,45 +171,13 @@ namespace EmmyTypeGenerator
 
             sb.Clear();
 
-#if !CombineNamespaceWithClassName
-            //搜集namespace
-            List<string> namespaceList = new List<string>();
-            for (int i = 0; i < globalVariableTypes.Count; i++)
-            {
-                Type exportType = globalVariableTypes[i];
-                string ns = exportType.Namespace;
-                if (string.IsNullOrEmpty(ns))
-                {
-                    continue;
-                }
-
-                if (namespaceList.Contains(ns))
-                {
-                    continue;
-                }
-
-                namespaceList.Add(ns);
-            }
-
-            for (int i = 0; i < namespaceList.Count; i++)
-            {
-                string ns = namespaceList[i];
-
-                sb.AppendLine(string.Format("{0} = {1}", ns, ns));
-            }
-#endif
-
             for (int i = 0; i < globalVariableTypes.Count; i++)
             {
                 Type exportType = globalVariableTypes[i];
                 keepStringTypeName = exportType == typeof(string);
 
                 sb.AppendLine(string.Format("---@type {0}", exportType.ToLuaTypeName()));
-#if CombineNamespaceWithClassName
                 sb.AppendLine(string.Format("{0} = {1}", exportType.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore(), exportType.ToLuaTypeName()));
-#else
-                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName, exportType.FullName));
-#endif
             }
 
             //generate delegates
@@ -629,11 +595,8 @@ namespace EmmyTypeGenerator
                     }
                     
                     tempSb.Clear();
-#if CombineNamespaceWithClassName
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
-#else
-                    tempSb.Append(delegateType.GetGenericTypeFullName());
-#endif
+
                     Type[] genericTypes = delegateType.GetGenericArguments();
                     for (int j = 0; j < genericTypes.Length; j++)
                     {
@@ -651,13 +614,8 @@ namespace EmmyTypeGenerator
                 }
                 else
                 {
-#if CombineNamespaceWithClassName
                     sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.ReplaceDotOrPlusWithUnderscore(),
                         delegateType.FullName.ReplacePlusWithDot()));
-#else
-                    sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.Replace("+", "."),
-                        delegateType.FullName.Replace("+", ".")));
-#endif
                 }
             }
         }
