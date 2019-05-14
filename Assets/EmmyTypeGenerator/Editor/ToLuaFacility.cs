@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using LuaInterface;
 using UnityEngine;
 using Object = System.Object;
@@ -10,6 +11,8 @@ namespace EmmyTypeGenerator
 {
     public static class ToLuaFacility
     {
+        private static StringBuilder sb;
+        private static StringBuilder tempSb = new StringBuilder();
         /// <summary>
         /// 这部分类型,Tolua在Lua侧实现
         /// </summary>
@@ -50,7 +53,7 @@ namespace EmmyTypeGenerator
             typeof(Enum),
             typeof(NullObject),
             typeof(Object),
-            typeof(String),
+            typeof(string),
             typeof(Type),
             typeof(Coroutine),
             typeof(UnityEngine.Object)

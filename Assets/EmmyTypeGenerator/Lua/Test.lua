@@ -33,3 +33,7 @@ local dic = TestExportScript.GetDictionary()
 UnityEngine_Debug.Log('dictionary count: ' .. dic.Count)
 UnityEngine_Debug.Log('dictionary element: ' .. dic:get_Item(1))
 UnityEngine_Debug.Log('dictionary element: ' .. dic[1])
+
+local csharpString = System_String.New('123_456')
+UnityEngine_Debug.Log('csharp string ' .. tostring(csharpString))
+UnityEngine_Debug.Log('csharp string replace ' .. tostring(csharpString:Replace('123','000')))

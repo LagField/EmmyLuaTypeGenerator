@@ -66,8 +66,7 @@ namespace EmmyTypeGenerator
             "while"
         };
 
-
-        private static StringBuilder sb = new StringBuilder(1024);
+        public static StringBuilder sb = new StringBuilder(1024);
         private static StringBuilder tempSb = new StringBuilder(1024);
         private static List<Type> exportTypeList = new List<Type>();
 
@@ -134,9 +133,11 @@ namespace EmmyTypeGenerator
             {
                 Type type = exportTypeList[i];
 
+                keepStringTypeName = type == typeof(string);
+
                 WriteClassDefine(type);
                 WriteClassFieldDefine(type);
-                sb.AppendLine(string.Format("local {0} = {{}}", type.FullName.Replace(".", "_")));
+                sb.AppendLine(string.Format("local {0} = {{}}", type.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore()));
 
                 WriteClassConstructorDefine(type);
                 WriteClassMethodDefine(type);
@@ -203,10 +204,11 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < globalVariableTypes.Count; i++)
             {
                 Type exportType = globalVariableTypes[i];
+                keepStringTypeName = exportType == typeof(string);
 
-                sb.AppendLine(string.Format("---@type {0}", exportType.FullName));
+                sb.AppendLine(string.Format("---@type {0}", exportType.ToLuaTypeName()));
 #if CombineNamespaceWithClassName
-                sb.AppendLine(string.Format("{0} = {1}", exportType.FullName.ReplaceDotOrPlusWithUnderscore(), exportType.FullName));
+                sb.AppendLine(string.Format("{0} = {1}", exportType.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore(), exportType.ToLuaTypeName()));
 #else
                 sb.AppendLine(string.Format("{0} = {1}", exportType.FullName, exportType.FullName));
 #endif
@@ -220,7 +222,7 @@ namespace EmmyTypeGenerator
 
         #region TypeDefineFileGenerator
 
-        private static void WriteClassDefine(Type type)
+        public static void WriteClassDefine(Type type)
         {
             if (type.BaseType != null && !type.IsEnum)
             {
@@ -232,7 +234,7 @@ namespace EmmyTypeGenerator
             }
         }
 
-        private static void WriteClassFieldDefine(Type type)
+        public static void WriteClassFieldDefine(Type type)
         {
             FieldInfo[] publicInstanceFieldInfos =
                 type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
@@ -248,7 +250,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
-                if (IsMemberObsolete(fieldInfo))
+                if (fieldInfo.IsMemberObsolete())
                 {
                     continue;
                 }
@@ -271,7 +273,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < propertyInfoList.Count; i++)
             {
                 PropertyInfo propertyInfo = propertyInfoList[i];
-                if (IsMemberObsolete(propertyInfo))
+                if (propertyInfo.IsMemberObsolete())
                 {
                     continue;
                 }
@@ -281,14 +283,14 @@ namespace EmmyTypeGenerator
             }
         }
 
-        private static void WriteClassConstructorDefine(Type type)
+        public static void WriteClassConstructorDefine(Type type)
         {
             if (type == typeof(MonoBehaviour) || type.IsSubclassOf(typeof(MonoBehaviour)))
             {
                 return;
             }
 
-            string className = type.FullName.Replace(".", "_");
+            string className = type.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore();
             ConstructorInfo[] constructorInfos = type.GetConstructors();
             if (constructorInfos.Length == 0)
             {
@@ -310,7 +312,7 @@ namespace EmmyTypeGenerator
             WriteMethodFunctionDeclare(lastCtorInfo.GetParameters(), type, "New", className, true);
         }
 
-        private static void WriteClassMethodDefine(Type type)
+        public static void WriteClassMethodDefine(Type type)
         {
             string classNameWithNameSpace = type.ToLuaTypeName().Replace(".", "_");
 
@@ -359,7 +361,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < publicStaticMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicStaticMethodInfos[i];
-                if (IsMemberObsolete(methodInfo))
+                if (methodInfo.IsMemberObsolete())
                 {
                     continue;
                 }
@@ -370,7 +372,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < publicInstanceMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicInstanceMethodInfos[i];
-                if (IsMemberObsolete(methodInfo))
+                if (methodInfo.IsMemberObsolete())
                 {
                     continue;
                 }
@@ -393,7 +395,7 @@ namespace EmmyTypeGenerator
             }
         }
 
-        private static void WriteOverloadMethodCommentDecalre(ParameterInfo[] parameterInfos, Type returnType)
+        public static void WriteOverloadMethodCommentDecalre(ParameterInfo[] parameterInfos, Type returnType)
         {
             List<ParameterInfo> outOrRefParameterInfoList = new List<ParameterInfo>();
 
@@ -464,7 +466,7 @@ namespace EmmyTypeGenerator
             }
         }
 
-        private static void WriteMethodFunctionDeclare(ParameterInfo[] parameterInfos, Type returnType, string methodName,
+        public static void WriteMethodFunctionDeclare(ParameterInfo[] parameterInfos, Type returnType, string methodName,
             string className, bool isStaticMethod)
         {
             List<ParameterInfo> outOrRefParameterInfoList = new List<ParameterInfo>();
@@ -562,6 +564,13 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < exportTypeList.Count; i++)
             {
                 Type exportType = exportTypeList[i];
+#if ToLuaVersion
+                //tolua基础类型的委托事件好像都没有被导出来
+                if (ToLuaFacility.toluaBaseTypes.Contains(exportType))
+                {
+                    continue;
+                }
+#endif
                 MethodInfo[] methodInfos = exportType.GetMethods(BindingFlags.Public | BindingFlags.Static);
                 FieldInfo[] fieldInfos = exportType.GetFields(BindingFlags.Public | BindingFlags.Static);
                 PropertyInfo[] propertyInfos = exportType.GetProperties(BindingFlags.Public | BindingFlags.Static);
@@ -618,7 +627,7 @@ namespace EmmyTypeGenerator
                     {
                         continue;
                     }
-
+                    
                     tempSb.Clear();
 #if CombineNamespaceWithClassName
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
@@ -644,7 +653,7 @@ namespace EmmyTypeGenerator
                 {
 #if CombineNamespaceWithClassName
                     sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.ReplaceDotOrPlusWithUnderscore(),
-                        delegateType.FullName.Replace("+", ".")));
+                        delegateType.FullName.ReplacePlusWithDot()));
 #else
                     sb.AppendLine(string.Format("{0} = {1}", delegateType.FullName.Replace("+", "."),
                         delegateType.FullName.Replace("+", ".")));
@@ -700,7 +709,8 @@ namespace EmmyTypeGenerator
 #endif
         }
 
-        private static string ToLuaTypeName(this Type type)
+        private static bool keepStringTypeName;
+        public static string ToLuaTypeName(this Type type)
         {
             if (!TypeIsExport(type))
             {
@@ -719,7 +729,7 @@ namespace EmmyTypeGenerator
 
             if (type == typeof(string))
             {
-                return "string";
+                return keepStringTypeName ? "System.String" : "string";
             }
 
             if (type == typeof(bool))
@@ -735,7 +745,7 @@ namespace EmmyTypeGenerator
             string typeName = type.FullName;
             
             //去除泛型后缀
-            typeName = Regex.Replace(typeName, @"\`[0-9]+", "").Replace("+", ".");
+            typeName = typeName.EscapeGenericTypeSuffix();
             
             return typeName;
         }
@@ -756,7 +766,18 @@ namespace EmmyTypeGenerator
             {typeof(string), "string"},
         };
 
-        private static string ToCSharpTypeFullName(this Type type)
+
+        public static string EscapeLuaKeyword(string s)
+        {
+            if (luaKeywordSet.Contains(s))
+            {
+                return "_" + s;
+            }
+
+            return s;
+        }
+        
+        public static string ToCSharpTypeFullName(this Type type)
         {
             if (CSharpTypeNameDic.ContainsKey(type))
             {
@@ -766,29 +787,29 @@ namespace EmmyTypeGenerator
             return type.FullName;
         }
 
-        private static string GetGenericTypeFullName(this Type type)
+        public static string GetGenericTypeFullName(this Type type)
         {
             string fullName = type.FullName;
             int backquoteIndex = fullName.IndexOf("`");
             return fullName.Substring(0, backquoteIndex);
         }
 
-        private static string ReplaceDotOrPlusWithUnderscore(this string s)
+        public static string ReplaceDotOrPlusWithUnderscore(this string s)
         {
             return s.Replace(".", "_").Replace("+", "_");
         }
-
-        private static string EscapeLuaKeyword(string s)
+        
+        public static string ReplacePlusWithDot(this string s)
         {
-            if (luaKeywordSet.Contains(s))
-            {
-                return "_" + s;
-            }
-
-            return s;
+            return s.Replace("+", ".");
         }
 
-        private static bool IsMemberObsolete(MemberInfo memberInfo)
+        public static string EscapeGenericTypeSuffix(this string s)
+        {
+            return Regex.Replace(s, @"\`[0-9]+", "").Replace("+", ".");
+        }
+        
+        public static bool IsMemberObsolete(this MemberInfo memberInfo)
         {
             return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0;
         }
