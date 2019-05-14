@@ -20,3 +20,7 @@ UnityEngine_Debug.Log('dictionary element: ' .. dic[1])
 local csharpString = System_String.New('123_456')
 UnityEngine_Debug.Log('csharp string ' .. tostring(csharpString))
 UnityEngine_Debug.Log('csharp string replace ' .. tostring(csharpString:Replace('123','000')))
+
+if System_Collections_Generic_List_UnityEngine_GameObject ~= nil then
+    UnityEngine_Debug.Log('System_Collections_Generic_List_UnityEngine_GameObject not nil')
+end

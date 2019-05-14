@@ -706,10 +706,22 @@ namespace EmmyTypeGenerator
                 return type.FullName.Replace("+", ".");
             }
 
+
             string typeName = type.FullName;
             
             //去除泛型后缀
             typeName = typeName.EscapeGenericTypeSuffix();
+            
+            int bracketIndex = typeName.IndexOf("[[");
+            if (bracketIndex > 0)
+            {
+                typeName = typeName.Substring(0, bracketIndex);
+                Type[] genericTypes = type.GetGenericArguments();
+                for (int i = 0; i < genericTypes.Length; i++)
+                {
+                    typeName = typeName + "_" + genericTypes[i].FullName.ReplaceDotOrPlusWithUnderscore();
+                }
+            }
             
             return typeName;
         }
@@ -770,7 +782,10 @@ namespace EmmyTypeGenerator
 
         public static string EscapeGenericTypeSuffix(this string s)
         {
-            return Regex.Replace(s, @"\`[0-9]+", "").Replace("+", ".");
+            string result = Regex.Replace(s, @"\`[0-9]+", "").Replace("+", ".");
+
+
+            return result;
         }
         
         public static bool IsMemberObsolete(this MemberInfo memberInfo)

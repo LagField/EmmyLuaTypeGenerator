@@ -122,6 +122,8 @@ LuaProfiler = LuaProfiler
 TestExportScript = TestExportScript
 ---@type UnityEngine.Debug
 UnityEngine_Debug = UnityEngine.Debug
+---@type System.Collections.Generic.List_UnityEngine_GameObject
+System_Collections_Generic_List_UnityEngine_GameObject = System.Collections.Generic.List_UnityEngine_GameObject
 ---@type LuaInterface.EventObject
 LuaInterface_EventObject = LuaInterface.EventObject
 ---@type LuaInterface.LuaConstructor

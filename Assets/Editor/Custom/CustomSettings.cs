@@ -153,6 +153,7 @@ public static class CustomSettings
         
         _GT(typeof(TestExportScript)),
         _GT(typeof(Debug)),
+        _GT(typeof(List<GameObject>)),
     };
 
     public static List<Type> dynamicList = new List<Type>()

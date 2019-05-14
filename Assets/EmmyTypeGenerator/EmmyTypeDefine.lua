@@ -3220,6 +3220,118 @@ function UnityEngine_Debug.LogAssertion(message, context) end
 ---@param args NotExportType
 function UnityEngine_Debug.LogAssertionFormat(context, format, args) end
 
+---@class System.Collections.Generic.List_UnityEngine_GameObject : System.Object
+---@field Capacity number
+---@field Count number
+---@field Item UnityEngine.GameObject
+local System_Collections_Generic_List_UnityEngine_GameObject = {}
+---@overload fun() : System.Collections.Generic.List_UnityEngine_GameObject
+---@overload fun(capacity : number) : System.Collections.Generic.List_UnityEngine_GameObject
+---@param collection NotExportType
+---@return System.Collections.Generic.List_UnityEngine_GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject.New(collection) end
+---@param item UnityEngine.GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:Add(item) end
+---@param collection NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:AddRange(collection) end
+---@return NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:AsReadOnly() end
+---@overload fun(index : number, count : number, item : UnityEngine.GameObject, comparer : NotExportType) : number
+---@overload fun(item : UnityEngine.GameObject) : number
+---@param item UnityEngine.GameObject
+---@param comparer NotExportType
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:BinarySearch(item, comparer) end
+function System_Collections_Generic_List_UnityEngine_GameObject:Clear() end
+---@param item UnityEngine.GameObject
+---@return boolean
+function System_Collections_Generic_List_UnityEngine_GameObject:Contains(item) end
+---@overload fun(array : NotExportType)
+---@overload fun(index : number, array : NotExportType, arrayIndex : number, count : number)
+---@param array NotExportType
+---@param arrayIndex number
+function System_Collections_Generic_List_UnityEngine_GameObject:CopyTo(array, arrayIndex) end
+---@param match NotExportType
+---@return boolean
+function System_Collections_Generic_List_UnityEngine_GameObject:Exists(match) end
+---@param match NotExportType
+---@return UnityEngine.GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:Find(match) end
+---@param match NotExportType
+---@return System.Collections.Generic.List_UnityEngine_GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:FindAll(match) end
+---@overload fun(match : NotExportType) : number
+---@overload fun(startIndex : number, match : NotExportType) : number
+---@param startIndex number
+---@param count number
+---@param match NotExportType
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:FindIndex(startIndex, count, match) end
+---@param match NotExportType
+---@return UnityEngine.GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:FindLast(match) end
+---@overload fun(match : NotExportType) : number
+---@overload fun(startIndex : number, match : NotExportType) : number
+---@param startIndex number
+---@param count number
+---@param match NotExportType
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:FindLastIndex(startIndex, count, match) end
+---@param action NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:ForEach(action) end
+---@return NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:GetEnumerator() end
+---@param index number
+---@param count number
+---@return System.Collections.Generic.List_UnityEngine_GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:GetRange(index, count) end
+---@overload fun(item : UnityEngine.GameObject) : number
+---@overload fun(item : UnityEngine.GameObject, index : number) : number
+---@param item UnityEngine.GameObject
+---@param index number
+---@param count number
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:IndexOf(item, index, count) end
+---@param index number
+---@param item UnityEngine.GameObject
+function System_Collections_Generic_List_UnityEngine_GameObject:Insert(index, item) end
+---@param index number
+---@param collection NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:InsertRange(index, collection) end
+---@overload fun(item : UnityEngine.GameObject) : number
+---@overload fun(item : UnityEngine.GameObject, index : number) : number
+---@param item UnityEngine.GameObject
+---@param index number
+---@param count number
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:LastIndexOf(item, index, count) end
+---@param item UnityEngine.GameObject
+---@return boolean
+function System_Collections_Generic_List_UnityEngine_GameObject:Remove(item) end
+---@param match NotExportType
+---@return number
+function System_Collections_Generic_List_UnityEngine_GameObject:RemoveAll(match) end
+---@param index number
+function System_Collections_Generic_List_UnityEngine_GameObject:RemoveAt(index) end
+---@param index number
+---@param count number
+function System_Collections_Generic_List_UnityEngine_GameObject:RemoveRange(index, count) end
+---@overload fun()
+---@param index number
+---@param count number
+function System_Collections_Generic_List_UnityEngine_GameObject:Reverse(index, count) end
+---@overload fun()
+---@overload fun(comparer : NotExportType)
+---@overload fun(index : number, count : number, comparer : NotExportType)
+---@param comparison NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:Sort(comparison) end
+---@return NotExportType
+function System_Collections_Generic_List_UnityEngine_GameObject:ToArray() end
+function System_Collections_Generic_List_UnityEngine_GameObject:TrimExcess() end
+---@param match NotExportType
+---@return boolean
+function System_Collections_Generic_List_UnityEngine_GameObject:TrueForAll(match) end
+
 ---@class LuaInterface.EventObject : System.Object
 ---@field op NotExportEnum
 ---@field func System.Delegate

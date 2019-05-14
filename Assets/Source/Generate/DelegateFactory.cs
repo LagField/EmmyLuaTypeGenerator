@@ -35,6 +35,9 @@ public class DelegateFactory
 		dict.Add(typeof(TestExportScript.CustomDelegate), factory.TestExportScript_CustomDelegate);
 		dict.Add(typeof(System.Action<UnityEngine.Camera>), factory.System_Action_UnityEngine_Camera);
 		dict.Add(typeof(System.Action<float>), factory.System_Action_float);
+		dict.Add(typeof(System.Predicate<UnityEngine.GameObject>), factory.System_Predicate_UnityEngine_GameObject);
+		dict.Add(typeof(System.Action<UnityEngine.GameObject>), factory.System_Action_UnityEngine_GameObject);
+		dict.Add(typeof(System.Comparison<UnityEngine.GameObject>), factory.System_Comparison_UnityEngine_GameObject);
 
 		DelegateTraits<System.Action>.Init(factory.System_Action);
 		DelegateTraits<UnityEngine.Events.UnityAction>.Init(factory.UnityEngine_Events_UnityAction);
@@ -54,6 +57,9 @@ public class DelegateFactory
 		DelegateTraits<TestExportScript.CustomDelegate>.Init(factory.TestExportScript_CustomDelegate);
 		DelegateTraits<System.Action<UnityEngine.Camera>>.Init(factory.System_Action_UnityEngine_Camera);
 		DelegateTraits<System.Action<float>>.Init(factory.System_Action_float);
+		DelegateTraits<System.Predicate<UnityEngine.GameObject>>.Init(factory.System_Predicate_UnityEngine_GameObject);
+		DelegateTraits<System.Action<UnityEngine.GameObject>>.Init(factory.System_Action_UnityEngine_GameObject);
+		DelegateTraits<System.Comparison<UnityEngine.GameObject>>.Init(factory.System_Comparison_UnityEngine_GameObject);
 
 		TypeTraits<System.Action>.Init(factory.Check_System_Action);
 		TypeTraits<UnityEngine.Events.UnityAction>.Init(factory.Check_UnityEngine_Events_UnityAction);
@@ -73,6 +79,9 @@ public class DelegateFactory
 		TypeTraits<TestExportScript.CustomDelegate>.Init(factory.Check_TestExportScript_CustomDelegate);
 		TypeTraits<System.Action<UnityEngine.Camera>>.Init(factory.Check_System_Action_UnityEngine_Camera);
 		TypeTraits<System.Action<float>>.Init(factory.Check_System_Action_float);
+		TypeTraits<System.Predicate<UnityEngine.GameObject>>.Init(factory.Check_System_Predicate_UnityEngine_GameObject);
+		TypeTraits<System.Action<UnityEngine.GameObject>>.Init(factory.Check_System_Action_UnityEngine_GameObject);
+		TypeTraits<System.Comparison<UnityEngine.GameObject>>.Init(factory.Check_System_Comparison_UnityEngine_GameObject);
 
 		StackTraits<System.Action>.Push = factory.Push_System_Action;
 		StackTraits<UnityEngine.Events.UnityAction>.Push = factory.Push_UnityEngine_Events_UnityAction;
@@ -92,6 +101,9 @@ public class DelegateFactory
 		StackTraits<TestExportScript.CustomDelegate>.Push = factory.Push_TestExportScript_CustomDelegate;
 		StackTraits<System.Action<UnityEngine.Camera>>.Push = factory.Push_System_Action_UnityEngine_Camera;
 		StackTraits<System.Action<float>>.Push = factory.Push_System_Action_float;
+		StackTraits<System.Predicate<UnityEngine.GameObject>>.Push = factory.Push_System_Predicate_UnityEngine_GameObject;
+		StackTraits<System.Action<UnityEngine.GameObject>>.Push = factory.Push_System_Action_UnityEngine_GameObject;
+		StackTraits<System.Comparison<UnityEngine.GameObject>>.Push = factory.Push_System_Comparison_UnityEngine_GameObject;
 	}
     
     public static Delegate CreateDelegate(Type t, LuaFunction func = null)
@@ -1237,6 +1249,187 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_float(IntPtr L, System.Action<float> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Predicate_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Predicate_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Predicate_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public bool Call(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			bool ret = func.CheckBoolean();
+			func.EndPCall();
+			return ret;
+		}
+
+		public bool CallWithSelf(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			bool ret = func.CheckBoolean();
+			func.EndPCall();
+			return ret;
+		}
+	}
+
+	public System.Predicate<UnityEngine.GameObject> System_Predicate_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Predicate<UnityEngine.GameObject> fn = delegate(UnityEngine.GameObject param0) { return false; };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Predicate_UnityEngine_GameObject_Event target = new System_Predicate_UnityEngine_GameObject_Event(func);
+			System.Predicate<UnityEngine.GameObject> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Predicate_UnityEngine_GameObject_Event target = new System_Predicate_UnityEngine_GameObject_Event(func, self);
+			System.Predicate<UnityEngine.GameObject> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Predicate_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Predicate<UnityEngine.GameObject>), L, pos);
+	}
+
+	void Push_System_Predicate_UnityEngine_GameObject(IntPtr L, System.Predicate<UnityEngine.GameObject> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.GameObject> System_Action_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.GameObject> fn = delegate(UnityEngine.GameObject param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_GameObject_Event target = new System_Action_UnityEngine_GameObject_Event(func);
+			System.Action<UnityEngine.GameObject> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_GameObject_Event target = new System_Action_UnityEngine_GameObject_Event(func, self);
+			System.Action<UnityEngine.GameObject> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.GameObject>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_GameObject(IntPtr L, System.Action<UnityEngine.GameObject> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Comparison_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Comparison_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Comparison_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public int Call(UnityEngine.GameObject param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			int ret = (int)func.CheckNumber();
+			func.EndPCall();
+			return ret;
+		}
+
+		public int CallWithSelf(UnityEngine.GameObject param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			int ret = (int)func.CheckNumber();
+			func.EndPCall();
+			return ret;
+		}
+	}
+
+	public System.Comparison<UnityEngine.GameObject> System_Comparison_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Comparison<UnityEngine.GameObject> fn = delegate(UnityEngine.GameObject param0, UnityEngine.GameObject param1) { return 0; };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Comparison_UnityEngine_GameObject_Event target = new System_Comparison_UnityEngine_GameObject_Event(func);
+			System.Comparison<UnityEngine.GameObject> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Comparison_UnityEngine_GameObject_Event target = new System_Comparison_UnityEngine_GameObject_Event(func, self);
+			System.Comparison<UnityEngine.GameObject> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Comparison_UnityEngine_GameObject(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Comparison<UnityEngine.GameObject>), L, pos);
+	}
+
+	void Push_System_Comparison_UnityEngine_GameObject(IntPtr L, System.Comparison<UnityEngine.GameObject> o)
 	{
 		ToLua.Push(L, o);
 	}
