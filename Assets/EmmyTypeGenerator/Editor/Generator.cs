@@ -792,7 +792,7 @@ namespace EmmyTypeGenerator
         
         public static bool IsMemberObsolete(this MemberInfo memberInfo)
         {
-            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0;
+            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0 && ToLuaExport.IsMemberFilter(memberInfo);
         }
     }
 }
