@@ -154,6 +154,10 @@ public static class CustomSettings
         _GT(typeof(TestExportScript)),
         _GT(typeof(Debug)),
         _GT(typeof(List<GameObject>)),
+        _GT(typeof(Dictionary<int,GameObject>)),
+        _GT(typeof(List<List<GameObject>>)),
+        
+        _GT(typeof(CanvasRenderer)),
     };
 
     public static List<Type> dynamicList = new List<Type>()

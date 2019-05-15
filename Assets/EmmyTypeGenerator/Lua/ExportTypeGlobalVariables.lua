@@ -128,6 +128,8 @@ System_Collections_Generic_List_UnityEngine_GameObject = System.Collections.Gene
 System_Collections_Generic_Dictionary_int_UnityEngine_GameObject = System.Collections.Generic.Dictionary_int_UnityEngine_GameObject
 ---@type System.Collections.Generic.List_System_Collections_Generic_List_UnityEngine_GameObject
 System_Collections_Generic_List_System_Collections_Generic_List_UnityEngine_GameObject = System.Collections.Generic.List_System_Collections_Generic_List_UnityEngine_GameObject
+---@type UnityEngine.CanvasRenderer
+UnityEngine_CanvasRenderer = UnityEngine.CanvasRenderer
 ---@type LuaInterface.EventObject
 LuaInterface_EventObject = LuaInterface.EventObject
 ---@type LuaInterface.LuaConstructor

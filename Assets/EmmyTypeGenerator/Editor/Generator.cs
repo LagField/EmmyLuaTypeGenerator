@@ -109,6 +109,11 @@ namespace EmmyTypeGenerator
                 return;
             }
 
+            if (ToLuaExport.IsMemberFilter(type))
+            {
+                return;
+            }
+
             exportTypeList.Add(type);
             if (type.BaseType != null && !type.IsEnum)
             {
@@ -119,6 +124,10 @@ namespace EmmyTypeGenerator
         private static void RecordType(Type type)
         {
             if (exportTypeList.Contains(type))
+            {
+                return;
+            }
+            if (ToLuaExport.IsMemberFilter(type))
             {
                 return;
             }
@@ -505,6 +514,10 @@ namespace EmmyTypeGenerator
             {
                 if (typeof(Delegate).IsAssignableFrom(type))
                 {
+                    if (ToLuaExport.IsMemberFilter(type))
+                    {
+                        return;
+                    }
                     if (!exportDelegateTypeList.Contains(type))
                     {
                         exportDelegateTypeList.Add(type);

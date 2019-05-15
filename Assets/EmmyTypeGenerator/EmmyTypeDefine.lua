@@ -3493,6 +3493,88 @@ function System_Collections_Generic_List_System_Collections_Generic_List_UnityEn
 ---@return boolean
 function System_Collections_Generic_List_System_Collections_Generic_List_UnityEngine_GameObject:TrueForAll(match) end
 
+---@class UnityEngine.CanvasRenderer : UnityEngine.Component
+---@field hasPopInstruction boolean
+---@field materialCount number
+---@field popMaterialCount number
+---@field absoluteDepth number
+---@field hasMoved boolean
+---@field cullTransparentMesh boolean
+---@field hasRectClipping boolean
+---@field relativeDepth number
+---@field cull boolean
+local UnityEngine_CanvasRenderer = {}
+---@return UnityEngine.CanvasRenderer
+function UnityEngine_CanvasRenderer.New() end
+---@overload fun(verts : NotExportType, positions : NotExportType, colors : NotExportType, uv0S : NotExportType, uv1S : NotExportType, normals : NotExportType, tangents : NotExportType, indices : NotExportType)
+---@param verts NotExportType
+---@param positions NotExportType
+---@param colors NotExportType
+---@param uv0S NotExportType
+---@param uv1S NotExportType
+---@param uv2S NotExportType
+---@param uv3S NotExportType
+---@param normals NotExportType
+---@param tangents NotExportType
+---@param indices NotExportType
+function UnityEngine_CanvasRenderer.SplitUIVertexStreams(verts, positions, colors, uv0S, uv1S, uv2S, uv3S, normals, tangents, indices) end
+---@overload fun(verts : NotExportType, positions : NotExportType, colors : NotExportType, uv0S : NotExportType, uv1S : NotExportType, normals : NotExportType, tangents : NotExportType, indices : NotExportType)
+---@param verts NotExportType
+---@param positions NotExportType
+---@param colors NotExportType
+---@param uv0S NotExportType
+---@param uv1S NotExportType
+---@param uv2S NotExportType
+---@param uv3S NotExportType
+---@param normals NotExportType
+---@param tangents NotExportType
+---@param indices NotExportType
+function UnityEngine_CanvasRenderer.CreateUIVertexStream(verts, positions, colors, uv0S, uv1S, uv2S, uv3S, normals, tangents, indices) end
+---@overload fun(verts : NotExportType, positions : NotExportType, colors : NotExportType, uv0S : NotExportType, uv1S : NotExportType, normals : NotExportType, tangents : NotExportType)
+---@param verts NotExportType
+---@param positions NotExportType
+---@param colors NotExportType
+---@param uv0S NotExportType
+---@param uv1S NotExportType
+---@param uv2S NotExportType
+---@param uv3S NotExportType
+---@param normals NotExportType
+---@param tangents NotExportType
+function UnityEngine_CanvasRenderer.AddUIVertexStream(verts, positions, colors, uv0S, uv1S, uv2S, uv3S, normals, tangents) end
+---@param color UnityEngine.Color
+function UnityEngine_CanvasRenderer:SetColor(color) end
+---@return UnityEngine.Color
+function UnityEngine_CanvasRenderer:GetColor() end
+---@param rect NotExportType
+function UnityEngine_CanvasRenderer:EnableRectClipping(rect) end
+function UnityEngine_CanvasRenderer:DisableRectClipping() end
+---@overload fun(material : UnityEngine.Material, index : number)
+---@param material UnityEngine.Material
+---@param texture UnityEngine.Texture
+function UnityEngine_CanvasRenderer:SetMaterial(material, texture) end
+---@overload fun(index : number) : UnityEngine.Material
+---@return UnityEngine.Material
+function UnityEngine_CanvasRenderer:GetMaterial() end
+---@param material UnityEngine.Material
+---@param index number
+function UnityEngine_CanvasRenderer:SetPopMaterial(material, index) end
+---@param index number
+---@return UnityEngine.Material
+function UnityEngine_CanvasRenderer:GetPopMaterial(index) end
+---@param texture UnityEngine.Texture
+function UnityEngine_CanvasRenderer:SetTexture(texture) end
+---@param texture UnityEngine.Texture
+function UnityEngine_CanvasRenderer:SetAlphaTexture(texture) end
+---@param mesh NotExportType
+function UnityEngine_CanvasRenderer:SetMesh(mesh) end
+function UnityEngine_CanvasRenderer:Clear() end
+---@return number
+function UnityEngine_CanvasRenderer:GetAlpha() end
+---@param alpha number
+function UnityEngine_CanvasRenderer:SetAlpha(alpha) end
+---@return number
+function UnityEngine_CanvasRenderer:GetInheritedAlpha() end
+
 ---@class LuaInterface.EventObject : System.Object
 ---@field op NotExportEnum
 ---@field func System.Delegate
