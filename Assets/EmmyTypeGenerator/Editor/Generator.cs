@@ -1,20 +1,4 @@
-﻿//        /// <summary>
-//        /// 该文件只用来给ide进行lua类型提示的,不要在运行时require该文件或者打包到版本中.
-//        /// </summary>
-//        private static string TypeDefineFilePath
-//        {
-//            get { return  CustomSettings.saveDir + "/EmmyLuaAPI.lua"; }
-//        }
-//
-//        /// <summary>
-//        /// 该文件需要在运行时require到lua虚拟机中,主要存放了大部分导出类型以及委托的全局引用
-//        /// </summary>
-//        private static string LuaGlobalVariableFilePath
-//        {
-//            get { return  Application.dataPath + "/GameMain/Lua/Base/ExportedGlobalVariables.lua"; }
-//        }
-
-#define ToLuaVersion
+﻿#define ToLuaVersion
 //todo xlua version
 //#define XLuaVersion
 
@@ -37,7 +21,7 @@ namespace EmmyTypeGenerator
         /// </summary>
         private static string TypeDefineFilePath
         {
-            get { return CustomSettings.saveDir + "/EmmyLuaAPI.lua"; }
+            get { return Application.dataPath + "/EmmyTypeGenerator/EmmyTypeDefine.lua"; }
         }
 
         /// <summary>
@@ -45,7 +29,7 @@ namespace EmmyTypeGenerator
         /// </summary>
         private static string LuaGlobalVariableFilePath
         {
-            get { return Application.dataPath + "/GameMain/Lua/Base/ExportedGlobalVariables.lua"; }
+            get { return Application.dataPath + "/EmmyTypeGenerator/Lua/ExportTypeGlobalVariables.lua"; }
         }
 
         private static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
