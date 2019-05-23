@@ -1,4 +1,20 @@
-﻿#define ToLuaVersion
+﻿//        /// <summary>
+//        /// 该文件只用来给ide进行lua类型提示的,不要在运行时require该文件或者打包到版本中.
+//        /// </summary>
+//        private static string TypeDefineFilePath
+//        {
+//            get { return  CustomSettings.saveDir + "/EmmyLuaAPI.lua"; }
+//        }
+//
+//        /// <summary>
+//        /// 该文件需要在运行时require到lua虚拟机中,主要存放了大部分导出类型以及委托的全局引用
+//        /// </summary>
+//        private static string LuaGlobalVariableFilePath
+//        {
+//            get { return  Application.dataPath + "/GameMain/Lua/Base/ExportedGlobalVariables.lua"; }
+//        }
+
+#define ToLuaVersion
 //todo xlua version
 //#define XLuaVersion
 
@@ -8,6 +24,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using LuaInterface;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +37,7 @@ namespace EmmyTypeGenerator
         /// </summary>
         private static string TypeDefineFilePath
         {
-            get { return Application.dataPath + "/EmmyTypeGenerator/EmmyTypeDefine.lua"; }
+            get { return CustomSettings.saveDir + "/EmmyLuaAPI.lua"; }
         }
 
         /// <summary>
@@ -28,7 +45,7 @@ namespace EmmyTypeGenerator
         /// </summary>
         private static string LuaGlobalVariableFilePath
         {
-            get { return Application.dataPath + "/EmmyTypeGenerator/Lua/ExportTypeGlobalVariables.lua"; }
+            get { return Application.dataPath + "/GameMain/Lua/Base/ExportedGlobalVariables.lua"; }
         }
 
         private static HashSet<Type> luaNumberTypeSet = new HashSet<Type>
@@ -127,10 +144,12 @@ namespace EmmyTypeGenerator
             {
                 return;
             }
+
             if (ToLuaExport.IsMemberFilter(type))
             {
                 return;
             }
+
             exportTypeList.Add(type);
         }
 
@@ -171,7 +190,8 @@ namespace EmmyTypeGenerator
                 keepStringTypeName = exportType == typeof(string);
 
                 sb.AppendLine(string.Format("---@type {0}", exportType.ToLuaTypeName()));
-                sb.AppendLine(string.Format("{0} = {1}", exportType.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore(), exportType.ToLuaTypeName()));
+                sb.AppendLine(string.Format("{0} = {1}", exportType.ToLuaTypeName().ReplaceDotOrPlusWithUnderscore(),
+                    exportType.ToLuaTypeName()));
             }
 
             //generate delegates
@@ -210,7 +230,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
-                if (fieldInfo.IsMemberObsolete())
+                if (fieldInfo.IsMemberObsolete(type))
                 {
                     continue;
                 }
@@ -233,7 +253,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < propertyInfoList.Count; i++)
             {
                 PropertyInfo propertyInfo = propertyInfoList[i];
-                if (propertyInfo.IsMemberObsolete())
+                if (propertyInfo.IsMemberObsolete(type))
                 {
                     continue;
                 }
@@ -291,6 +311,11 @@ namespace EmmyTypeGenerator
                     return;
                 }
 
+                if (methodInfo.GetCustomAttributes(typeof(NoToLuaAttribute), false).Length > 0)
+                {
+                    return;
+                }
+
                 if (methodName.StartsWith("get_") || methodName.StartsWith("set_") || methodName.StartsWith("op_"))
                 {
                     return;
@@ -321,7 +346,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < publicStaticMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicStaticMethodInfos[i];
-                if (methodInfo.IsMemberObsolete())
+                if (methodInfo.IsMemberObsolete(type))
                 {
                     continue;
                 }
@@ -332,7 +357,7 @@ namespace EmmyTypeGenerator
             for (int i = 0; i < publicInstanceMethodInfos.Length; i++)
             {
                 MethodInfo methodInfo = publicInstanceMethodInfos[i];
-                if (methodInfo.IsMemberObsolete())
+                if (methodInfo.IsMemberObsolete(type))
                 {
                     continue;
                 }
@@ -518,6 +543,7 @@ namespace EmmyTypeGenerator
                     {
                         return;
                     }
+
                     if (!exportDelegateTypeList.Contains(type))
                     {
                         exportDelegateTypeList.Add(type);
@@ -591,7 +617,7 @@ namespace EmmyTypeGenerator
                     {
                         continue;
                     }
-                    
+
                     tempSb.Clear();
                     tempSb.Append(delegateType.GetGenericTypeFullName().ReplaceDotOrPlusWithUnderscore());
 
@@ -632,6 +658,7 @@ namespace EmmyTypeGenerator
             {
                 return;
             }
+
             ParameterInfo[] parameterInfos = invokeMethodInfo.GetParameters();
             for (int i = 0; i < parameterInfos.Length; i++)
             {
@@ -666,6 +693,7 @@ namespace EmmyTypeGenerator
         }
 
         private static bool keepStringTypeName;
+
         public static string ToLuaTypeName(this Type type)
         {
             if (!TypeIsExport(type))
@@ -673,6 +701,11 @@ namespace EmmyTypeGenerator
                 if (type.IsEnum)
                 {
                     return "NotExportEnum";
+                }
+
+                if (type == typeof(LuaFunction))
+                {
+                    return "fun()";
                 }
 
                 return "NotExportType";
@@ -700,10 +733,10 @@ namespace EmmyTypeGenerator
 
 
             string typeName = type.FullName;
-            
+
             //去除泛型后缀
             typeName = typeName.EscapeGenericTypeSuffix();
-            
+
             int bracketIndex = typeName.IndexOf("[[");
             if (bracketIndex > 0)
             {
@@ -721,10 +754,11 @@ namespace EmmyTypeGenerator
                     {
                         genericArgumentTypeName = genericArgumentType.ToLuaTypeName();
                     }
+
                     typeName = typeName + "_" + genericArgumentTypeName.ReplaceDotOrPlusWithUnderscore();
                 }
             }
-            
+
             return typeName;
         }
 
@@ -754,7 +788,7 @@ namespace EmmyTypeGenerator
 
             return s;
         }
-        
+
         public static string ToCSharpTypeFullName(this Type type)
         {
             if (CSharpTypeNameDic.ContainsKey(type))
@@ -776,7 +810,7 @@ namespace EmmyTypeGenerator
         {
             return s.Replace(".", "_").Replace("+", "_");
         }
-        
+
         public static string ReplacePlusWithDot(this string s)
         {
             return s.Replace("+", ".");
@@ -785,14 +819,36 @@ namespace EmmyTypeGenerator
         public static string EscapeGenericTypeSuffix(this string s)
         {
             string result = Regex.Replace(s, @"\`[0-9]+", "").Replace("+", ".");
-
-
             return result;
         }
-        
-        public static bool IsMemberObsolete(this MemberInfo memberInfo)
+
+        public static bool IsMemberObsolete(this MemberInfo memberInfo, Type type)
         {
-            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0 && ToLuaExport.IsMemberFilter(memberInfo);
+            return memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length > 0 ||
+                   IsMemberFilter(memberInfo, type);
+        }
+
+        public static bool IsMemberFilter(MemberInfo mi, Type type)
+        {
+            if (type.IsGenericType)
+            {
+                Type genericType = type.GetGenericTypeDefinition();
+
+                if (genericType == typeof(Dictionary<,>) && mi.Name == "Remove")
+                {
+                    MethodBase mb = (MethodBase) mi;
+                    return mb.GetParameters().Length == 2;
+                }
+
+                if (genericType == typeof(Dictionary<,>) || genericType == typeof(KeyValuePair<,>))
+                {
+                    string str = genericType.Name;
+                    str = str.Substring(0, str.IndexOf("`"));
+                    return ToLuaExport.memberFilter.Contains(str + "." + mi.Name);
+                }
+            }
+
+            return ToLuaExport.memberInfoFilter.Contains(mi) || ToLuaExport.memberFilter.Contains(type.Name + "." + mi.Name);
         }
     }
 }
