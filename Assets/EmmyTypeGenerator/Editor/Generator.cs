@@ -5,9 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using DG.Tweening;
 using LuaInterface;
 using UnityEditor;
 using UnityEngine;
@@ -75,12 +78,23 @@ namespace EmmyTypeGenerator
         private static StringBuilder tempSb = new StringBuilder(1024);
         private static List<Type> exportTypeList = new List<Type>();
 
+        private static Dictionary<Type, List<MethodInfo>>
+            extensionMethodsDic = new Dictionary<Type, List<MethodInfo>>();
+
         [MenuItem("Lua/EmmyTypeGenerate")]
         public static void GenerateEmmyTypeFiles()
         {
             for (int i = 0; i < CustomSettings.customTypeList.Length; i++)
             {
-                RecordTypeAndBaseType(CustomSettings.customTypeList[i].type);
+                ToLuaMenu.BindType bindType = CustomSettings.customTypeList[i];
+                RecordTypeAndBaseType(bindType.type);
+                if (bindType.extendList.Count > 0)
+                {
+                    for (var j = 0; j < bindType.extendList.Count; j++)
+                    {
+                        RecordTypeAndBaseType(bindType.extendList[j]);
+                    }
+                }
             }
 
 #if ToLuaVersion
@@ -90,11 +104,16 @@ namespace EmmyTypeGenerator
             }
 #endif
 
+            HandleExtensionMethods();
+            //如果没有使用DOTween，屏蔽这一句
+            UnRecordType(typeof(ShortcutExtensions));
+            
             GenerateTypeDefines();
             GenerateExportTypeGlobalVariable();
 
             AssetDatabase.Refresh();
         }
+
 
         private static void RecordTypeAndBaseType(Type type)
         {
@@ -135,6 +154,42 @@ namespace EmmyTypeGenerator
             }
 
             exportTypeList.Add(type);
+        }
+
+        private static void UnRecordType(Type type)
+        {
+            if (exportTypeList.Contains(type))
+            {
+                exportTypeList.Remove(type);
+            }
+        }
+
+        private static void HandleExtensionMethods()
+        {
+            for (var i = 0; i < exportTypeList.Count; i++)
+            {
+                Type type = exportTypeList[i];
+
+                MethodInfo[] publicStaticMethodInfos =
+                    type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+                for (var j = 0; j < publicStaticMethodInfos.Length; j++)
+                {
+                    MethodInfo methodInfo = publicStaticMethodInfos[j];
+                    if (methodInfo.IsDefined(typeof(ExtensionAttribute), false))
+                    {
+                        Type extensionType = methodInfo.GetParameters()[0].ParameterType;
+                        if (extensionMethodsDic.TryGetValue(extensionType, out List<MethodInfo> extensionMethodList))
+                        {
+                            extensionMethodList.Add(methodInfo);
+                        }
+                        else
+                        {
+                            List<MethodInfo> methodList = new List<MethodInfo> {methodInfo};
+                            extensionMethodsDic.Add(extensionType, methodList);
+                        }
+                    }
+                }
+            }
         }
 
         private static void GenerateTypeDefines()
@@ -190,7 +245,8 @@ namespace EmmyTypeGenerator
         {
             if (type.BaseType != null && !type.IsEnum)
             {
-                sb.AppendLine(string.Format("---@class {0} : {1}", type.ToLuaTypeName(), type.BaseType.ToLuaTypeName()));
+                sb.AppendLine(string.Format("---@class {0} : {1}", type.ToLuaTypeName(),
+                    type.BaseType.ToLuaTypeName()));
             }
             else
             {
@@ -359,9 +415,12 @@ namespace EmmyTypeGenerator
                 }
 
                 MethodInfo lastMethodInfo = methodInfoList[methodInfoList.Count - 1];
-                WriteMethodFunctionDeclare(lastMethodInfo.GetParameters(), lastMethodInfo.ReturnType, lastMethodInfo.Name,
+                WriteMethodFunctionDeclare(lastMethodInfo.GetParameters(), lastMethodInfo.ReturnType,
+                    lastMethodInfo.Name,
                     classNameWithNameSpace, lastMethodInfo.IsStatic);
             }
+
+            WriteExtensionMethodFunctionDecalre(type);
         }
 
         public static void WriteOverloadMethodCommentDecalre(ParameterInfo[] parameterInfos, Type returnType)
@@ -435,7 +494,8 @@ namespace EmmyTypeGenerator
             }
         }
 
-        public static void WriteMethodFunctionDeclare(ParameterInfo[] parameterInfos, Type returnType, string methodName,
+        public static void WriteMethodFunctionDeclare(ParameterInfo[] parameterInfos, Type returnType,
+            string methodName,
             string className, bool isStaticMethod)
         {
             List<ParameterInfo> outOrRefParameterInfoList = new List<ParameterInfo>();
@@ -490,7 +550,8 @@ namespace EmmyTypeGenerator
 
             for (int i = 0; i < outOrRefParameterInfoList.Count; i++)
             {
-                sb.Append(string.Format(",{0}", outOrRefParameterInfoList[i].ParameterType.GetElementType().ToLuaTypeName()));
+                sb.Append(string.Format(",{0}",
+                    outOrRefParameterInfoList[i].ParameterType.GetElementType().ToLuaTypeName()));
             }
 
             if (haveReturen)
@@ -505,6 +566,29 @@ namespace EmmyTypeGenerator
             else
             {
                 sb.AppendLine(string.Format("function {0}:{1}({2}) end", className, methodName, tempSb));
+            }
+        }
+
+        private static void WriteExtensionMethodFunctionDecalre(Type type)
+        {
+            if (extensionMethodsDic.TryGetValue(type, out List<MethodInfo> extensionMethodList))
+            {
+                for (var i = 0; i < extensionMethodList.Count; i++)
+                {
+                    MethodInfo methodInfo = extensionMethodList[i];
+                    ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+                    if (parameterInfos.Length > 0)
+                    {
+                        //第一个param是拓展类型，去掉
+                        parameterInfos = parameterInfos.ToList().GetRange(1, parameterInfos.Length - 1).ToArray();
+                    }
+
+                    Type returnType = methodInfo.ReturnType;
+                    string methodName = methodInfo.Name;
+                    string classNameWithNameSpace = type.ToLuaTypeName().Replace(".", "_");
+
+                    WriteMethodFunctionDeclare(parameterInfos, returnType, methodName, classNameWithNameSpace, false);
+                }
             }
         }
 
@@ -609,13 +693,15 @@ namespace EmmyTypeGenerator
                     for (int j = 0; j < genericTypes.Length; j++)
                     {
 //                        Debug.Log("包含泛型参数类型: " + genericTypes[j].FullName);
-                        tempSb.AppendFormat("_{0}", genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                        tempSb.AppendFormat("_{0}",
+                            genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
                     }
 
                     tempSb.AppendFormat(" = {0}", delegateType.GetGenericTypeFullName());
                     for (int j = 0; j < genericTypes.Length; j++)
                     {
-                        tempSb.AppendFormat("_{0}", genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
+                        tempSb.AppendFormat("_{0}",
+                            genericTypes[j].ToCSharpTypeFullName().ReplaceDotOrPlusWithUnderscore());
                     }
 
                     sb.AppendLine(tempSb.ToString());
@@ -668,7 +754,8 @@ namespace EmmyTypeGenerator
         private static bool TypeIsExport(Type type)
         {
 #if ToLuaVersion
-            return ToLuaFacility.toluaRewriteTypes.Contains(type) || exportTypeList.Contains(type) || type == typeof(string) ||
+            return ToLuaFacility.toluaRewriteTypes.Contains(type) || exportTypeList.Contains(type) ||
+                   type == typeof(string) ||
                    luaNumberTypeSet.Contains(type) || type == typeof(bool);
 #else
             return exportTypeList.Contains(type) || type == typeof(string) ||
@@ -832,7 +919,8 @@ namespace EmmyTypeGenerator
                 }
             }
 
-            return ToLuaExport.memberInfoFilter.Contains(mi) || ToLuaExport.memberFilter.Contains(type.Name + "." + mi.Name);
+            return ToLuaExport.memberInfoFilter.Contains(mi) ||
+                   ToLuaExport.memberFilter.Contains(type.Name + "." + mi.Name);
         }
     }
 }

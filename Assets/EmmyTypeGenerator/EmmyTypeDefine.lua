@@ -9,14 +9,8 @@ local LuaInterface_LuaInjectionStation = {}
 ---@return LuaInterface.LuaInjectionStation
 function LuaInterface_LuaInjectionStation.New() end
 ---@param index number
----@return number
-function LuaInterface_LuaInjectionStation.GetInjectFlag(index) end
----@param index number
----@return NotExportType
-function LuaInterface_LuaInjectionStation.GetInjectionFunction(index) end
----@param index number
 ---@param injectFlag number
----@param func NotExportType
+---@param func fun()
 function LuaInterface_LuaInjectionStation.CacheInjectFunction(index, injectFlag, func) end
 function LuaInterface_LuaInjectionStation.Clear() end
 
@@ -82,6 +76,570 @@ function LuaInterface_Debugger.LogError(str, param) end
 ---@param e NotExportType
 function LuaInterface_Debugger.LogException(str, e) end
 
+---@class DG.Tweening.DOTween : System.Object
+---@field Version string
+---@field useSafeMode boolean
+---@field nestedTweenFailureBehaviour NotExportEnum
+---@field showUnityEditorReport boolean
+---@field timeScale number
+---@field useSmoothDeltaTime boolean
+---@field maxSmoothUnscaledTime number
+---@field onWillLog NotExportType
+---@field drawGizmos boolean
+---@field defaultUpdateType NotExportEnum
+---@field defaultTimeScaleIndependent boolean
+---@field defaultAutoPlay NotExportEnum
+---@field defaultAutoKill boolean
+---@field defaultLoopType DG.Tweening.LoopType
+---@field defaultRecyclable boolean
+---@field defaultEaseType NotExportEnum
+---@field defaultEaseOvershootOrAmplitude number
+---@field defaultEasePeriod number
+---@field instance NotExportType
+---@field logBehaviour NotExportEnum
+local DG_Tweening_DOTween = {}
+---@return DG.Tweening.DOTween
+function DG_Tweening_DOTween.New() end
+---@param recycleAllByDefault NotExportType
+---@param useSafeMode NotExportType
+---@param logBehaviour NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.Init(recycleAllByDefault, useSafeMode, logBehaviour) end
+---@param tweenersCapacity number
+---@param sequencesCapacity number
+function DG_Tweening_DOTween.SetTweensCapacity(tweenersCapacity, sequencesCapacity) end
+---@param destroy boolean
+function DG_Tweening_DOTween.Clear(destroy) end
+function DG_Tweening_DOTween.ClearCachedTweens() end
+---@return number
+function DG_Tweening_DOTween.Validate() end
+---@param deltaTime number
+---@param unscaledDeltaTime number
+function DG_Tweening_DOTween.ManualUpdate(deltaTime, unscaledDeltaTime) end
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : number, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : string, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : UnityEngine.Vector2, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : UnityEngine.Vector3, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : NotExportType, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : UnityEngine.Vector3, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : UnityEngine.Color, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : NotExportType, duration : number) : NotExportType
+---@overload fun(getter : NotExportType, setter : NotExportType, endValue : NotExportType, duration : number) : DG.Tweening.Tweener
+---@param setter NotExportType
+---@param startValue number
+---@param endValue number
+---@param duration number
+---@return DG.Tweening.Tweener
+function DG_Tweening_DOTween.To(setter, startValue, endValue, duration) end
+---@param getter NotExportType
+---@param setter NotExportType
+---@param endValue number
+---@param duration number
+---@param axisConstraint NotExportEnum
+---@return NotExportType
+function DG_Tweening_DOTween.ToAxis(getter, setter, endValue, duration, axisConstraint) end
+---@param getter NotExportType
+---@param setter NotExportType
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function DG_Tweening_DOTween.ToAlpha(getter, setter, endValue, duration) end
+---@param getter NotExportType
+---@param setter NotExportType
+---@param direction UnityEngine.Vector3
+---@param duration number
+---@param vibrato number
+---@param elasticity number
+---@return NotExportType
+function DG_Tweening_DOTween.Punch(getter, setter, direction, duration, vibrato, elasticity) end
+---@overload fun(getter : NotExportType, setter : NotExportType, duration : number, strength : number, vibrato : number, randomness : number, ignoreZAxis : boolean, fadeOut : boolean) : NotExportType
+---@param getter NotExportType
+---@param setter NotExportType
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return NotExportType
+function DG_Tweening_DOTween.Shake(getter, setter, duration, strength, vibrato, randomness, fadeOut) end
+---@param getter NotExportType
+---@param setter NotExportType
+---@param endValues NotExportType
+---@param durations NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.ToArray(getter, setter, endValues, durations) end
+---@return DG.Tweening.Sequence
+function DG_Tweening_DOTween.Sequence() end
+---@param withCallbacks boolean
+---@return number
+function DG_Tweening_DOTween.CompleteAll(withCallbacks) end
+---@param targetOrId System.Object
+---@param withCallbacks boolean
+---@return number
+function DG_Tweening_DOTween.Complete(targetOrId, withCallbacks) end
+---@return number
+function DG_Tweening_DOTween.FlipAll() end
+---@param targetOrId System.Object
+---@return number
+function DG_Tweening_DOTween.Flip(targetOrId) end
+---@param to number
+---@param andPlay boolean
+---@return number
+function DG_Tweening_DOTween.GotoAll(to, andPlay) end
+---@param targetOrId System.Object
+---@param to number
+---@param andPlay boolean
+---@return number
+function DG_Tweening_DOTween.Goto(targetOrId, to, andPlay) end
+---@overload fun(complete : boolean) : number
+---@param complete boolean
+---@param idsOrTargetsToExclude NotExportType
+---@return number
+function DG_Tweening_DOTween.KillAll(complete, idsOrTargetsToExclude) end
+---@param targetOrId System.Object
+---@param complete boolean
+---@return number
+function DG_Tweening_DOTween.Kill(targetOrId, complete) end
+---@return number
+function DG_Tweening_DOTween.PauseAll() end
+---@param targetOrId System.Object
+---@return number
+function DG_Tweening_DOTween.Pause(targetOrId) end
+---@return number
+function DG_Tweening_DOTween.PlayAll() end
+---@overload fun(targetOrId : System.Object) : number
+---@param target System.Object
+---@param id System.Object
+---@return number
+function DG_Tweening_DOTween.Play(target, id) end
+---@return number
+function DG_Tweening_DOTween.PlayBackwardsAll() end
+---@overload fun(targetOrId : System.Object) : number
+---@param target System.Object
+---@param id System.Object
+---@return number
+function DG_Tweening_DOTween.PlayBackwards(target, id) end
+---@return number
+function DG_Tweening_DOTween.PlayForwardAll() end
+---@overload fun(targetOrId : System.Object) : number
+---@param target System.Object
+---@param id System.Object
+---@return number
+function DG_Tweening_DOTween.PlayForward(target, id) end
+---@param includeDelay boolean
+---@return number
+function DG_Tweening_DOTween.RestartAll(includeDelay) end
+---@overload fun(targetOrId : System.Object, includeDelay : boolean, changeDelayTo : number) : number
+---@param target System.Object
+---@param id System.Object
+---@param includeDelay boolean
+---@param changeDelayTo number
+---@return number
+function DG_Tweening_DOTween.Restart(target, id, includeDelay, changeDelayTo) end
+---@param includeDelay boolean
+---@return number
+function DG_Tweening_DOTween.RewindAll(includeDelay) end
+---@param targetOrId System.Object
+---@param includeDelay boolean
+---@return number
+function DG_Tweening_DOTween.Rewind(targetOrId, includeDelay) end
+---@return number
+function DG_Tweening_DOTween.SmoothRewindAll() end
+---@param targetOrId System.Object
+---@return number
+function DG_Tweening_DOTween.SmoothRewind(targetOrId) end
+---@return number
+function DG_Tweening_DOTween.TogglePauseAll() end
+---@param targetOrId System.Object
+---@return number
+function DG_Tweening_DOTween.TogglePause(targetOrId) end
+---@param targetOrId System.Object
+---@param alsoCheckIfIsPlaying boolean
+---@return boolean
+function DG_Tweening_DOTween.IsTweening(targetOrId, alsoCheckIfIsPlaying) end
+---@return number
+function DG_Tweening_DOTween.TotalPlayingTweens() end
+---@param fillableList NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.PlayingTweens(fillableList) end
+---@param fillableList NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.PausedTweens(fillableList) end
+---@param id System.Object
+---@param playingOnly boolean
+---@param fillableList NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.TweensById(id, playingOnly, fillableList) end
+---@param target System.Object
+---@param playingOnly boolean
+---@param fillableList NotExportType
+---@return NotExportType
+function DG_Tweening_DOTween.TweensByTarget(target, playingOnly, fillableList) end
+
+---@class DG.Tweening.Tween : DG.Tweening.Core.ABSSequentiable
+---@field timeScale number
+---@field isBackwards boolean
+---@field id System.Object
+---@field stringId string
+---@field intId number
+---@field target System.Object
+---@field onPlay NotExportType
+---@field onPause NotExportType
+---@field onRewind NotExportType
+---@field onUpdate NotExportType
+---@field onStepComplete NotExportType
+---@field onComplete NotExportType
+---@field onKill NotExportType
+---@field onWaypointChange NotExportType
+---@field easeOvershootOrAmplitude number
+---@field easePeriod number
+---@field isRelative boolean
+---@field active boolean
+---@field fullPosition number
+---@field playedOnce boolean
+---@field position number
+local DG_Tweening_Tween = {}
+function DG_Tweening_Tween:Complete() end
+---@param withCallbacks boolean
+function DG_Tweening_Tween:Complete(withCallbacks) end
+function DG_Tweening_Tween:Flip() end
+function DG_Tweening_Tween:ForceInit() end
+---@param to number
+---@param andPlay boolean
+function DG_Tweening_Tween:Goto(to, andPlay) end
+---@param complete boolean
+function DG_Tweening_Tween:Kill(complete) end
+function DG_Tweening_Tween:PlayBackwards() end
+function DG_Tweening_Tween:PlayForward() end
+---@param includeDelay boolean
+---@param changeDelayTo number
+function DG_Tweening_Tween:Restart(includeDelay, changeDelayTo) end
+---@param includeDelay boolean
+function DG_Tweening_Tween:Rewind(includeDelay) end
+function DG_Tweening_Tween:SmoothRewind() end
+function DG_Tweening_Tween:TogglePause() end
+---@param waypointIndex number
+---@param andPlay boolean
+function DG_Tweening_Tween:GotoWaypoint(waypointIndex, andPlay) end
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_Tween:WaitForCompletion() end
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_Tween:WaitForRewind() end
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_Tween:WaitForKill() end
+---@param elapsedLoops number
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_Tween:WaitForElapsedLoops(elapsedLoops) end
+---@param position number
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_Tween:WaitForPosition(position) end
+---@return UnityEngine.Coroutine
+function DG_Tweening_Tween:WaitForStart() end
+---@return number
+function DG_Tweening_Tween:CompletedLoops() end
+---@return number
+function DG_Tweening_Tween:Delay() end
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_Tween:Duration(includeLoops) end
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_Tween:Elapsed(includeLoops) end
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_Tween:ElapsedPercentage(includeLoops) end
+---@return number
+function DG_Tweening_Tween:ElapsedDirectionalPercentage() end
+---@return boolean
+function DG_Tweening_Tween:IsActive() end
+---@return boolean
+function DG_Tweening_Tween:IsBackwards() end
+---@return boolean
+function DG_Tweening_Tween:IsComplete() end
+---@return boolean
+function DG_Tweening_Tween:IsInitialized() end
+---@return boolean
+function DG_Tweening_Tween:IsPlaying() end
+---@return number
+function DG_Tweening_Tween:Loops() end
+---@param pathPercentage number
+---@return UnityEngine.Vector3
+function DG_Tweening_Tween:PathGetPoint(pathPercentage) end
+---@param subdivisionsXSegment number
+---@return NotExportType
+function DG_Tweening_Tween:PathGetDrawPoints(subdivisionsXSegment) end
+---@return number
+function DG_Tweening_Tween:PathLength() end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function DG_Tweening_Tween:DOTimeScale(endValue, duration) end
+
+---@class DG.Tweening.Core.ABSSequentiable : System.Object
+local DG_Tweening_Core_ABSSequentiable = {}
+
+---@class DG.Tweening.TweenExtensions : System.Object
+local DG_Tweening_TweenExtensions = {}
+---@overload fun(t : DG.Tweening.Tween)
+---@param t DG.Tweening.Tween
+---@param withCallbacks boolean
+function DG_Tweening_TweenExtensions.Complete(t, withCallbacks) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.Flip(t) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.ForceInit(t) end
+---@param t DG.Tweening.Tween
+---@param to number
+---@param andPlay boolean
+function DG_Tweening_TweenExtensions.Goto(t, to, andPlay) end
+---@param t DG.Tweening.Tween
+---@param complete boolean
+function DG_Tweening_TweenExtensions.Kill(t, complete) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.PlayBackwards(t) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.PlayForward(t) end
+---@param t DG.Tweening.Tween
+---@param includeDelay boolean
+---@param changeDelayTo number
+function DG_Tweening_TweenExtensions.Restart(t, includeDelay, changeDelayTo) end
+---@param t DG.Tweening.Tween
+---@param includeDelay boolean
+function DG_Tweening_TweenExtensions.Rewind(t, includeDelay) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.SmoothRewind(t) end
+---@param t DG.Tweening.Tween
+function DG_Tweening_TweenExtensions.TogglePause(t) end
+---@param t DG.Tweening.Tween
+---@param waypointIndex number
+---@param andPlay boolean
+function DG_Tweening_TweenExtensions.GotoWaypoint(t, waypointIndex, andPlay) end
+---@param t DG.Tweening.Tween
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_TweenExtensions.WaitForCompletion(t) end
+---@param t DG.Tweening.Tween
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_TweenExtensions.WaitForRewind(t) end
+---@param t DG.Tweening.Tween
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_TweenExtensions.WaitForKill(t) end
+---@param t DG.Tweening.Tween
+---@param elapsedLoops number
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_TweenExtensions.WaitForElapsedLoops(t, elapsedLoops) end
+---@param t DG.Tweening.Tween
+---@param position number
+---@return UnityEngine.YieldInstruction
+function DG_Tweening_TweenExtensions.WaitForPosition(t, position) end
+---@param t DG.Tweening.Tween
+---@return UnityEngine.Coroutine
+function DG_Tweening_TweenExtensions.WaitForStart(t) end
+---@param t DG.Tweening.Tween
+---@return number
+function DG_Tweening_TweenExtensions.CompletedLoops(t) end
+---@param t DG.Tweening.Tween
+---@return number
+function DG_Tweening_TweenExtensions.Delay(t) end
+---@param t DG.Tweening.Tween
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_TweenExtensions.Duration(t, includeLoops) end
+---@param t DG.Tweening.Tween
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_TweenExtensions.Elapsed(t, includeLoops) end
+---@param t DG.Tweening.Tween
+---@param includeLoops boolean
+---@return number
+function DG_Tweening_TweenExtensions.ElapsedPercentage(t, includeLoops) end
+---@param t DG.Tweening.Tween
+---@return number
+function DG_Tweening_TweenExtensions.ElapsedDirectionalPercentage(t) end
+---@param t DG.Tweening.Tween
+---@return boolean
+function DG_Tweening_TweenExtensions.IsActive(t) end
+---@param t DG.Tweening.Tween
+---@return boolean
+function DG_Tweening_TweenExtensions.IsBackwards(t) end
+---@param t DG.Tweening.Tween
+---@return boolean
+function DG_Tweening_TweenExtensions.IsComplete(t) end
+---@param t DG.Tweening.Tween
+---@return boolean
+function DG_Tweening_TweenExtensions.IsInitialized(t) end
+---@param t DG.Tweening.Tween
+---@return boolean
+function DG_Tweening_TweenExtensions.IsPlaying(t) end
+---@param t DG.Tweening.Tween
+---@return number
+function DG_Tweening_TweenExtensions.Loops(t) end
+---@param t DG.Tweening.Tween
+---@param pathPercentage number
+---@return UnityEngine.Vector3
+function DG_Tweening_TweenExtensions.PathGetPoint(t, pathPercentage) end
+---@param t DG.Tweening.Tween
+---@param subdivisionsXSegment number
+---@return NotExportType
+function DG_Tweening_TweenExtensions.PathGetDrawPoints(t, subdivisionsXSegment) end
+---@param t DG.Tweening.Tween
+---@return number
+function DG_Tweening_TweenExtensions.PathLength(t) end
+
+---@class DG.Tweening.Sequence : DG.Tweening.Tween
+local DG_Tweening_Sequence = {}
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:Append(t) end
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:Prepend(t) end
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:Join(t) end
+---@param atPosition number
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:Insert(atPosition, t) end
+---@param interval number
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:AppendInterval(interval) end
+---@param interval number
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:PrependInterval(interval) end
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:AppendCallback(callback) end
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:PrependCallback(callback) end
+---@param atPosition number
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_Sequence:InsertCallback(atPosition, callback) end
+
+---@class DG.Tweening.TweenSettingsExtensions : System.Object
+local DG_Tweening_TweenSettingsExtensions = {}
+---@param s DG.Tweening.Sequence
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.Append(s, t) end
+---@param s DG.Tweening.Sequence
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.Prepend(s, t) end
+---@param s DG.Tweening.Sequence
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.Join(s, t) end
+---@param s DG.Tweening.Sequence
+---@param atPosition number
+---@param t DG.Tweening.Tween
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.Insert(s, atPosition, t) end
+---@param s DG.Tweening.Sequence
+---@param interval number
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.AppendInterval(s, interval) end
+---@param s DG.Tweening.Sequence
+---@param interval number
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.PrependInterval(s, interval) end
+---@param s DG.Tweening.Sequence
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.AppendCallback(s, callback) end
+---@param s DG.Tweening.Sequence
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.PrependCallback(s, callback) end
+---@param s DG.Tweening.Sequence
+---@param atPosition number
+---@param callback NotExportType
+---@return DG.Tweening.Sequence
+function DG_Tweening_TweenSettingsExtensions.InsertCallback(s, atPosition, callback) end
+---@overload fun(t : NotExportType, fromAlphaValue : number, setImmediately : boolean) : NotExportType
+---@param t NotExportType
+---@param fromValue number
+---@param setImmediately boolean
+---@return NotExportType
+function DG_Tweening_TweenSettingsExtensions.From(t, fromValue, setImmediately) end
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, axisConstraint : NotExportEnum, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, axisConstraint : NotExportEnum, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, axisConstraint : NotExportEnum, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, useShortest360Route : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, alphaOnly : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, richTextEnabled : boolean, scrambleMode : NotExportEnum, scrambleChars : string) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, axisConstraint : NotExportEnum, snapping : boolean) : DG.Tweening.Tweener
+---@overload fun(t : NotExportType, lockPosition : NotExportEnum, lockRotation : NotExportEnum) : NotExportType
+---@param t NotExportType
+---@param closePath boolean
+---@param lockPosition NotExportEnum
+---@param lockRotation NotExportEnum
+---@return NotExportType
+function DG_Tweening_TweenSettingsExtensions.SetOptions(t, closePath, lockPosition, lockRotation) end
+---@overload fun(t : NotExportType, lookAtPosition : UnityEngine.Vector3, forwardDirection : NotExportType, up : NotExportType) : NotExportType
+---@overload fun(t : NotExportType, lookAtTransform : UnityEngine.Transform, forwardDirection : NotExportType, up : NotExportType) : NotExportType
+---@param t NotExportType
+---@param lookAhead number
+---@param forwardDirection NotExportType
+---@param up NotExportType
+---@return NotExportType
+function DG_Tweening_TweenSettingsExtensions.SetLookAt(t, lookAhead, forwardDirection, up) end
+
+---@class DG.Tweening.Tweener : DG.Tweening.Tween
+local DG_Tweening_Tweener = {}
+---@param newStartValue System.Object
+---@param newDuration number
+---@return DG.Tweening.Tweener
+function DG_Tweening_Tweener:ChangeStartValue(newStartValue, newDuration) end
+---@overload fun(newEndValue : System.Object, newDuration : number, snapStartValue : boolean) : DG.Tweening.Tweener
+---@param newEndValue System.Object
+---@param snapStartValue boolean
+---@return DG.Tweening.Tweener
+function DG_Tweening_Tweener:ChangeEndValue(newEndValue, snapStartValue) end
+---@param newStartValue System.Object
+---@param newEndValue System.Object
+---@param newDuration number
+---@return DG.Tweening.Tweener
+function DG_Tweening_Tweener:ChangeValues(newStartValue, newEndValue, newDuration) end
+
+---@class DG.Tweening.LoopType
+---@field Restart DG.Tweening.LoopType
+---@field Yoyo DG.Tweening.LoopType
+---@field Incremental DG.Tweening.LoopType
+local DG_Tweening_LoopType = {}
+
+---@class DG.Tweening.PathMode
+---@field Ignore DG.Tweening.PathMode
+---@field Full3D DG.Tweening.PathMode
+---@field TopDown2D DG.Tweening.PathMode
+---@field Sidescroller2D DG.Tweening.PathMode
+local DG_Tweening_PathMode = {}
+
+---@class DG.Tweening.PathType
+---@field Linear DG.Tweening.PathType
+---@field CatmullRom DG.Tweening.PathType
+---@field CubicBezier DG.Tweening.PathType
+local DG_Tweening_PathType = {}
+
+---@class DG.Tweening.RotateMode
+---@field Fast DG.Tweening.RotateMode
+---@field FastBeyond360 DG.Tweening.RotateMode
+---@field WorldAxisAdd DG.Tweening.RotateMode
+---@field LocalAxisAdd DG.Tweening.RotateMode
+local DG_Tweening_RotateMode = {}
+
 ---@class UnityEngine.Component : UnityEngine.Object
 ---@field transform UnityEngine.Transform
 ---@field gameObject UnityEngine.GameObject
@@ -133,6 +691,36 @@ function UnityEngine_Component:SendMessage(methodName, options) end
 ---@param methodName string
 ---@param options NotExportEnum
 function UnityEngine_Component:BroadcastMessage(methodName, options) end
+---@param withCallbacks boolean
+---@return number
+function UnityEngine_Component:DOComplete(withCallbacks) end
+---@param complete boolean
+---@return number
+function UnityEngine_Component:DOKill(complete) end
+---@return number
+function UnityEngine_Component:DOFlip() end
+---@param to number
+---@param andPlay boolean
+---@return number
+function UnityEngine_Component:DOGoto(to, andPlay) end
+---@return number
+function UnityEngine_Component:DOPause() end
+---@return number
+function UnityEngine_Component:DOPlay() end
+---@return number
+function UnityEngine_Component:DOPlayBackwards() end
+---@return number
+function UnityEngine_Component:DOPlayForward() end
+---@param includeDelay boolean
+---@return number
+function UnityEngine_Component:DORestart(includeDelay) end
+---@param includeDelay boolean
+---@return number
+function UnityEngine_Component:DORewind(includeDelay) end
+---@return number
+function UnityEngine_Component:DOSmoothRewind() end
+---@return number
+function UnityEngine_Component:DOTogglePause() end
 
 ---@class UnityEngine.Object : System.Object
 ---@field name string
@@ -282,6 +870,299 @@ function UnityEngine_Transform:GetEnumerator() end
 ---@param index number
 ---@return UnityEngine.Transform
 function UnityEngine_Transform:GetChild(index) end
+---@param endValue UnityEngine.Vector3
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOMove(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOMoveX(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOMoveY(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOMoveZ(endValue, duration, snapping) end
+---@param endValue UnityEngine.Vector3
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOLocalMove(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOLocalMoveX(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOLocalMoveY(endValue, duration, snapping) end
+---@param endValue number
+---@param duration number
+---@param snapping boolean
+---@return NotExportType
+function UnityEngine_Transform:DOLocalMoveZ(endValue, duration, snapping) end
+---@param endValue UnityEngine.Vector3
+---@param duration number
+---@param mode DG.Tweening.RotateMode
+---@return NotExportType
+function UnityEngine_Transform:DORotate(endValue, duration, mode) end
+---@param endValue UnityEngine.Quaternion
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DORotateQuaternion(endValue, duration) end
+---@param endValue UnityEngine.Vector3
+---@param duration number
+---@param mode DG.Tweening.RotateMode
+---@return NotExportType
+function UnityEngine_Transform:DOLocalRotate(endValue, duration, mode) end
+---@param endValue UnityEngine.Quaternion
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOLocalRotateQuaternion(endValue, duration) end
+---@param endValue UnityEngine.Vector3
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOScale(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOScale(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOScaleX(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOScaleY(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Transform:DOScaleZ(endValue, duration) end
+---@param towards UnityEngine.Vector3
+---@param duration number
+---@param axisConstraint NotExportEnum
+---@param up NotExportType
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOLookAt(towards, duration, axisConstraint, up) end
+---@param punch UnityEngine.Vector3
+---@param duration number
+---@param vibrato number
+---@param elasticity number
+---@param snapping boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOPunchPosition(punch, duration, vibrato, elasticity, snapping) end
+---@param punch UnityEngine.Vector3
+---@param duration number
+---@param vibrato number
+---@param elasticity number
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOPunchScale(punch, duration, vibrato, elasticity) end
+---@param punch UnityEngine.Vector3
+---@param duration number
+---@param vibrato number
+---@param elasticity number
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOPunchRotation(punch, duration, vibrato, elasticity) end
+---@param duration number
+---@param strength number
+---@param vibrato number
+---@param randomness number
+---@param snapping boolean
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut) end
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param snapping boolean
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut) end
+---@param duration number
+---@param strength number
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakeRotation(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakeRotation(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength number
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakeScale(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOShakeScale(duration, strength, vibrato, randomness, fadeOut) end
+---@param endValue UnityEngine.Vector3
+---@param jumpPower number
+---@param numJumps number
+---@param duration number
+---@param snapping boolean
+---@return DG.Tweening.Sequence
+function UnityEngine_Transform:DOJump(endValue, jumpPower, numJumps, duration, snapping) end
+---@param endValue UnityEngine.Vector3
+---@param jumpPower number
+---@param numJumps number
+---@param duration number
+---@param snapping boolean
+---@return DG.Tweening.Sequence
+function UnityEngine_Transform:DOLocalJump(endValue, jumpPower, numJumps, duration, snapping) end
+---@param path NotExportType
+---@param duration number
+---@param pathType DG.Tweening.PathType
+---@param pathMode DG.Tweening.PathMode
+---@param resolution number
+---@param gizmoColor NotExportType
+---@return NotExportType
+function UnityEngine_Transform:DOPath(path, duration, pathType, pathMode, resolution, gizmoColor) end
+---@param path NotExportType
+---@param duration number
+---@param pathType DG.Tweening.PathType
+---@param pathMode DG.Tweening.PathMode
+---@param resolution number
+---@param gizmoColor NotExportType
+---@return NotExportType
+function UnityEngine_Transform:DOLocalPath(path, duration, pathType, pathMode, resolution, gizmoColor) end
+---@param path NotExportType
+---@param duration number
+---@param pathMode DG.Tweening.PathMode
+---@return NotExportType
+function UnityEngine_Transform:DOPath(path, duration, pathMode) end
+---@param path NotExportType
+---@param duration number
+---@param pathMode DG.Tweening.PathMode
+---@return NotExportType
+function UnityEngine_Transform:DOLocalPath(path, duration, pathMode) end
+---@param byValue UnityEngine.Vector3
+---@param duration number
+---@param snapping boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendableMoveBy(byValue, duration, snapping) end
+---@param byValue UnityEngine.Vector3
+---@param duration number
+---@param snapping boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendableLocalMoveBy(byValue, duration, snapping) end
+---@param byValue UnityEngine.Vector3
+---@param duration number
+---@param mode DG.Tweening.RotateMode
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendableRotateBy(byValue, duration, mode) end
+---@param byValue UnityEngine.Vector3
+---@param duration number
+---@param mode DG.Tweening.RotateMode
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendableLocalRotateBy(byValue, duration, mode) end
+---@param punch UnityEngine.Vector3
+---@param duration number
+---@param vibrato number
+---@param elasticity number
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendablePunchRotation(punch, duration, vibrato, elasticity) end
+---@param byValue UnityEngine.Vector3
+---@param duration number
+---@return DG.Tweening.Tweener
+function UnityEngine_Transform:DOBlendableScaleBy(byValue, duration) end
+
+---@class UnityEngine.Light : UnityEngine.Behaviour
+---@field type UnityEngine.LightType
+---@field spotAngle number
+---@field color UnityEngine.Color
+---@field colorTemperature number
+---@field intensity number
+---@field bounceIntensity number
+---@field shadowCustomResolution number
+---@field shadowBias number
+---@field shadowNormalBias number
+---@field shadowNearPlane number
+---@field range number
+---@field flare NotExportType
+---@field bakingOutput NotExportType
+---@field cullingMask number
+---@field lightShadowCasterMode NotExportEnum
+---@field shadows NotExportEnum
+---@field shadowStrength number
+---@field shadowResolution NotExportEnum
+---@field layerShadowCullDistances NotExportType
+---@field cookieSize number
+---@field cookie UnityEngine.Texture
+---@field renderMode NotExportEnum
+---@field commandBufferCount number
+local UnityEngine_Light = {}
+---@return UnityEngine.Light
+function UnityEngine_Light.New() end
+---@param type UnityEngine.LightType
+---@param layer number
+---@return NotExportType
+function UnityEngine_Light.GetLights(type, layer) end
+function UnityEngine_Light:Reset() end
+---@overload fun(evt : NotExportEnum, buffer : NotExportType)
+---@param evt NotExportEnum
+---@param buffer NotExportType
+---@param shadowPassMask NotExportEnum
+function UnityEngine_Light:AddCommandBuffer(evt, buffer, shadowPassMask) end
+---@overload fun(evt : NotExportEnum, buffer : NotExportType, queueType : NotExportEnum)
+---@param evt NotExportEnum
+---@param buffer NotExportType
+---@param shadowPassMask NotExportEnum
+---@param queueType NotExportEnum
+function UnityEngine_Light:AddCommandBufferAsync(evt, buffer, shadowPassMask, queueType) end
+---@param evt NotExportEnum
+---@param buffer NotExportType
+function UnityEngine_Light:RemoveCommandBuffer(evt, buffer) end
+---@param evt NotExportEnum
+function UnityEngine_Light:RemoveCommandBuffers(evt) end
+function UnityEngine_Light:RemoveAllCommandBuffers() end
+---@param evt NotExportEnum
+---@return NotExportType
+function UnityEngine_Light:GetCommandBuffers(evt) end
+---@param endValue UnityEngine.Color
+---@param duration number
+---@return NotExportType
+function UnityEngine_Light:DOColor(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Light:DOIntensity(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Light:DOShadowStrength(endValue, duration) end
+---@param endValue UnityEngine.Color
+---@param duration number
+---@return DG.Tweening.Tweener
+function UnityEngine_Light:DOBlendableColor(endValue, duration) end
+
+---@class UnityEngine.Behaviour : UnityEngine.Component
+---@field enabled boolean
+---@field isActiveAndEnabled boolean
+local UnityEngine_Behaviour = {}
+---@return UnityEngine.Behaviour
+function UnityEngine_Behaviour.New() end
 
 ---@class UnityEngine.Material : UnityEngine.Object
 ---@field shader UnityEngine.Shader
@@ -463,71 +1344,116 @@ function UnityEngine_Material:GetTextureOffset(nameID) end
 ---@param nameID number
 ---@return UnityEngine.Vector2
 function UnityEngine_Material:GetTextureScale(nameID) end
-
----@class UnityEngine.Light : UnityEngine.Behaviour
----@field type UnityEngine.LightType
----@field spotAngle number
----@field color UnityEngine.Color
----@field colorTemperature number
----@field intensity number
----@field bounceIntensity number
----@field shadowCustomResolution number
----@field shadowBias number
----@field shadowNormalBias number
----@field shadowNearPlane number
----@field range number
----@field flare NotExportType
----@field bakingOutput NotExportType
----@field cullingMask number
----@field lightShadowCasterMode NotExportEnum
----@field shadowRadius number
----@field shadowAngle number
----@field shadows NotExportEnum
----@field shadowStrength number
----@field shadowResolution NotExportEnum
----@field layerShadowCullDistances NotExportType
----@field cookieSize number
----@field cookie UnityEngine.Texture
----@field renderMode NotExportEnum
----@field areaSize UnityEngine.Vector2
----@field lightmapBakeType NotExportEnum
----@field commandBufferCount number
-local UnityEngine_Light = {}
----@return UnityEngine.Light
-function UnityEngine_Light.New() end
----@param type UnityEngine.LightType
----@param layer number
+---@param endValue UnityEngine.Color
+---@param duration number
 ---@return NotExportType
-function UnityEngine_Light.GetLights(type, layer) end
-function UnityEngine_Light:Reset() end
-function UnityEngine_Light:SetLightDirty() end
----@overload fun(evt : NotExportEnum, buffer : NotExportType)
----@param evt NotExportEnum
----@param buffer NotExportType
----@param shadowPassMask NotExportEnum
-function UnityEngine_Light:AddCommandBuffer(evt, buffer, shadowPassMask) end
----@overload fun(evt : NotExportEnum, buffer : NotExportType, queueType : NotExportEnum)
----@param evt NotExportEnum
----@param buffer NotExportType
----@param shadowPassMask NotExportEnum
----@param queueType NotExportEnum
-function UnityEngine_Light:AddCommandBufferAsync(evt, buffer, shadowPassMask, queueType) end
----@param evt NotExportEnum
----@param buffer NotExportType
-function UnityEngine_Light:RemoveCommandBuffer(evt, buffer) end
----@param evt NotExportEnum
-function UnityEngine_Light:RemoveCommandBuffers(evt) end
-function UnityEngine_Light:RemoveAllCommandBuffers() end
----@param evt NotExportEnum
+function UnityEngine_Material:DOColor(endValue, duration) end
+---@param endValue UnityEngine.Color
+---@param property string
+---@param duration number
 ---@return NotExportType
-function UnityEngine_Light:GetCommandBuffers(evt) end
-
----@class UnityEngine.Behaviour : UnityEngine.Component
----@field enabled boolean
----@field isActiveAndEnabled boolean
-local UnityEngine_Behaviour = {}
----@return UnityEngine.Behaviour
-function UnityEngine_Behaviour.New() end
+function UnityEngine_Material:DOColor(endValue, property, duration) end
+---@param endValue UnityEngine.Color
+---@param propertyID number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOColor(endValue, propertyID, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOFade(endValue, duration) end
+---@param endValue number
+---@param property string
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOFade(endValue, property, duration) end
+---@param endValue number
+---@param propertyID number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOFade(endValue, propertyID, duration) end
+---@param endValue number
+---@param property string
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOFloat(endValue, property, duration) end
+---@param endValue number
+---@param propertyID number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOFloat(endValue, propertyID, duration) end
+---@param endValue UnityEngine.Vector2
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOOffset(endValue, duration) end
+---@param endValue UnityEngine.Vector2
+---@param property string
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOOffset(endValue, property, duration) end
+---@param endValue UnityEngine.Vector2
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOTiling(endValue, duration) end
+---@param endValue UnityEngine.Vector2
+---@param property string
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOTiling(endValue, property, duration) end
+---@param endValue NotExportType
+---@param property string
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOVector(endValue, property, duration) end
+---@param endValue NotExportType
+---@param propertyID number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Material:DOVector(endValue, propertyID, duration) end
+---@param endValue UnityEngine.Color
+---@param duration number
+---@return DG.Tweening.Tweener
+function UnityEngine_Material:DOBlendableColor(endValue, duration) end
+---@param endValue UnityEngine.Color
+---@param property string
+---@param duration number
+---@return DG.Tweening.Tweener
+function UnityEngine_Material:DOBlendableColor(endValue, property, duration) end
+---@param endValue UnityEngine.Color
+---@param propertyID number
+---@param duration number
+---@return DG.Tweening.Tweener
+function UnityEngine_Material:DOBlendableColor(endValue, propertyID, duration) end
+---@param withCallbacks boolean
+---@return number
+function UnityEngine_Material:DOComplete(withCallbacks) end
+---@param complete boolean
+---@return number
+function UnityEngine_Material:DOKill(complete) end
+---@return number
+function UnityEngine_Material:DOFlip() end
+---@param to number
+---@param andPlay boolean
+---@return number
+function UnityEngine_Material:DOGoto(to, andPlay) end
+---@return number
+function UnityEngine_Material:DOPause() end
+---@return number
+function UnityEngine_Material:DOPlay() end
+---@return number
+function UnityEngine_Material:DOPlayBackwards() end
+---@return number
+function UnityEngine_Material:DOPlayForward() end
+---@param includeDelay boolean
+---@return number
+function UnityEngine_Material:DORestart(includeDelay) end
+---@param includeDelay boolean
+---@return number
+function UnityEngine_Material:DORewind(includeDelay) end
+---@return number
+function UnityEngine_Material:DOSmoothRewind() end
+---@return number
+function UnityEngine_Material:DOTogglePause() end
 
 ---@class UnityEngine.Rigidbody : UnityEngine.Component
 ---@field velocity UnityEngine.Vector3
@@ -819,6 +1745,66 @@ function UnityEngine_Camera:RemoveCommandBuffer(evt, buffer) end
 ---@param evt NotExportEnum
 ---@return NotExportType
 function UnityEngine_Camera:GetCommandBuffers(evt) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOAspect(endValue, duration) end
+---@param endValue UnityEngine.Color
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOColor(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOFarClipPlane(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOFieldOfView(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DONearClipPlane(endValue, duration) end
+---@param endValue number
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOOrthoSize(endValue, duration) end
+---@param endValue NotExportType
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DOPixelRect(endValue, duration) end
+---@param endValue NotExportType
+---@param duration number
+---@return NotExportType
+function UnityEngine_Camera:DORect(endValue, duration) end
+---@param duration number
+---@param strength number
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Camera:DOShakePosition(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Camera:DOShakePosition(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength number
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Camera:DOShakeRotation(duration, strength, vibrato, randomness, fadeOut) end
+---@param duration number
+---@param strength UnityEngine.Vector3
+---@param vibrato number
+---@param randomness number
+---@param fadeOut boolean
+---@return DG.Tweening.Tweener
+function UnityEngine_Camera:DOShakeRotation(duration, strength, vibrato, randomness, fadeOut) end
 
 ---@class UnityEngine.AudioSource : UnityEngine.AudioBehaviour
 ---@field volume number
@@ -911,7 +1897,6 @@ function UnityEngine_AudioBehaviour.New() end
 
 ---@class UnityEngine.MonoBehaviour : UnityEngine.Behaviour
 ---@field useGUILayout boolean
----@field runInEditMode boolean
 local UnityEngine_MonoBehaviour = {}
 ---@param message System.Object
 function UnityEngine_MonoBehaviour.print(message) end
@@ -1019,6 +2004,7 @@ function UnityEngine_GameObject:SetActive(value) end
 ---@param tag string
 ---@return boolean
 function UnityEngine_GameObject:CompareTag(tag) end
+function UnityEngine_GameObject:PrintGameobject() end
 
 ---@class UnityEngine.TrackedReference : System.Object
 local UnityEngine_TrackedReference = {}
@@ -1425,7 +2411,6 @@ function UnityEngine_Collider:ClosestPointOnBounds(position) end
 ---@field mipMapBias number
 ---@field texelSize UnityEngine.Vector2
 ---@field updateCount number
----@field imageContentsHash NotExportType
 local UnityEngine_Texture = {}
 ---@param forcedMin number
 ---@param globalMax number
@@ -1447,7 +2432,6 @@ function UnityEngine_Texture:IncrementUpdateCount() end
 ---@field desiredMipmapLevel number
 ---@field loadingMipmapLevel number
 ---@field loadedMipmapLevel number
----@field alphaIsTransparency boolean
 local UnityEngine_Texture2D = {}
 ---@overload fun(width : number, height : number, format : NotExportEnum, flags : NotExportEnum) : UnityEngine.Texture2D
 ---@overload fun(width : number, height : number, textureFormat : NotExportEnum, mipChain : boolean, linear : boolean) : UnityEngine.Texture2D
@@ -2339,9 +3323,6 @@ function UnityEngine_Input.GetMouseButtonDown(button) end
 ---@return boolean
 function UnityEngine_Input.GetMouseButtonUp(button) end
 function UnityEngine_Input.ResetInputAxes() end
----@param joystickName string
----@return boolean
-function UnityEngine_Input.IsJoystickPreconfigured(joystickName) end
 ---@return NotExportType
 function UnityEngine_Input.GetJoystickNames() end
 ---@param index number
@@ -2959,8 +3940,6 @@ local UnityEngine_WrapMode = {}
 ---@field blendWeights UnityEngine.BlendWeights
 ---@field streamingMipmapsActive boolean
 ---@field streamingMipmapsMemoryBudget number
----@field streamingMipmapsRenderersPerFrame number
----@field streamingMipmapsMaxLevelReduction number
 ---@field streamingMipmapsAddAllCameras boolean
 ---@field streamingMipmapsMaxFileIORequests number
 ---@field maxQueuedFrames number
@@ -3367,19 +4346,13 @@ function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:GetEnu
 function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:GetObjectData(info, context) end
 ---@param sender System.Object
 function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:OnDeserialization(sender) end
----@overload fun(key : number) : boolean
 ---@param key number
----@param out_value UnityEngine.GameObject
----@return boolean,UnityEngine.GameObject
-function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:Remove(key, out_value) end
+---@return boolean
+function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:Remove(key) end
 ---@param key number
 ---@param out_value UnityEngine.GameObject
 ---@return boolean,UnityEngine.GameObject
 function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:TryGetValue(key, out_value) end
----@param key number
----@param value UnityEngine.GameObject
----@return boolean
-function System_Collections_Generic_Dictionary_int_UnityEngine_GameObject:TryAdd(key, value) end
 
 ---@class System.Collections.Generic.List_System_Collections_Generic_List_UnityEngine_GameObject : System.Object
 ---@field Capacity number
@@ -3825,19 +4798,13 @@ function System_Collections_Generic_Dictionary:GetEnumerator() end
 function System_Collections_Generic_Dictionary:GetObjectData(info, context) end
 ---@param sender System.Object
 function System_Collections_Generic_Dictionary:OnDeserialization(sender) end
----@overload fun(key : NotExportType) : boolean
 ---@param key NotExportType
----@param out_value NotExportType
----@return boolean,NotExportType
-function System_Collections_Generic_Dictionary:Remove(key, out_value) end
+---@return boolean
+function System_Collections_Generic_Dictionary:Remove(key) end
 ---@param key NotExportType
 ---@param out_value NotExportType
 ---@return boolean,NotExportType
 function System_Collections_Generic_Dictionary:TryGetValue(key, out_value) end
----@param key NotExportType
----@param value NotExportType
----@return boolean
-function System_Collections_Generic_Dictionary:TryAdd(key, value) end
 
 ---@class System.Collections.Generic.KeyValuePair : NotExportType
 ---@field Key NotExportType
@@ -3849,10 +4816,6 @@ local System_Collections_Generic_KeyValuePair = {}
 function System_Collections_Generic_KeyValuePair.New(key, value) end
 ---@return string
 function System_Collections_Generic_KeyValuePair:ToString() end
----@param out_key NotExportType
----@param out_value NotExportType
----@return ,NotExportType,NotExportType
-function System_Collections_Generic_KeyValuePair:Deconstruct(out_key, out_value) end
 
 ---@class System.Collections.Generic.List : System.Object
 ---@field Capacity number
@@ -4106,7 +5069,6 @@ function LuaInterface_NullObject.New() end
 
 ---@class System.String : System.Object
 ---@field Empty System.String
----@field Chars NotExportType
 ---@field Length number
 local System_String = {}
 ---@overload fun(value : NotExportType) : System.String

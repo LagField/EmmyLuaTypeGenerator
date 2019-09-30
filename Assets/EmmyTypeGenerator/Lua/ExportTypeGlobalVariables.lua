@@ -6,18 +6,40 @@ System_Object = System.Object
 LuaInterface_InjectType = LuaInterface.InjectType
 ---@type LuaInterface.Debugger
 LuaInterface_Debugger = LuaInterface.Debugger
+---@type DG.Tweening.DOTween
+DG_Tweening_DOTween = DG.Tweening.DOTween
+---@type DG.Tweening.Tween
+DG_Tweening_Tween = DG.Tweening.Tween
+---@type DG.Tweening.Core.ABSSequentiable
+DG_Tweening_Core_ABSSequentiable = DG.Tweening.Core.ABSSequentiable
+---@type DG.Tweening.TweenExtensions
+DG_Tweening_TweenExtensions = DG.Tweening.TweenExtensions
+---@type DG.Tweening.Sequence
+DG_Tweening_Sequence = DG.Tweening.Sequence
+---@type DG.Tweening.TweenSettingsExtensions
+DG_Tweening_TweenSettingsExtensions = DG.Tweening.TweenSettingsExtensions
+---@type DG.Tweening.Tweener
+DG_Tweening_Tweener = DG.Tweening.Tweener
+---@type DG.Tweening.LoopType
+DG_Tweening_LoopType = DG.Tweening.LoopType
+---@type DG.Tweening.PathMode
+DG_Tweening_PathMode = DG.Tweening.PathMode
+---@type DG.Tweening.PathType
+DG_Tweening_PathType = DG.Tweening.PathType
+---@type DG.Tweening.RotateMode
+DG_Tweening_RotateMode = DG.Tweening.RotateMode
 ---@type UnityEngine.Component
 UnityEngine_Component = UnityEngine.Component
 ---@type UnityEngine.Object
 UnityEngine_Object = UnityEngine.Object
 ---@type UnityEngine.Transform
 UnityEngine_Transform = UnityEngine.Transform
----@type UnityEngine.Material
-UnityEngine_Material = UnityEngine.Material
 ---@type UnityEngine.Light
 UnityEngine_Light = UnityEngine.Light
 ---@type UnityEngine.Behaviour
 UnityEngine_Behaviour = UnityEngine.Behaviour
+---@type UnityEngine.Material
+UnityEngine_Material = UnityEngine.Material
 ---@type UnityEngine.Rigidbody
 UnityEngine_Rigidbody = UnityEngine.Rigidbody
 ---@type UnityEngine.Camera
@@ -182,6 +204,72 @@ System_Action_int = System.Action_int
 System_Comparison_int = System.Comparison_int
 ---@type fun(f : fun(arg : number) : number)
 System_Func_int_int = System.Func_int_int
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_float = DG.Tweening.Core.DOGetter_float
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_float = DG.Tweening.Core.DOSetter_float
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_double = DG.Tweening.Core.DOGetter_double
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_double = DG.Tweening.Core.DOSetter_double
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_int = DG.Tweening.Core.DOGetter_int
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_int = DG.Tweening.Core.DOSetter_int
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_uint = DG.Tweening.Core.DOGetter_uint
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_uint = DG.Tweening.Core.DOSetter_uint
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_long = DG.Tweening.Core.DOGetter_long
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_long = DG.Tweening.Core.DOSetter_long
+---@type fun(f : fun() : number)
+DG_Tweening_Core_DOGetter_ulong = DG.Tweening.Core.DOGetter_ulong
+---@type fun(f : fun(pNewValue : number))
+DG_Tweening_Core_DOSetter_ulong = DG.Tweening.Core.DOSetter_ulong
+---@type fun(f : fun() : string)
+DG_Tweening_Core_DOGetter_string = DG.Tweening.Core.DOGetter_string
+---@type fun(f : fun(pNewValue : string))
+DG_Tweening_Core_DOSetter_string = DG.Tweening.Core.DOSetter_string
+---@type fun(f : fun() : UnityEngine.Vector2)
+DG_Tweening_Core_DOGetter_UnityEngine_Vector2 = DG.Tweening.Core.DOGetter_UnityEngine_Vector2
+---@type fun(f : fun(pNewValue : UnityEngine.Vector2))
+DG_Tweening_Core_DOSetter_UnityEngine_Vector2 = DG.Tweening.Core.DOSetter_UnityEngine_Vector2
+---@type fun(f : fun() : UnityEngine.Vector3)
+DG_Tweening_Core_DOGetter_UnityEngine_Vector3 = DG.Tweening.Core.DOGetter_UnityEngine_Vector3
+---@type fun(f : fun(pNewValue : UnityEngine.Vector3))
+DG_Tweening_Core_DOSetter_UnityEngine_Vector3 = DG.Tweening.Core.DOSetter_UnityEngine_Vector3
+---@type fun(f : fun() : NotExportType)
+DG_Tweening_Core_DOGetter_UnityEngine_Vector4 = DG.Tweening.Core.DOGetter_UnityEngine_Vector4
+---@type fun(f : fun(pNewValue : NotExportType))
+DG_Tweening_Core_DOSetter_UnityEngine_Vector4 = DG.Tweening.Core.DOSetter_UnityEngine_Vector4
+---@type fun(f : fun() : UnityEngine.Quaternion)
+DG_Tweening_Core_DOGetter_UnityEngine_Quaternion = DG.Tweening.Core.DOGetter_UnityEngine_Quaternion
+---@type fun(f : fun(pNewValue : UnityEngine.Quaternion))
+DG_Tweening_Core_DOSetter_UnityEngine_Quaternion = DG.Tweening.Core.DOSetter_UnityEngine_Quaternion
+---@type fun(f : fun() : UnityEngine.Color)
+DG_Tweening_Core_DOGetter_UnityEngine_Color = DG.Tweening.Core.DOGetter_UnityEngine_Color
+---@type fun(f : fun(pNewValue : UnityEngine.Color))
+DG_Tweening_Core_DOSetter_UnityEngine_Color = DG.Tweening.Core.DOSetter_UnityEngine_Color
+---@type fun(f : fun() : NotExportType)
+DG_Tweening_Core_DOGetter_UnityEngine_Rect = DG.Tweening.Core.DOGetter_UnityEngine_Rect
+---@type fun(f : fun(pNewValue : NotExportType))
+DG_Tweening_Core_DOSetter_UnityEngine_Rect = DG.Tweening.Core.DOSetter_UnityEngine_Rect
+---@type fun(f : fun() : NotExportType)
+DG_Tweening_Core_DOGetter_UnityEngine_RectOffset = DG.Tweening.Core.DOGetter_UnityEngine_RectOffset
+---@type fun(f : fun(pNewValue : NotExportType))
+DG_Tweening_Core_DOSetter_UnityEngine_RectOffset = DG.Tweening.Core.DOSetter_UnityEngine_RectOffset
+---@type fun(f : fun() : NotExportType)
+---@type fun(f : fun(pNewValue : NotExportType))
+---@type fun(f : fun(arg1 : NotExportEnum, arg2 : System.Object) : boolean)
+System_Func_UnityEngine_LogType_System_Object_bool = System.Func_UnityEngine_LogType_System_Object_bool
+---@type fun(f : fun(time : number, duration : number, overshootOrAmplitude : number, period : number) : number)
+DG_Tweening_EaseFunction = DG.Tweening.EaseFunction
+---@type fun(f : fun())
+DG_Tweening_TweenCallback = DG.Tweening.TweenCallback
+---@type fun(f : fun(value : number))
+DG_Tweening_TweenCallback_int = DG.Tweening.TweenCallback_int
 ---@type fun(f : fun(cam : UnityEngine.Camera))
 UnityEngine_Camera_CameraCallback = UnityEngine.Camera.CameraCallback
 ---@type fun(f : fun(advertisingId : string, trackingEnabled : boolean, errorMsg : string))

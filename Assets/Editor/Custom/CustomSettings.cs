@@ -61,7 +61,6 @@ public static class CustomSettings
         _GT(typeof(InjectType)),
         _GT(typeof(Debugger)).SetNameSpace(null),          
 
-#if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
         _GT(typeof(DG.Tweening.Tween)).SetBaseType(typeof(System.Object)).AddExtendType(typeof(DG.Tweening.TweenExtensions)),
         _GT(typeof(DG.Tweening.Sequence)).AddExtendType(typeof(DG.Tweening.TweenSettingsExtensions)),
@@ -79,18 +78,9 @@ public static class CustomSettings
         _GT(typeof(AudioSource)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         //_GT(typeof(LineRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         //_GT(typeof(TrailRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),    
-#else
-                                         
-        _GT(typeof(Component)),
-        _GT(typeof(Transform)),
-        _GT(typeof(Material)),
-        _GT(typeof(Light)),
-        _GT(typeof(Rigidbody)),
-        _GT(typeof(Camera)),
-        _GT(typeof(AudioSource)),
         //_GT(typeof(LineRenderer))
         //_GT(typeof(TrailRenderer))
-#endif
+//#endif
       
         _GT(typeof(Behaviour)),
         _GT(typeof(MonoBehaviour)),        
