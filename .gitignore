@@ -5,3 +5,4 @@
 *.csproj
 *.sln
 /ProjectSettings
+*.DotSettings.user
